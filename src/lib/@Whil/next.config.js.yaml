@@ -1,9 +1,6 @@
 /** @type {import('next').NextConfig} */
 module.exports = {
   reactStrictMode: true,
-  images: {
-    domains: ['firebasestorage.googleapis.com', "via.placeholder.com"]
-  },
   webpack: (config) => {
     config.module.rules.push({
       test: /\.svg$/,
@@ -13,3 +10,4 @@ module.exports = {
     return config;
   }
 }
+//npm install @svgr/webpack --save-dev
