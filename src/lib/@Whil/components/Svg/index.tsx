@@ -10,7 +10,7 @@ const Svg: FC<SvgProps> = (props) => {
   )
   if (!Icon) return null
   return (
-    <SvgWrapper {...{ style: props.style }}>
+    <SvgWrapper {...{ style: props.style, customStyle: props.customStyles }}>
       <Icon />
     </SvgWrapper>
   )

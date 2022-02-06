@@ -1,4 +1,5 @@
 /* eslint-disable no-console */
+import Cookies from 'js-cookie'
 import refreshSpotifyToken from 'lib/spotify/refershSpotifyToken'
 import { LOGIN_URL } from 'lib/spotify/spotify'
 import NextAuth from 'next-auth'
@@ -16,6 +17,7 @@ export default NextAuth({
   pages: {
     signIn: '/',
   },
+
   callbacks: {
     async jwt({ token, account, user }: any) {
       if (account && user) {
@@ -34,7 +36,7 @@ export default NextAuth({
       return await refreshSpotifyToken(token)
     },
     async session({ session, token }: any) {
-      //  { session: Session; token: JWT  }
+      Cookies.set('accessToken', token.accessToken)
       if (session) {
         return {
           ...session,

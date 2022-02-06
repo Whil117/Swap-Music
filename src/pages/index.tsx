@@ -1,5 +1,6 @@
 import * as S from '@Styles/pages'
 import Svg from '@Whil/components/Svg'
+import { baseUrl } from 'lib/spotify/spotify'
 import { NextPage } from 'next'
 import { signIn } from 'next-auth/react'
 
@@ -13,9 +14,7 @@ const LandingPage: NextPage = () => (
       <h1>Welcome back!</h1>
       <h3>Sign in with spotify</h3>
       <S.LandingPageButton
-        onClick={() => {
-          signIn('spotify', { callbackUrl: 'http://localhost:3000/home' })
-        }}
+        onClick={() => signIn('spotify', { callbackUrl: `${baseUrl}/swap` })}
       >
         Sign In
       </S.LandingPageButton>

@@ -3,13 +3,10 @@ import storage from '@Redux/storage'
 import { combineReducers, createStore } from 'redux'
 import { composeWithDevTools } from 'redux-devtools-extension'
 import { persistReducer, persistStore } from 'redux-persist'
-
-const reducer = (state = {}, action: any) => {
-  return state
-}
+import user from '@Redux/reducers/user'
 
 const rootReducer = combineReducers({
-  reducer,
+  user,
 })
 
 const persistConfig = {

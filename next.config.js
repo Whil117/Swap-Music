@@ -2,7 +2,7 @@
 module.exports = {
   reactStrictMode: true,
   images: {
-    domains: ['firebasestorage.googleapis.com', "via.placeholder.com"]
+    domains: ['i.scdn.co', "via.placeholder.com"]
   },
   webpack: (config) => {
     config.module.rules.push({

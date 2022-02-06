@@ -8,6 +8,7 @@ const Normalize = css`
     font-family: 'Inter', sans-serif;
   }
   body {
+    background: ${colors.black_primary};
     color: ${colors.black_primary};
     margin: 0;
     font-family: 'Inter', sans-serif;

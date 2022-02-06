@@ -1,5 +1,7 @@
 import SpotifyWebApi from 'spotify-web-api-node'
 
+export const baseUrl = 'http://localhost:3000'
+
 const scopes = [
   //User
   'user-read-private',

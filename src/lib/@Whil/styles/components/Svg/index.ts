@@ -1,11 +1,15 @@
-import { css } from '@emotion/react'
+import { css, SerializedStyles } from '@emotion/react'
 import styled from '@emotion/styled'
 import Styles from '@Whil/types/styles'
 
-export const SvgWrapper = styled.div<{ style?: Styles }>`
+export const SvgWrapper = styled.div<{
+  style?: Styles
+  customStyle?: SerializedStyles
+}>`
   display: flex;
   justify-content: center;
   align-items: center;
+  ${({ customStyle }) => css(customStyle)}
   ${({ style }) =>
     style &&
     css`
