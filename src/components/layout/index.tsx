@@ -1,27 +1,21 @@
 import Hidratation from '@Components/layout/Hidratation'
+import Loading from '@Components/Loading'
 import Navbar from '@Components/Navbar'
-import { css } from '@emotion/react'
-import { Wrapper } from '@Styles/components/layout'
-import { LoadingWrapper } from '@Styles/components/layout/Hidratation/Loading'
-import colors from '@Styles/global/colors'
-import Svg from '@Whil/components/Svg'
+import { Profile, Wrapper } from '@Styles/components/layout'
+import Link from 'next/link'
 import { NextRouter } from 'next/router'
 import { FC, useEffect, useState } from 'react'
-
+import { useSelector } from 'react-redux'
+import Selector from '@Types/redux/reducers/user/types'
+import Image from '@Whil/components/Image'
 type Props = {
   router: NextRouter
   hidratation: boolean
-  accessToken: string
 }
 
-const Layout: FC<Props> = ({
-  children,
-  router: { pathname },
-  hidratation,
-  accessToken,
-}) => {
+const Layout: FC<Props> = ({ children, router: { pathname }, hidratation }) => {
   const [loading, setLoading] = useState<boolean>(false)
-
+  const user = useSelector(Selector)
   useEffect(() => {
     if (hidratation) {
       setTimeout(() => {
@@ -31,36 +25,34 @@ const Layout: FC<Props> = ({
   }, [hidratation])
 
   return (
-    <Hidratation {...{ hidratation, accessToken }}>
+    <Hidratation {...{ hidratation }}>
       {pathname.includes('/swap') ? (
         <>
           {loading ? (
             <>
               <Navbar />
+              <Link
+                href={{
+                  pathname: '/swap/profile',
+                }}
+                passHref
+              >
+                <Profile>
+                  <Image
+                    src={user.me?.image}
+                    alt={user.me?.name as string}
+                    width={50}
+                    height={50}
+                    styles={{
+                      borderRadius: '50%',
+                    }}
+                  />
+                </Profile>
+              </Link>
               <Wrapper>{children}</Wrapper>
             </>
           ) : (
-            <>
-              <LoadingWrapper>
-                <Svg
-                  src="/icons/loading"
-                  customStyles={css`
-                    position: fixed;
-                    z-index: 1;
-                    svg {
-                      width: 100px;
-                      height: 100px;
-                    }
-                    circle:nth-of-type(1) {
-                      stroke: ${colors.black_quaternary};
-                    }
-                    circle:nth-of-type(2) {
-                      stroke: ${colors.black_quinary};
-                    }
-                  `}
-                />
-              </LoadingWrapper>
-            </>
+            <Loading />
           )}
         </>
       ) : (

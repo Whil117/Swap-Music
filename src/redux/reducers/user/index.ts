@@ -1,11 +1,18 @@
+import { Session } from 'next-auth'
+
 export type State = {
-  followedArtists: SpotifyApi.CursorBasedPagingObject<SpotifyApi.ArtistObjectFull>
+  followedArtists: {
+    artists: SpotifyApi.CursorBasedPagingObject<SpotifyApi.ArtistObjectFull>
+  }
+  me: Session['user']
+  Playlists: SpotifyApi.CursorBasedPagingObject<SpotifyApi.PlaylistObjectSimplified>
+  TopArtists: SpotifyApi.CursorBasedPagingObject<SpotifyApi.ArtistObjectFull>
+  SavedAlbums: SpotifyApi.CursorBasedPagingObject<SpotifyApi.SavedAlbumObject>
 }
 
 const TypesReducers = {
   HIDRATATION: (state: State, payload: State) => ({
-    ...state,
-    followedArtists: payload.followedArtists,
+    ...payload,
   }),
 }
 

@@ -9,7 +9,7 @@ const Normalize = css`
   }
   body {
     background: ${colors.black_primary};
-    color: ${colors.black_primary};
+    color: ${colors.white};
     margin: 0;
     font-family: 'Inter', sans-serif;
   }

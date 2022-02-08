@@ -26,7 +26,11 @@ const Section: FC<Props> = (props) => {
         >
           <NavbarSection>
             <Svg src={`/icons/${option.icon}`} />
-            <p>{option.name}</p>
+            {option.name.length > 15 ? (
+              <p>{option.name.slice(0, 15)}...</p>
+            ) : (
+              <p>{option.name}</p>
+            )}
           </NavbarSection>
         </Link>
       ))}

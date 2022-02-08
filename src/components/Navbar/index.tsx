@@ -1,11 +1,13 @@
 import * as S from '@Styles/components/Navbar'
 import Svg from '@Whil/components/Svg'
 import { FC } from 'react'
+import { useSelector } from 'react-redux'
 import Section from './section'
-
+import Selector from '@Types/redux/reducers/user/types'
 type Props = {}
 
 const Navbar: FC<Props> = () => {
+  const user = useSelector(Selector)
   const Sections = [
     {
       section_name: 'Menu',
@@ -32,10 +34,18 @@ const Navbar: FC<Props> = () => {
         },
         {
           name: 'Liked Songs',
-          path: '/swap/library/likedsongs',
+          path: '/swap/likedsongs',
           icon: 'heart',
         },
       ],
+    },
+    {
+      section_name: 'Playlists',
+      options: user.Playlists?.items?.map((playlist) => ({
+        name: playlist.name,
+        path: `/swap/playlist/${playlist.id}`,
+        icon: 'playlist',
+      })),
     },
   ]
   return (
