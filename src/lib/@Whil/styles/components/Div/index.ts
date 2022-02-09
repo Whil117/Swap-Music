@@ -21,6 +21,7 @@ export const DivWrapper = styled.div<{ styles?: Styles }>`
             align-items: ${styles.alignitems || 'center'};
             width: ${styles.width || 'auto'};
             height: ${styles.height || 'auto'};
+            flex-wrap: ${styles.flexwrap || 'nowrap'};
             padding: ${styles.padding || '0'};
             font-size: ${styles.fontSize || '14px'};
             font-weight: ${styles.fontWeight || 'normal'};

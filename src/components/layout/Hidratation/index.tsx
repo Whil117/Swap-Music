@@ -50,7 +50,12 @@ const Hidratation: FC<Props> = ({ children, hidratation }) => {
       .getNewReleases({
         limit: 50,
       })
-      .then((res) => res.body)
+      .then((res) => {
+        return {
+          ...res.body,
+          items: res.body.albums.items.sort(() => Math.random() - 0.5),
+        }
+      })
     const RecentlyPlayed = await spotifyAPI
       .getMyRecentlyPlayedTracks({
         limit: 50,
@@ -61,10 +66,19 @@ const Hidratation: FC<Props> = ({ children, hidratation }) => {
         limit: 50,
       })
       .then((res) => res.body)
+
+    const SavedTracks = await spotifyAPI
+      .getMySavedTracks({
+        limit: 50,
+      })
+      .then((res) => res.body)
+
     return {
       me: Session?.user,
       NewReleases,
+      featuredPlaylists,
       RecentlyPlayed,
+      SavedTracks,
       Playlists,
       SavedAlbums,
       TopArtists,

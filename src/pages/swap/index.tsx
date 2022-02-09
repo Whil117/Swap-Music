@@ -8,9 +8,28 @@ import Button from '@Whil/components/Button'
 import Svg from '@Whil/components/Svg'
 import Div from '@Whil/components/Div'
 import CardAlbum from '@Components/Cards/Album'
+import { Dispatch, SetStateAction } from 'react'
 
 const SwapPage = () => {
   const user = useSelector(Selector)
+
+  const data = [
+    {
+      id: '1',
+      title: 'New Releases',
+      assets: user.NewReleases.albums.items,
+    },
+    {
+      id: '2',
+      title: 'Top Artists',
+      assets: user.TopArtists.items,
+    },
+    {
+      id: '3',
+      title: 'Your favorite artists',
+      assets: user.followedArtists.artists.items,
+    },
+  ]
 
   return (
     <Div
@@ -24,71 +43,54 @@ const SwapPage = () => {
           {Greetings()} - {user.me?.name}!
         </h1>
       </div>
-      <div>
-        <List
-          Elements={({ show, setShow }) => (
-            <Div
-              styles={{
-                width: '100%',
-                flexdirection: 'row',
-                justifycontent: 'space-between',
-              }}
-            >
-              <h2>Top Artists</h2>
-              <Button
-                props={{ type: 'submit', style: { padding: '5px' } }}
-                click={() => setShow(!show)}
+      {data.map((item) => (
+        <div key={item.id}>
+          <List
+            Elements={({
+              show,
+              setShow,
+            }: {
+              show: boolean
+              setShow: Dispatch<SetStateAction<boolean>>
+            }) => (
+              <Div
+                styles={{
+                  width: '100%',
+                  flexdirection: 'row',
+                  justifycontent: 'space-between',
+                }}
               >
-                <Svg src="/icons/list" />
-              </Button>
-            </Div>
-          )}
-        >
-          {({ show }: { show: boolean }) => (
-            <>
-              <Cards {...{ show }}>
-                {user.TopArtists.items?.map((artist) => (
-                  <CardArtist key={artist.id} {...artist} />
-                ))}
-              </Cards>
-            </>
-          )}
-        </List>
-      </div>
+                <h2>{item.title}</h2>
+                <Button
+                  props={{ type: 'submit', style: { padding: '5px ' } }}
+                  click={() => setShow(!show)}
+                >
+                  <Svg src="/icons/list" />
+                </Button>
+              </Div>
+            )}
+          >
+            {({ show }: { show: boolean }) => (
+              <>
+                <Cards {...{ show }}>
+                  {item.assets?.map((artist) => (
+                    <CardArtist key={artist.id} {...artist} />
+                  ))}
+                </Cards>
+              </>
+            )}
+          </List>
+        </div>
+      ))}
       <div>
         <List
-          Elements={({ show, setShow }) => (
-            <Div
-              styles={{
-                width: '100%',
-                flexdirection: 'row',
-                justifycontent: 'space-between',
-              }}
-            >
-              <h2>Your favorite artists</h2>
-              <Button
-                props={{ type: 'submit', style: { padding: '5px' } }}
-                click={() => setShow(!show)}
-              >
-                <Svg src="/icons/list" />
-              </Button>
-            </Div>
-          )}
-        >
-          {({ show }: { show: boolean }) => (
-            <>
-              <Cards {...{ show }}>
-                {user.followedArtists.artists.items?.map((artist) => (
-                  <CardArtist key={artist.id} {...artist} />
-                ))}
-              </Cards>
-            </>
-          )}
-        </List>
-      </div>
-      <div>
-        <List
-          Elements={({ show, setShow }) => (
+          Elements={({
+            show,
+            setShow,
+          }: {
+            show: boolean
+            setShow: Dispatch<SetStateAction<boolean>>
+          }) => (
             <Div
               styles={{
                 width: '100%',

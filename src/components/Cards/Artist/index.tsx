@@ -3,7 +3,9 @@ import Image from '@Whil/components/Image'
 import Link from 'next/link'
 import { FC } from 'react'
 
-const CardArtist: FC<SpotifyApi.ArtistObjectFull> = (props) => {
+const CardArtist: FC<
+  SpotifyApi.ArtistObjectFull | SpotifyApi.AlbumObjectSimplified
+> = (props) => {
   return (
     <Link
       href={{
@@ -21,7 +23,7 @@ const CardArtist: FC<SpotifyApi.ArtistObjectFull> = (props) => {
           width={180}
           height={180}
           styles={{
-            borderRadius: '50%',
+            borderRadius: props.type === 'album' ? '5px' : '50%',
           }}
         />
         <h4>{props.name}</h4>

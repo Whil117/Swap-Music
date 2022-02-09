@@ -7,8 +7,10 @@ type Styles = {
   p0sition?: string
   borderRadius?: string
   border?: string
+  flexwrap?: string
   background?: string
   color?: string
+  textAlign?: string
   objectfit?: string
   margin?: string
   display?: string

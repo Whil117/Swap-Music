@@ -12,6 +12,7 @@ export const Button = styled.button<ButtonProps>`
     props
       ? css`
           width: ${props?.style?.width || 'auto'};
+          height: ${props?.style?.height || 'auto'};
           margin: ${props?.style?.margin || '10px'};
           color: ${props?.style?.color || props.type === 'default'
             ? '#000'
@@ -21,6 +22,8 @@ export const Button = styled.button<ButtonProps>`
           font-weight: ${props?.style?.fontWeight || 'bold'};
           border-radius: ${props?.style?.borderRadius || '5px'};
           border: ${props?.style?.border || 'none'};
+          justify-content: ${props?.style?.justifycontent || 'center'};
+          align-items: ${props?.style?.alignitems || 'center'};
           background: ${props?.style?.background || colors[props.type]};
           box-shadow: 0px 0px 2px
             ${props.type === 'default'

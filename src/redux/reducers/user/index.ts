@@ -8,6 +8,8 @@ export type State = {
   Playlists: SpotifyApi.CursorBasedPagingObject<SpotifyApi.PlaylistObjectSimplified>
   TopArtists: SpotifyApi.CursorBasedPagingObject<SpotifyApi.ArtistObjectFull>
   SavedAlbums: SpotifyApi.CursorBasedPagingObject<SpotifyApi.SavedAlbumObject>
+  NewReleases: SpotifyApi.ListOfNewReleasesResponse
+  SavedTracks: SpotifyApi.CursorBasedPagingObject<SpotifyApi.SavedTrackObject>
 }
 
 const TypesReducers = {

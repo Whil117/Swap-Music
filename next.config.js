@@ -2,7 +2,7 @@
 module.exports = {
   reactStrictMode: true,
   images: {
-    domains: ['i.scdn.co', "via.placeholder.com"]
+    domains: ['i.scdn.co', "via.placeholder.com", "seed-mix-image.spotifycdn.com"]
   },
   webpack: (config) => {
     config.module.rules.push({
