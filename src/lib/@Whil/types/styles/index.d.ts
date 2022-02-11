@@ -3,7 +3,9 @@ type Styles = {
   bottom?: string
   padding?: string
   fontSize?: string
+  opacity?: number
   fontWeight?: string
+  textDecoration?: string
   p0sition?: string
   borderRadius?: string
   border?: string

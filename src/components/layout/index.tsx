@@ -2,12 +2,12 @@ import Hidratation from '@Components/layout/Hidratation'
 import Loading from '@Components/Loading'
 import Navbar from '@Components/Navbar'
 import { Profile, Wrapper } from '@Styles/components/layout'
-import Link from 'next/link'
-import { NextRouter } from 'next/router'
-import { FC, useEffect, useState } from 'react'
-import { useSelector } from 'react-redux'
 import Selector from '@Types/redux/reducers/user/types'
 import Image from '@Whil/components/Image'
+import Link from 'next/link'
+import { NextRouter } from 'next/router'
+import { FC, useState } from 'react'
+import { useSelector } from 'react-redux'
 type Props = {
   router: NextRouter
   hidratation: boolean
@@ -16,16 +16,9 @@ type Props = {
 const Layout: FC<Props> = ({ children, router: { pathname }, hidratation }) => {
   const [loading, setLoading] = useState<boolean>(false)
   const user = useSelector(Selector)
-  useEffect(() => {
-    if (hidratation) {
-      setTimeout(() => {
-        setLoading(true)
-      }, 2000)
-    }
-  }, [hidratation])
 
   return (
-    <Hidratation {...{ hidratation }}>
+    <Hidratation {...{ hidratation, setLoading }}>
       {pathname.includes('/swap') ? (
         <>
           {loading ? (

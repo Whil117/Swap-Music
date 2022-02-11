@@ -1,14 +1,13 @@
+import Card from '@Components/Cards/Card'
 import List from '@Components/List'
-import CardArtist from '@Components/Cards/Artist'
 import { Cards } from '@Styles/components/Cards'
 import Selector from '@Types/redux/reducers/user/types'
 import Greetings from '@Utils/greetings'
-import { useSelector } from 'react-redux'
 import Button from '@Whil/components/Button'
-import Svg from '@Whil/components/Svg'
 import Div from '@Whil/components/Div'
-import CardAlbum from '@Components/Cards/Album'
+import Svg from '@Whil/components/Svg'
 import { Dispatch, SetStateAction } from 'react'
+import { useSelector } from 'react-redux'
 
 const SwapPage = () => {
   const user = useSelector(Selector)
@@ -74,7 +73,15 @@ const SwapPage = () => {
               <>
                 <Cards {...{ show }}>
                   {item.assets?.map((artist) => (
-                    <CardArtist key={artist.id} {...artist} />
+                    <Card
+                      key={artist.id}
+                      {...{
+                        id: artist.id,
+                        type: artist.type,
+                        image: artist.images[0].url,
+                        name: artist.name,
+                      }}
+                    />
                   ))}
                 </Cards>
               </>
@@ -112,7 +119,15 @@ const SwapPage = () => {
             <>
               <Cards {...{ show }}>
                 {user.SavedAlbums.items?.map((artist) => (
-                  <CardAlbum key={artist.album.id} {...artist} />
+                  <Card
+                    key={artist.album.id}
+                    {...{
+                      id: artist.album.id,
+                      type: artist.album.type,
+                      image: artist.album.images[0].url,
+                      name: artist.album.name,
+                    }}
+                  />
                 ))}
               </Cards>
             </>

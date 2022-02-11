@@ -1,15 +1,14 @@
 import { FC } from 'react'
 import Selector from '@Types/redux/reducers/user/types'
 import { useSelector } from 'react-redux'
-import CardPlaylist from '@Components/Cards/Playlist'
 import Div from '@Whil/components/Div'
 import Button from '@Whil/components/Button'
 import P from '@Whil/components/P'
+import Card from '@Components/Cards/Card'
 type Props = {}
 
 const Library: FC<Props> = () => {
   const user = useSelector(Selector)
-  console.log(user)
 
   return (
     <Div
@@ -68,7 +67,15 @@ const Library: FC<Props> = () => {
             </Div>
           </Button>
           {user.Playlists.items.map((item) => (
-            <CardPlaylist key={item.id} {...item} />
+            <Card
+              key={item.id}
+              {...{
+                id: item.id,
+                type: item.type,
+                image: item?.images[0]?.url,
+                name: item.name,
+              }}
+            />
           ))}
         </Div>
       </div>

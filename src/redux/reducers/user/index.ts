@@ -20,7 +20,7 @@ const TypesReducers = {
 
 type Action = {
   type: keyof typeof TypesReducers
-  payload: any
+  payload: State
 }
 
 const reducer = (state = {}, action: Action) => {

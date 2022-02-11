@@ -3,7 +3,9 @@ import colors from '@Styles/global/colors'
 import Styles from '@Whil/types/styles'
 
 export const PWrapper = styled.p<{ styles?: Styles }>`
+  text-decoration: ${({ styles }) => styles?.textDecoration || 'none'};
   font-size: ${({ styles }) => styles?.fontSize || '1rem'};
+  opacity: ${({ styles }) => styles?.opacity || 1};
   font-weight: ${({ styles }) => styles?.fontWeight || 'normal'};
   line-height: ${({ styles }) => styles?.lineheight || '16px'};
   text-align: ${({ styles }) => styles?.textAlign || 'left'};

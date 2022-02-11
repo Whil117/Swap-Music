@@ -1,13 +1,21 @@
-import Link from 'next/link'
-import { FC } from 'react'
 import * as S from '@Styles/components/Cards/Artist'
 import Image from '@Whil/components/Image'
+import Link from 'next/link'
+import { FC } from 'react'
 
-const CardPlaylist: FC<SpotifyApi.PlaylistObjectSimplified> = (props) => {
+type Card = {
+  id: string
+  type: string
+  image: string
+  name: string
+}
+
+const Card: FC<Card> = (props) => {
+  const ImageTypes = ['album', 'track', 'playlist']
   return (
     <Link
       href={{
-        pathname: '/swap/album/[id]',
+        pathname: `/swap/${props.type}/[id]`,
         query: {
           id: props.id,
         },
@@ -16,12 +24,12 @@ const CardPlaylist: FC<SpotifyApi.PlaylistObjectSimplified> = (props) => {
     >
       <S.CardArtist>
         <Image
-          src={props.images[0]?.url || 'https://via.placeholder.com/180'}
+          src={props.image || 'https://via.placeholder.com/150'}
           alt={props.name}
           width={180}
           height={180}
           styles={{
-            borderRadius: '5px',
+            borderRadius: ImageTypes.includes(props.type) ? '5px' : '50%',
           }}
         />
         {props.name.length > 35 ? (
@@ -29,10 +37,10 @@ const CardPlaylist: FC<SpotifyApi.PlaylistObjectSimplified> = (props) => {
         ) : (
           <h4>{props.name}</h4>
         )}
-        <p>{props.owner.display_name}</p>
+        <p>{props.type}</p>
       </S.CardArtist>
     </Link>
   )
 }
 
-export default CardPlaylist
+export default Card
