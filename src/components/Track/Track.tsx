@@ -14,12 +14,12 @@ type Props = {
   name: string
   image?: string
   artists: {
-    name: string
-    id: string
+    name?: string
+    id?: string
   }[]
-  album?: {
-    id: string
-    name: string
+  album: {
+    id?: string
+    name?: string
   }
   duration: number
   saved?: boolean
@@ -80,7 +80,9 @@ const Track: FC<Props> = (props) => {
           }}
         >
           <P styles={{ fontWeight: '600', margin: '5px 0' }}>
-            {props.name.length > 40
+            {!props.album
+              ? props.name
+              : Object.keys(props.album).length > 0 && props.name.length > 40
               ? props.name.slice(0, 40) + '...'
               : props.name}
           </P>
@@ -118,7 +120,7 @@ const Track: FC<Props> = (props) => {
           )}
         </Div>
       </Div>
-      {props.album && (
+      {Object.keys(props.album).length > 0 && (
         <Div
           styles={{
             alignitems: 'flex-start',
@@ -138,7 +140,7 @@ const Track: FC<Props> = (props) => {
                   opacity: 0.5,
                 }}
               >
-                {props?.album?.name.length > 40
+                {props.album.name && props?.album?.name?.length > 40
                   ? props?.album?.name.slice(0, 40) + '...'
                   : props?.album?.name}
               </P>

@@ -5,8 +5,11 @@ import { CardArtist } from '@Types/components/Cards/types'
 export const Cards = styled.div<CardArtist>`
   display: flex;
   flex-wrap: wrap;
+  justify-content: ${({ assets }) =>
+    assets?.length > 6 ? 'space-between' : 'flex-start'};
   overflow: hidden;
-  width: 1540px;
+  width: ${({ width, assets }) =>
+    assets ? 'inherit' : width ? '1540px' : '100%'};
   height: 304px;
   ${({ show }) =>
     show &&

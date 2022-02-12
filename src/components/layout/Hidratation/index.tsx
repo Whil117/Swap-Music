@@ -14,7 +14,6 @@ const Hidratation: FC<Props> = ({ children, hidratation, setLoading }) => {
 
   const DataUserFetching = async () => {
     const Session = await getSession()
-
     spotifyAPI.setAccessToken(Session?.accessToken as string)
 
     const followedArtists = await spotifyAPI

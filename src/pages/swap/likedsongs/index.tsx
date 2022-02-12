@@ -40,6 +40,7 @@ const LikedSongs: FC<Props> = ({ color }) => {
       <Div
         styles={{
           alignitems: 'flex-start',
+          width: '93%',
           margin: '0 60px',
         }}
       >
@@ -54,7 +55,7 @@ const LikedSongs: FC<Props> = ({ color }) => {
               artists: item.track.artists,
               album: item.track.album,
               duration: item.track.duration_ms,
-              saved: item.saved,
+              saved: true,
             }}
           />
         ))}
