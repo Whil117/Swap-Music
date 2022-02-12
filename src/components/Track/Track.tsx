@@ -1,25 +1,28 @@
 import useTime from '@Hooks/useTime'
+import { TrackWrapper } from '@Styles/components/Track'
+import Button from '@Whil/components/Button'
 import Div from '@Whil/components/Div'
 import Image from '@Whil/components/Image'
 import P from '@Whil/components/P'
+import Svg from '@Whil/components/Svg'
 import Link from 'next/link'
-import { TrackWrapper } from 'pages/swap/likedsongs'
 import { FC } from 'react'
 
 type Props = {
   id: string
   count: number
   name: string
-  image: string
+  image?: string
   artists: {
     name: string
     id: string
   }[]
-  album: {
+  album?: {
     id: string
     name: string
   }
   duration: number
+  saved?: boolean
 }
 
 const Track: FC<Props> = (props) => {
@@ -29,7 +32,7 @@ const Track: FC<Props> = (props) => {
       <Div
         styles={{
           justifycontent: 'flex-start',
-          width: '50%',
+          width: '40%',
           flexdirection: 'row',
         }}
       >
@@ -50,16 +53,18 @@ const Track: FC<Props> = (props) => {
           </P>
         </Div>
         <div>
-          <Image
-            src={props.image || ''}
-            width={55}
-            height={55}
-            alt={props.name}
-            styles={{
-              margin: '20px',
-              borderRadius: '5px',
-            }}
-          />
+          {props.image && (
+            <Image
+              src={props.image || ''}
+              width={55}
+              height={55}
+              alt={props.name}
+              styles={{
+                margin: '20px',
+                borderRadius: '5px',
+              }}
+            />
+          )}
         </div>
         <Div
           styles={{
@@ -114,7 +119,7 @@ const Track: FC<Props> = (props) => {
         <Link
           href={{
             pathname: '/swap/album/[id]',
-            query: { id: props.album.id },
+            query: { id: props?.album?.id },
           }}
           passHref
         >
@@ -124,11 +129,14 @@ const Track: FC<Props> = (props) => {
                 opacity: 0.5,
               }}
             >
-              {props.album.name}
+              {props?.album?.name}
             </P>
           </a>
         </Link>
       </Div>
+      <Button props={{ type: 'none' }}>
+        <Svg src={props.saved ? '/icons/fullheart' : '/icons/heart'} />
+      </Button>
       <div>
         <p>
           {' '}

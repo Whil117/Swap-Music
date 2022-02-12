@@ -1,5 +1,6 @@
 const colors = {
   default: '#fff',
+  none: 'transparent',
   submit: '#1E7AE5',
   add: '#5DDD20',
   danger: '#E51E1E',

@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import spotifyAPI from 'lib/spotify/spotify'
 import { getSession } from 'next-auth/react'
 import { Dispatch, FC, SetStateAction, useEffect } from 'react'
@@ -15,7 +14,6 @@ const Hidratation: FC<Props> = ({ children, hidratation, setLoading }) => {
 
   const DataUserFetching = async () => {
     const Session = await getSession()
-    console.log('Session', Session)
 
     spotifyAPI.setAccessToken(Session?.accessToken as string)
 
@@ -74,7 +72,15 @@ const Hidratation: FC<Props> = ({ children, hidratation, setLoading }) => {
       .getMySavedTracks({
         limit: 50,
       })
-      .then((res) => res.body)
+      .then((res) => {
+        return {
+          ...res.body,
+          items: res.body.items.map((track) => ({
+            ...track,
+            saved: true,
+          })),
+        }
+      })
 
     return {
       me: Session?.user,
@@ -92,6 +98,7 @@ const Hidratation: FC<Props> = ({ children, hidratation, setLoading }) => {
   useEffect(() => {
     if (hidratation) {
       DataUserFetching().then((res) => {
+        // eslint-disable-next-line no-console
         console.log('Hidratation')
         dispatch({
           type: 'HIDRATATION',

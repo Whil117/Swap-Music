@@ -35,7 +35,7 @@ const Navbar: FC<Props> = () => {
         {
           name: 'Liked Songs',
           path: '/swap/likedsongs',
-          icon: 'heart',
+          icon: 'fullheart',
         },
       ],
     },

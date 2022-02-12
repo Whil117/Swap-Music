@@ -5,10 +5,12 @@ import Div from '@Whil/components/Div'
 import Button from '@Whil/components/Button'
 import P from '@Whil/components/P'
 import Card from '@Components/Cards/Card'
+import { useRouter } from 'next/router'
 type Props = {}
 
 const Library: FC<Props> = () => {
   const user = useSelector(Selector)
+  const router = useRouter()
 
   return (
     <Div
@@ -28,6 +30,7 @@ const Library: FC<Props> = () => {
           }}
         >
           <Button
+            click={() => router.push('/swap/likedsongs')}
             props={{
               type: 'submit',
               style: {
@@ -40,6 +43,7 @@ const Library: FC<Props> = () => {
           >
             <Div
               styles={{
+                boxshadow: 'a',
                 flexdirection: 'column',
                 justifycontent: 'end',
                 alignitems: 'baseline',

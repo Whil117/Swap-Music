@@ -1,5 +1,5 @@
 import Track from '@Components/Track/Track'
-import styled from '@emotion/styled'
+import colors from '@Styles/global/colors'
 import * as S from '@Styles/pages/swap/liked songs'
 import Selector from '@Types/redux/reducers/user/types'
 import Div from '@Whil/components/Div'
@@ -8,29 +8,20 @@ import Svg from '@Whil/components/Svg'
 import { FC } from 'react'
 import { useSelector } from 'react-redux'
 
-type Props = {}
+type Props = {
+  color: string
+}
 
-export const TrackWrapper = styled.div`
-  display: flex;
-  justify-content: space-between;
-  margin: 10px 0;
-  width: 100%;
-  align-items: center;
-`
-
-const LikedSongs: FC<Props> = () => {
+const LikedSongs: FC<Props> = ({ color }) => {
   const user = useSelector(Selector)
-
   return (
     <S.LikedSongsApp>
-      <S.LikedSongsWrapper>
+      <S.LikedSongsWrapper {...{ color }}>
         <Div
           styles={{
             height: '200px',
             width: '200px',
-
-            background:
-              ' linear-gradient(110deg, rgba(90, 28, 28, 0) 0%, #121216 100%),#1e7ae5',
+            background: colors.black_quinary,
           }}
         >
           <Svg src="/icons/bigheart" />
@@ -63,6 +54,7 @@ const LikedSongs: FC<Props> = () => {
               artists: item.track.artists,
               album: item.track.album,
               duration: item.track.duration_ms,
+              saved: item.saved,
             }}
           />
         ))}
@@ -70,5 +62,11 @@ const LikedSongs: FC<Props> = () => {
     </S.LikedSongsApp>
   )
 }
-
+export async function getServerSideProps() {
+  return {
+    props: {
+      color: '#0461ee',
+    },
+  }
+}
 export default LikedSongs
