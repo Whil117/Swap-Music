@@ -23,6 +23,13 @@ type Props = {
   }
   duration: number
   saved?: boolean
+  styles?: {
+    width?: {
+      song?: string
+      album?: string
+      part3?: string
+    }
+  }
 }
 
 const Track: FC<Props> = (props) => {
@@ -32,7 +39,7 @@ const Track: FC<Props> = (props) => {
       <Div
         styles={{
           justifycontent: 'flex-start',
-          width: '40%',
+          width: props.styles?.width?.song || '40%',
           flexdirection: 'row',
         }}
       >
@@ -56,7 +63,7 @@ const Track: FC<Props> = (props) => {
           {props.image && (
             <Image
               src={props.image || ''}
-              width={55}
+              width={50}
               height={55}
               alt={props.name}
               styles={{
@@ -77,63 +84,69 @@ const Track: FC<Props> = (props) => {
               ? props.name.slice(0, 40) + '...'
               : props.name}
           </P>
-
-          <Div
-            styles={{
-              justifycontent: 'flex-start',
-              flexdirection: 'row',
-            }}
-          >
-            {props.artists.map((artist, index) => (
-              <Link
-                href={{
-                  pathname: '/swap/artist/[id]',
-                  query: { id: artist.id },
-                }}
-                passHref
-                key={artist.id}
-              >
-                <a>
-                  <P
-                    styles={{
-                      opacity: 0.5,
-                      width: 'auto',
-                    }}
-                    key={artist.id}
-                  >
-                    {index === 0 ? '' : ', '} {artist.name}
-                  </P>
-                </a>
-              </Link>
-            ))}
-          </Div>
-        </Div>
-      </Div>
-
-      <Div
-        styles={{
-          alignitems: 'flex-start',
-          width: '50%',
-        }}
-      >
-        <Link
-          href={{
-            pathname: '/swap/album/[id]',
-            query: { id: props?.album?.id },
-          }}
-          passHref
-        >
-          <a>
-            <P
+          {props.artists.length !== 0 && (
+            <Div
               styles={{
-                opacity: 0.5,
+                justifycontent: 'flex-start',
+                flexdirection: 'row',
               }}
             >
-              {props?.album?.name}
-            </P>
-          </a>
-        </Link>
+              {props?.artists?.map((artist, index) => (
+                <Link
+                  href={{
+                    pathname: '/swap/artist/[id]',
+                    query: { id: artist.id },
+                  }}
+                  passHref
+                  key={artist.id}
+                >
+                  <a>
+                    <P
+                      styles={{
+                        opacity: 0.5,
+
+                        width: 'auto',
+                      }}
+                      key={artist.id}
+                    >
+                      {index === 0 ? artist.name : `, ${artist.name}`}
+                    </P>
+                  </a>
+                </Link>
+              ))}
+            </Div>
+          )}
+        </Div>
       </Div>
+      {props.album && (
+        <Div
+          styles={{
+            alignitems: 'flex-start',
+            width: props.styles?.width?.album || '50%',
+          }}
+        >
+          <Link
+            href={{
+              pathname: '/swap/album/[id]',
+              query: { id: props?.album?.id },
+            }}
+            passHref
+          >
+            <a>
+              <P
+                styles={{
+                  opacity: 0.5,
+                }}
+              >
+                {props?.album?.name.length > 40
+                  ? props?.album?.name.slice(0, 40) + '...'
+                  : props?.album?.name}
+              </P>
+            </a>
+          </Link>
+        </Div>
+      )}
+
       <Button props={{ type: 'none' }}>
         <Svg src={props.saved ? '/icons/fullheart' : '/icons/heart'} />
       </Button>

@@ -19,6 +19,7 @@ const Normalize = css`
   h1 {
     font-size: 2em;
     margin: 0.67em 0;
+    line-height: 1;
   }
   hr {
     box-sizing: content-box; /* 1 */
