@@ -166,7 +166,7 @@ const Artist: FC<Artist> = ({
                       {...{
                         id: artist.id,
                         type: artist.type,
-                        image: artist.images[0].url,
+                        image: artist?.images[0]?.url,
                         name: artist.name,
                       }}
                     />
