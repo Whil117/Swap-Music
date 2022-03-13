@@ -63,7 +63,7 @@ const Library: FC<Props> = () => {
                   color: 'white',
                   fontSize: '18px',
                   fontWeight: '400',
-                  textAlign: 'initial',
+                  textalign: 'initial',
                 }}
               >
                 {user.SavedTracks.total} Liked Songs

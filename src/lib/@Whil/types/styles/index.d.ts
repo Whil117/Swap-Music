@@ -12,7 +12,7 @@ type Styles = {
   flexwrap?: string
   background?: string
   color?: string
-  textAlign?: string
+  textalign?: string
   objectfit?: string
   margin?: string
   display?: string

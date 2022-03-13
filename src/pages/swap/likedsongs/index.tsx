@@ -33,7 +33,7 @@ const LikedSongs: FC<Props> = ({ color }) => {
               opacity: 0.5,
             }}
           >
-            {user.me?.name} • {user.SavedTracks.total} Songs
+            {user.me?.display_name} • {user.SavedTracks.total} Songs
           </P>
         </S.LikedSongsProps>
       </S.LikedSongsWrapper>
