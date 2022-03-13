@@ -39,7 +39,7 @@ const SwapPage = () => {
     >
       <div>
         <h1>
-          {Greetings()} - {user.me?.name}!
+          {Greetings()} - {user.me?.display_name}!
         </h1>
       </div>
       {data.map((item) => (

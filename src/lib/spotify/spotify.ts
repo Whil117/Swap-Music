@@ -4,29 +4,15 @@ export const baseUrl = 'http://localhost:3000'
 
 const scopes = [
   //User
-  'user-read-private',
-  'user-read-email',
+  'user-top-read',
   'user-read-currently-playing',
   'user-read-playback-state',
-  'user-modify-playback-state',
-
-  //Playlist
-  'playlist-read-private',
-  'playlist-read-collaborative',
-  'playlist-modify-public',
-  'playlist-modify-private',
-
-  //Library
-  'user-library-read',
-  'user-library-modify',
-
-  //Follow
   'user-follow-read',
-  'user-follow-modify',
-
-  //Streaming
-  'streaming',
+  'user-read-recently-played',
+  'user-library-read',
+  'user-read-private',
 ]
+
 const params: any = {
   scope: scopes,
 }

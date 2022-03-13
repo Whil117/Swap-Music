@@ -30,8 +30,7 @@ export const DivWrapper = styled.div<{ styles?: Styles }>`
             border: ${styles.border || '0'};
             object-fit: ${styles.objectfit || 'cover'};
             margin: ${styles.margin || '0'};
-            box-shadow: ${styles.boxshadow ||
-            '0px 0px 2px rgba(0, 0, 0, 0.25)'};
+            box-shadow: ${styles.boxshadow || 'none'};
           `
         : ''};
 `

@@ -11,14 +11,20 @@ import { useSelector } from 'react-redux'
 type Props = {
   router: NextRouter
   hidratation: boolean
+  accessToken: string
 }
 
-const Layout: FC<Props> = ({ children, router: { pathname }, hidratation }) => {
+const Layout: FC<Props> = ({
+  children,
+  router: { pathname },
+  hidratation,
+  accessToken,
+}) => {
   const [loading, setLoading] = useState<boolean>(false)
   const user = useSelector(Selector)
 
   return (
-    <Hidratation {...{ hidratation, setLoading }}>
+    <Hidratation {...{ hidratation, setLoading, accessToken }}>
       {pathname.includes('/swap') ? (
         <>
           {loading ? (
@@ -32,8 +38,8 @@ const Layout: FC<Props> = ({ children, router: { pathname }, hidratation }) => {
               >
                 <Profile>
                   <Image
-                    src={user.me?.image}
-                    alt={user.me?.name as string}
+                    src={user.me?.images[0]?.url as string}
+                    alt={user.me?.display_name as string}
                     width={50}
                     height={50}
                     styles={{

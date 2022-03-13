@@ -1,17 +1,32 @@
+import OrganismBanner from '@Components/@organisms/OrganismBanner'
+import { ArtistWrapper } from '@Styles/pages/swap/artist'
 import spotifyAPI from 'lib/spotify/spotify'
 import { NextPageContext } from 'next'
 import { getSession } from 'next-auth/react'
 import { FC } from 'react'
 
-type Props = {}
+type Props = {
+  Playlist: SpotifyApi.SinglePlaylistResponse
+}
 
 const Playlist: FC<Props> = ({ Playlist }) => {
-  console.log(Playlist)
-
   return (
-    <div>
-      <h1>Playlist</h1>
-    </div>
+    <ArtistWrapper>
+      <OrganismBanner
+        id={Playlist.id}
+        title={Playlist.name}
+        desc={Playlist.description}
+        name={Playlist.owner.display_name as string}
+        image_url={Playlist?.images[0]?.url}
+        type={Playlist.type}
+        release_date=""
+        total_tracks={Playlist.tracks.total}
+        useTime={{
+          tracks: [...Playlist.tracks.items.map((item) => item.track)],
+        }}
+      />
+      {/* <pre>{JSON.stringify(Playlist, null, 2)}</pre> */}
+    </ArtistWrapper>
   )
 }
 export async function getServerSideProps(context: NextPageContext) {
@@ -22,6 +37,7 @@ export async function getServerSideProps(context: NextPageContext) {
   const Playlist = await spotifyAPI
     .getPlaylist(id as string)
     .then((res) => res.body)
+
   return {
     props: {
       Playlist,

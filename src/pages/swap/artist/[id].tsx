@@ -160,7 +160,7 @@ const Artist: FC<Artist> = ({
             >
               {({ show }: { show: boolean }) => (
                 <Cards {...{ show, width: true }}>
-                  {item.assets?.map((artist) => (
+                  {item.assets.map((artist) => (
                     <Card
                       key={artist.id}
                       {...{

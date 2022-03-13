@@ -4,7 +4,9 @@ type Tracks = {
   duration_ms: number
 }
 
-const useTime = ({ tracks, ms }: { tracks?: Tracks[]; ms?: number }) => {
+export type UseTimeProps = { tracks?: Tracks[]; ms?: number }
+
+const useTime = ({ tracks, ms }: UseTimeProps) => {
   const [[hours, minutes, seconds], setTime] = useState<number[]>([])
 
   useEffect(() => {
