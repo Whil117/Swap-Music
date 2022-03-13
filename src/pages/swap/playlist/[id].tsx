@@ -15,7 +15,7 @@ const Playlist: FC<Props> = ({ Playlist }) => {
       <OrganismBanner
         id={Playlist.id}
         title={Playlist.name}
-        desc={Playlist.description}
+        desc={Playlist.description as string}
         name={Playlist.owner.display_name as string}
         image_url={Playlist?.images[0]?.url}
         type={Playlist.type}
