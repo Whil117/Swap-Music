@@ -1,6 +1,7 @@
 import SpotifyWebApi from 'spotify-web-api-node'
 
 export const baseUrl = 'http://localhost:3000'
+export const deployUrl = 'https://swap-coral-six.vercel.app/'
 
 const scopes = [
   //User
