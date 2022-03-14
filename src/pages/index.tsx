@@ -15,7 +15,10 @@ const LandingPage: NextPage = () => {
         <h3>Sign in with spotify</h3>
         <S.LandingPageButton
           onClick={() =>
-            signIn('spotify', { callbackUrl: `${deployUrl}/swap` })
+            signIn('spotify', {
+              callbackUrl: `${deployUrl}/swap`,
+              redirect: true,
+            })
           }
         >
           Sign In
