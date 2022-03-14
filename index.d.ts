@@ -3,6 +3,11 @@ declare module 'redux-persist/es/persistStore' {
   import { Store, Action, AnyAction } from 'redux'
   import { PersistorOptions, Persistor } from 'redux-persist/es/types'
 
+  export const ColorExtractor: FC<{
+    src: string
+    getColors: (colors: string[]) => void
+  }>
+
   export default function persistStore(
     store: Store,
     persistorOptions?: PersistorOptions | null,
