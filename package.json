@@ -5,7 +5,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "server": " next build && next server"
   },
   "dependencies": {
     "@apollo/client": "^3.5.8",
