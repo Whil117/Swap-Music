@@ -1,10 +1,22 @@
-import { publicUrl } from '@Assets/swap'
 import * as S from '@Styles/pages'
 import Svg from '@Whil/components/Svg'
-import { baseUrl } from 'lib/spotify/spotify'
-import { NextPage } from 'next'
-import { signIn } from 'next-auth/react'
-const LandingPage: NextPage = () => {
+import { getProviders, signIn } from 'next-auth/react'
+
+type SpotifyAuthProps = {
+  providers: {
+    spotify: {
+      callbackUrl: string
+      id: string
+      name: string
+      signinUrl: string
+      type: string
+    }
+  }
+}
+
+const LandingPage = ({ providers }: SpotifyAuthProps) => {
+  console.log(providers)
+
   return (
     <S.LadingPageWrapper>
       <Svg
@@ -14,9 +26,7 @@ const LandingPage: NextPage = () => {
       <S.LandingPageContent>
         <h1>Welcome back!</h1>
         <h3>Sign in with spotify</h3>
-        <S.LandingPageButton
-          onClick={() => signIn('spotify', { callbackUrl: `${publicUrl}` })}
-        >
+        <S.LandingPageButton onClick={() => signIn(providers.spotify.id)}>
           Sign In
         </S.LandingPageButton>
       </S.LandingPageContent>
@@ -26,6 +36,15 @@ const LandingPage: NextPage = () => {
       </footer>
     </S.LadingPageWrapper>
   )
+}
+
+export async function getServerSideProps() {
+  const providers = await getProviders()
+  return {
+    props: {
+      providers,
+    },
+  }
 }
 
 export default LandingPage
