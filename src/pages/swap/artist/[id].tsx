@@ -2,7 +2,13 @@ import Card from '@Components/Cards/Card'
 import List from '@Components/List'
 import Track from '@Components/Track/Track'
 import { Cards } from '@Styles/components/Cards'
-import { ArtistWrapper } from '@Styles/pages/swap/artist'
+import {
+  AlbumsWrapper,
+  AlbumWrapper,
+  ArtistBody,
+  ArtistHeader,
+  ArtistWrapper,
+} from '@Styles/pages/swap/artist'
 import {
   LikedSongsProps,
   LikedSongsWrapper,
@@ -49,13 +55,7 @@ const Artist: FC<Artist> = ({
   return (
     <ArtistWrapper>
       <LikedSongsWrapper color={color[0]}>
-        <Div
-          styles={{
-            boxshadow: 'a',
-            justifycontent: 'flex-start',
-            flexdirection: 'row',
-          }}
-        >
+        <ArtistHeader>
           <ColorExtractor
             src={Artist.images[0].url}
             getColors={(colors: string[]) => setColor(colors)}
@@ -83,18 +83,9 @@ const Artist: FC<Artist> = ({
               {FollowNumbers(Artist.followers.total)}
             </P>
           </LikedSongsProps>
-        </Div>
+        </ArtistHeader>
       </LikedSongsWrapper>
-      <Div
-        styles={{
-          display: 'flex',
-          flexdirection: 'row',
-          flexwrap: 'wrap',
-          width: '57%',
-          justifycontent: 'space-between',
-          margin: '20px 60px',
-        }}
-      >
+      <ArtistBody>
         <Div
           styles={{
             display: 'flex',
@@ -132,7 +123,7 @@ const Artist: FC<Artist> = ({
           </Button>
         </Div>
         {data.map((item) => (
-          <div key={item.id}>
+          <AlbumWrapper key={item.id}>
             <List
               Elements={({
                 show,
@@ -141,13 +132,7 @@ const Artist: FC<Artist> = ({
                 show: boolean
                 setShow: Dispatch<SetStateAction<boolean>>
               }) => (
-                <Div
-                  styles={{
-                    width: '100%',
-                    flexdirection: 'row',
-                    justifycontent: 'space-between',
-                  }}
-                >
+                <AlbumsWrapper>
                   <h2>{item.title}</h2>
                   <Button
                     props={{ type: 'submit', style: { padding: '5px ' } }}
@@ -155,7 +140,7 @@ const Artist: FC<Artist> = ({
                   >
                     <Svg src="/icons/list" />
                   </Button>
-                </Div>
+                </AlbumsWrapper>
               )}
             >
               {({ show }: { show: boolean }) => (
@@ -174,9 +159,9 @@ const Artist: FC<Artist> = ({
                 </Cards>
               )}
             </List>
-          </div>
+          </AlbumWrapper>
         ))}
-      </Div>
+      </ArtistBody>
       {/* <pre>{JSON.stringify(ArtistRelated, null, 3)}</pre> */}
     </ArtistWrapper>
   )

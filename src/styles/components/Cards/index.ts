@@ -17,4 +17,8 @@ export const Cards = styled.div<CardArtist>`
       overflow: none;
       height: 100%;
     `}
+  @media (max-width: 768px) {
+    width: auto;
+    justify-content: center;
+  }
 `

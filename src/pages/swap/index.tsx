@@ -1,6 +1,7 @@
 import Card from '@Components/Cards/Card'
 import List from '@Components/List'
 import { Cards } from '@Styles/components/Cards'
+import { WrapperPages } from '@Styles/pages/swap'
 import Selector from '@Types/redux/reducers/user/types'
 import Greetings from '@Utils/greetings'
 import Button from '@Whil/components/Button'
@@ -31,12 +32,7 @@ const SwapPage = () => {
   ]
 
   return (
-    <Div
-      styles={{
-        margin: '60px 0 0 60px',
-        alignitems: 'flex-start',
-      }}
-    >
+    <WrapperPages>
       <div>
         <h1>
           {Greetings()} - {user.me?.display_name}!
@@ -134,7 +130,7 @@ const SwapPage = () => {
           )}
         </List>
       </div>
-    </Div>
+    </WrapperPages>
   )
 }
 

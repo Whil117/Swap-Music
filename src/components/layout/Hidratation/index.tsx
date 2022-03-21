@@ -113,9 +113,8 @@ const Hidratation: FC<Props> = ({
             setLoading(true)
           }, 2000)
         })
-        .catch((err) => {
+        .catch(() => {
           router.push('/')
-          console.log('AAAAAAAAAAAAA')
         })
     }
   }, [hidratation])

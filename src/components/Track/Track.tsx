@@ -1,5 +1,5 @@
 import useTime from '@Hooks/useTime'
-import { TrackWrapper } from '@Styles/components/Track'
+import { AlbumTrackWrapper, TrackWrapper } from '@Styles/components/Track'
 import Button from '@Whil/components/Button'
 import Div from '@Whil/components/Div'
 import Image from '@Whil/components/Image'
@@ -121,12 +121,7 @@ const Track: FC<Props> = (props) => {
         </Div>
       </Div>
       {Object.keys(props.album).length > 0 && (
-        <Div
-          styles={{
-            alignitems: 'flex-start',
-            width: props.styles?.width?.album || '50%',
-          }}
-        >
+        <AlbumTrackWrapper album={props.styles?.width?.album as string}>
           <Link
             href={{
               pathname: '/swap/album/[id]',
@@ -146,7 +141,7 @@ const Track: FC<Props> = (props) => {
               </P>
             </a>
           </Link>
-        </Div>
+        </AlbumTrackWrapper>
       )}
 
       <Button props={{ type: 'none' }}>

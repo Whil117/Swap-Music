@@ -13,6 +13,10 @@ export const LikedSongsWrapper = styled.div<{ color: string }>`
       background: linear-gradient(180deg, rgba(90, 28, 28, 0) 0%, #121216 100%),
         ${color};
     `}
+  @media (max-width: 642px) {
+    height: auto;
+    flex-direction: column;
+  }
 `
 export const LikedSongsApp = styled.div`
   width: 100%;
