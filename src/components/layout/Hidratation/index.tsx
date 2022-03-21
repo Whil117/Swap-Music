@@ -1,4 +1,5 @@
 import spotifyAPI from 'lib/spotify/spotify'
+import { useRouter } from 'next/router'
 import { Dispatch, FC, SetStateAction, useEffect } from 'react'
 import { useDispatch } from 'react-redux'
 
@@ -16,7 +17,7 @@ const Hidratation: FC<Props> = ({
   setLoading,
 }) => {
   const dispatch = useDispatch()
-
+  const router = useRouter()
   const DataUserFetching = async () => {
     spotifyAPI.setAccessToken(accessToken as string)
 
@@ -102,15 +103,20 @@ const Hidratation: FC<Props> = ({
 
   useEffect(() => {
     if (hidratation) {
-      DataUserFetching().then((res) => {
-        dispatch({
-          type: 'HIDRATATION',
-          payload: res,
+      DataUserFetching()
+        .then((res) => {
+          dispatch({
+            type: 'HIDRATATION',
+            payload: res,
+          })
+          setTimeout(() => {
+            setLoading(true)
+          }, 2000)
         })
-        setTimeout(() => {
-          setLoading(true)
-        }, 2000)
-      })
+        .catch((err) => {
+          router.push('/')
+          console.log('AAAAAAAAAAAAA')
+        })
     }
   }, [hidratation])
   return children
