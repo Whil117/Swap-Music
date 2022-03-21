@@ -11,9 +11,9 @@ export default async function middleware(req: any) {
     return NextResponse.redirect('/swap')
   }
   if (pathname.includes('/api/auth') || token) return NextResponse.next()
-  const url = req.nextUrl.clone()
-  url.pathname = '/'
-  if (pathname.includes('/swap') && !token) {
-    return NextResponse.redirect(url.toString())
-  }
+  // const url = req.nextUrl.clone()
+  // url.pathname = '/'
+  // if (pathname.includes('/swap') && !token) {
+  //   return NextResponse.redirect(url.toString())
+  // }
 }
