@@ -5,14 +5,14 @@ export default async function middleware(req: any) {
     req,
     secret: process.env.NEXTAUTH_SECRET as string,
   })
-  const { pathname } = req.nextUrl
+  // const { pathname } = req.nextUrl
 
-  if (token) {
-    return NextResponse.next()
-  } else if (pathname.includes('/swap') && !token) {
-    const url = req.nextUrl.clone()
-    url.pathname = '/'
-    return NextResponse.redirect(url.toString())
-  }
+  // if (token) {
+  //   return NextResponse.next()
+  // } else if (pathname.includes('/swap') && !token) {
+  //   const url = req.nextUrl.clone()
+  //   url.pathname = '/'
+  //   return NextResponse.redirect(url.toString())
+  // }
   // if (pathname.includes('/api/auth') || token) return NextResponse.next()
 }
