@@ -30,6 +30,7 @@ const MyApp = ({
 
 MyApp.getInitialProps = async (appContext: AppContext) => {
   const Session = await getSession(appContext.ctx)
+
   return {
     pageProps: {
       accessToken: Session?.accessToken,

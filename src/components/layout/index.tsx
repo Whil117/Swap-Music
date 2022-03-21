@@ -5,10 +5,10 @@ import { Profile, Wrapper } from '@Styles/components/layout'
 import Selector from '@Types/redux/reducers/user/types'
 import Image from '@Whil/components/Image'
 import Link from 'next/link'
-import { NextRouter } from 'next/router'
-import { FC, useState } from 'react'
+import { NextRouter, useRouter } from 'next/router'
+import { FC, useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
-type Props = {
+export type Props = {
   router: NextRouter
   hidratation: boolean
   accessToken: string

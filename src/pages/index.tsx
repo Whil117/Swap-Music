@@ -1,6 +1,7 @@
 import * as S from '@Styles/pages'
 import Svg from '@Whil/components/Svg'
-import { getProviders, signIn } from 'next-auth/react'
+import { NextPageContext } from 'next'
+import { getProviders, getSession, signIn } from 'next-auth/react'
 
 type SpotifyAuthProps = {
   providers: {
@@ -15,8 +16,6 @@ type SpotifyAuthProps = {
 }
 
 const LandingPage = ({ providers }: SpotifyAuthProps) => {
-  console.log(providers)
-
   return (
     <S.LadingPageWrapper>
       <Svg
@@ -38,13 +37,22 @@ const LandingPage = ({ providers }: SpotifyAuthProps) => {
   )
 }
 
-export async function getServerSideProps() {
+export async function getServerSideProps(context: NextPageContext) {
   const providers = await getProviders()
-  return {
-    props: {
-      providers,
-    },
-  }
+  const redirect = await getSession(context)
+  return redirect?.accessToken
+    ? {
+        redirect: {
+          permanent: false,
+          destination: '/swap',
+        },
+        props: {},
+      }
+    : {
+        props: {
+          providers,
+        },
+      }
 }
 
 export default LandingPage
