@@ -19,10 +19,10 @@ const Loading: FC<Props> = () => {
             height: 100px;
           }
           circle:nth-of-type(1) {
-            stroke: ${colors.black_quaternary};
+            stroke: ${colors.gray};
           }
           circle:nth-of-type(2) {
-            stroke: ${colors.black_quinary};
+            stroke: ${colors.black_quaternary};
           }
         `}
       />
