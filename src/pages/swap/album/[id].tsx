@@ -1,6 +1,6 @@
 import OrganismBanner from '@Components/@organisms/OrganismBanner'
 import Card from '@Components/Cards/Card'
-import List from '@Components/List'
+import SectionProps from '@Components/List'
 import Track from '@Components/Track/Track'
 import { Cards } from '@Styles/components/Cards'
 import { ArtistWrapper } from '@Styles/pages/swap/artist'
@@ -89,7 +89,7 @@ const Album: FC<Props> = ({
                 width: '100%',
               }}
             >
-              <List
+              <SectionProps
                 Elements={({
                   show,
                   setShow,
@@ -133,7 +133,7 @@ const Album: FC<Props> = ({
                     </Cards>
                   </>
                 )}
-              </List>
+              </SectionProps>
             </Div>
           ))}
         </Div>

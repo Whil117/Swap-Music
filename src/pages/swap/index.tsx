@@ -1,15 +1,13 @@
+import AtomSectionHeader from '@Components/@atoms/AtomSection/Header'
 import Card from '@Components/Cards/Card'
-import List from '@Components/List'
-import { Cards } from '@Styles/components/Cards'
-import { WrapperPages } from '@Styles/pages/swap'
+import SectionProps from '@Components/List'
+import { css } from '@emotion/react'
 import Selector from '@Types/redux/reducers/user/types'
 import Greetings from '@Utils/greetings'
-import Button from '@Whil/components/Button'
-import Div from '@Whil/components/Div'
-import Svg from '@Whil/components/Svg'
-import { Dispatch, SetStateAction } from 'react'
+import AtomText from 'lib/AtomText'
+import AtomWrapper from 'lib/Atomwrapper'
 import { useSelector } from 'react-redux'
-
+import { SwiperSlide } from 'swiper/react'
 const SwapPage = () => {
   const user = useSelector(Selector)
 
@@ -17,120 +15,83 @@ const SwapPage = () => {
     {
       id: '1',
       title: 'New Releases',
-      assets: user.NewReleases.albums.items,
+      assets: user?.NewReleases?.albums?.items,
     },
     {
       id: '2',
       title: 'Top Artists',
-      assets: user.TopArtists.items,
+      assets: user?.TopArtists?.items,
     },
     {
       id: '3',
       title: 'Your favorite artists',
-      assets: user.followedArtists.artists.items,
+      assets: user?.followedArtists?.artists?.items,
     },
   ]
 
   return (
-    <WrapperPages>
-      <div>
-        <h1>
+    <AtomWrapper
+      as="main"
+      css={css`
+        margin: 60px 0 0 60px;
+        display: flex;
+        flex-direction: column;
+        alig-items: flex-start;
+        max-width: 1440px;
+        @media (max-width: 768px) {
+          margin: 2rem;
+        }
+      `}
+    >
+      <AtomWrapper>
+        <AtomText as="h1">
           {Greetings()} - {user.me?.display_name}!
-        </h1>
-      </div>
+        </AtomText>
+      </AtomWrapper>
       {data.map((item) => (
-        <div key={item.id}>
-          <List
-            Elements={({
-              show,
-              setShow,
-            }: {
-              show: boolean
-              setShow: Dispatch<SetStateAction<boolean>>
-            }) => (
-              <Div
-                styles={{
-                  width: '100%',
-                  flexdirection: 'row',
-                  justifycontent: 'space-between',
-                }}
-              >
-                <h2>{item.title}</h2>
-                <Button
-                  props={{ type: 'submit', style: { padding: '5px ' } }}
-                  click={() => setShow(!show)}
-                >
-                  <Svg src="/icons/list" />
-                </Button>
-              </Div>
+        <AtomWrapper key={item.id}>
+          <SectionProps
+            Elements={({ setShow }) => (
+              <AtomSectionHeader setShow={setShow} title={item.title} />
             )}
           >
-            {({ show }: { show: boolean }) => (
-              <>
-                <Cards {...{ show }}>
-                  {item.assets?.map((artist) => (
-                    <Card
-                      key={artist.id}
-                      {...{
-                        id: artist.id,
-                        type: artist.type,
-                        image: artist.images[0].url,
-                        name: artist.name,
-                      }}
-                    />
-                  ))}
-                </Cards>
-              </>
-            )}
-          </List>
-        </div>
+            {item.assets?.map((artist) => (
+              <SwiperSlide key={artist.id} style={{ width: 'auto' }}>
+                <Card
+                  {...{
+                    id: artist.id,
+                    type: artist.type,
+                    image: artist.images[0].url,
+                    name: artist.name,
+                  }}
+                />
+              </SwiperSlide>
+            ))}
+          </SectionProps>
+        </AtomWrapper>
       ))}
-      <div>
-        <List
-          Elements={({
-            show,
-            setShow,
-          }: {
-            show: boolean
-            setShow: Dispatch<SetStateAction<boolean>>
-          }) => (
-            <Div
-              styles={{
-                width: '100%',
-                flexdirection: 'row',
-                justifycontent: 'space-between',
-              }}
-            >
-              <h2>Today's suggestions</h2>
-              <Button
-                props={{ type: 'submit', style: { padding: '5px ' } }}
-                click={() => setShow(!show)}
-              >
-                <Svg src="/icons/list" />
-              </Button>
-            </Div>
+      <AtomWrapper>
+        <SectionProps
+          Elements={({ setShow }) => (
+            <AtomSectionHeader setShow={setShow} title="Today's suggestions" />
           )}
         >
-          {({ show }: { show: boolean }) => (
-            <>
-              <Cards {...{ show }}>
-                {user.SavedAlbums.items?.map((artist) => (
-                  <Card
-                    key={artist.album.id}
-                    {...{
-                      id: artist.album.id,
-                      type: artist.album.type,
-                      image: artist.album.images[0].url,
-                      name: artist.album.name,
-                    }}
-                  />
-                ))}
-              </Cards>
-            </>
-          )}
-        </List>
-      </div>
-    </WrapperPages>
+          {user.SavedAlbums.items?.map((artist, index) => (
+            <SwiperSlide key={index} style={{ width: 'auto' }}>
+              <Card
+                key={artist.album.id}
+                {...{
+                  id: artist.album.id,
+                  type: artist.album.type,
+                  image: artist.album.images[0].url,
+                  name: artist.album.name,
+                }}
+              />
+            </SwiperSlide>
+          ))}
+        </SectionProps>
+      </AtomWrapper>
+    </AtomWrapper>
   )
 }
 

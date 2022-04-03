@@ -1,5 +1,5 @@
 import Card from '@Components/Cards/Card'
-import List from '@Components/List'
+import SectionProps from '@Components/List'
 import Track from '@Components/Track/Track'
 import { Cards } from '@Styles/components/Cards'
 import {
@@ -124,7 +124,7 @@ const Artist: FC<Artist> = ({
         </Div>
         {data.map((item) => (
           <AlbumWrapper key={item.id}>
-            <List
+            <SectionProps
               Elements={({
                 show,
                 setShow,
@@ -158,7 +158,7 @@ const Artist: FC<Artist> = ({
                   ))}
                 </Cards>
               )}
-            </List>
+            </SectionProps>
           </AlbumWrapper>
         ))}
       </ArtistBody>

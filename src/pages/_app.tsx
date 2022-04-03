@@ -7,6 +7,11 @@ import type { AppContext, AppProps } from 'next/app'
 import { Provider } from 'react-redux'
 import { PersistGate } from 'redux-persist/integration/react'
 import 'react-form-builder2/dist/app.css'
+import 'swiper/css'
+import 'swiper/css/navigation'
+import 'swiper/css/pagination'
+import 'swiper/css/scrollbar'
+
 const MyApp = ({
   router,
   Component,

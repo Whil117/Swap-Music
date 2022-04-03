@@ -11,7 +11,7 @@ const Normalize = css`
     background: ${colors.black_primary};
     color: ${colors.white};
     margin: 0;
-    font-family: 'Inter', sans-serif;
+    font-family: 'Roboto Mono', sans-serif;
   }
   main {
     display: block;
