@@ -16,7 +16,7 @@ export const AlbumTrackWrapper = styled.div<AlbumTrackWrapperProps>`
   flex-direction: column;
   alugin-items: flex-start;
   width: ${({ album }) => album || '50%'};
-  @media (max-width: 642px) {
+  @media (max-width: 768px) {
     display: none;
   }
 `

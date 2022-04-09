@@ -36,10 +36,22 @@ const Layout: FC<Props> = ({
                 grid-template-columns: 206px 1440px auto;
                 grid-template-row: 1fr;
                 height: 100vh;
+                @media (max-width: 768px) {
+                  grid-template-columns: 1fr;
+                }
               `}
             >
               <Navbar />
-              <AtomWrapper>CONTACTS</AtomWrapper>
+              <AtomWrapper
+                css={css`
+                  @media (max-width: 768px) {
+                    display: none;
+                  }
+                `}
+              >
+                {' '}
+                CONTACTS
+              </AtomWrapper>
 
               <Wrapper>
                 <AtomWrapper
@@ -76,6 +88,9 @@ const Layout: FC<Props> = ({
                     position: absolute;
                     width: 100%;
                     z-index: 1;
+                    @media (max-width: 768px) {
+                      grid-column: 1 / -1;
+                    }
                   `}
                 >
                   {children}

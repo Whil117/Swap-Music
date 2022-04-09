@@ -1,9 +1,9 @@
 import Track from '@Components/Track/Track'
 import { css } from '@emotion/react'
 import Selector from '@Types/redux/reducers/user/types'
-import Div from '@Whil/components/Div'
 import Svg from '@Whil/components/Svg'
 import AtomImage from 'lib/AtomImage'
+import AtomLink from 'lib/AtomLink'
 import AtomText from 'lib/AtomText'
 import AtomWrapper from 'lib/Atomwrapper'
 import { FC } from 'react'
@@ -31,6 +31,9 @@ const LikedSongs: FC<Props> = ({ color }) => {
               #121216 100%
             ),
             ${color};
+          @media (max-width: 768px) {
+            padding: 0;
+          }
         `}
       >
         <AtomWrapper
@@ -40,6 +43,9 @@ const LikedSongs: FC<Props> = ({ color }) => {
             justify-content: flex-start;
             width: 100%;
             padding: 20px;
+            @media (max-width: 568px) {
+              flex-direction: column;
+            }
           `}
         >
           <AtomWrapper
@@ -49,6 +55,8 @@ const LikedSongs: FC<Props> = ({ color }) => {
               justify-content: center;
               height: 145px;
               width: 150px;
+              background: rgba(0, 0, 0, 0.1);
+              margin: 10px;
             `}
           >
             <Svg src="/icons/bigheart" />
@@ -63,10 +71,11 @@ const LikedSongs: FC<Props> = ({ color }) => {
             <AtomText
               as="p"
               css={css`
-                /* text-align: justify;
-                text-justify: inter-word; */
                 font-size: 64px;
                 margin: 0;
+                @media (max-width: 768px) {
+                  font-size: 40px;
+                }
               `}
             >
               Liked Songs
@@ -78,21 +87,62 @@ const LikedSongs: FC<Props> = ({ color }) => {
                 justify-content: flex-start;
               `}
             >
-              <AtomImage
-                src={user.me?.images[0]?.url as string}
-                alt={user.me?.display_name as string}
-                borderRadius="50%"
-                width={35}
-                height={35}
-              />
-              <AtomText as="p">
-                {user.me?.display_name} • {user.SavedTracks.total} Songs
-              </AtomText>
+              <AtomLink href="/swap/profile" passHref>
+                <AtomWrapper
+                  as="a"
+                  css={css`
+                    display: flex;
+                    text-decoration: none;
+                    align-items: center;
+                    color: #fff;
+                    width: 100%;
+                  `}
+                >
+                  <AtomImage
+                    src={user.me?.images[0]?.url as string}
+                    alt={user.me?.display_name as string}
+                    borderRadius="50%"
+                    width={35}
+                    height={35}
+                  />
+                  <AtomText as="p">
+                    {user.me?.display_name} • {user.SavedTracks.total} Songs
+                  </AtomText>
+                </AtomWrapper>
+              </AtomLink>
             </AtomWrapper>
           </AtomWrapper>
         </AtomWrapper>
       </AtomWrapper>
-      <Div
+      <AtomWrapper
+        css={css`
+          display: flex;
+          alig-items: flex-start;
+          margin: 0 60px;
+          flex-direction: column;
+          @media (max-width: 768px) {
+            margin: 0 20px;
+          }
+        `}
+      >
+        {user.SavedTracks.items.map((item, index) => (
+          <Track
+            key={item.track.id}
+            {...{
+              id: item.track.id,
+              count: index,
+              name: item.track.name,
+              image: item.track.album.images[0].url,
+              artists: item.track.artists,
+              album: item.track.album,
+              duration: item.track.duration_ms,
+              saved: true,
+            }}
+          />
+        ))}
+      </AtomWrapper>
+
+      {/* <Div
         styles={{
           alignitems: 'flex-start',
           width: '93%',
@@ -114,7 +164,7 @@ const LikedSongs: FC<Props> = ({ color }) => {
             }}
           />
         ))}
-      </Div>
+      </Div> */}
     </AtomWrapper>
   )
 }

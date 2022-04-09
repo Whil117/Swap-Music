@@ -1,10 +1,12 @@
+import { css } from '@emotion/react'
 import useTime from '@Hooks/useTime'
-import { AlbumTrackWrapper, TrackWrapper } from '@Styles/components/Track'
-import Button from '@Whil/components/Button'
-import Div from '@Whil/components/Div'
-import Image from '@Whil/components/Image'
+import { TrackWrapper } from '@Styles/components/Track'
 import P from '@Whil/components/P'
 import Svg from '@Whil/components/Svg'
+import Atombutton from 'lib/Atombutton'
+import AtomImage from 'lib/AtomImage'
+import AtomText from 'lib/AtomText'
+import AtomWrapper from 'lib/Atomwrapper'
 import Link from 'next/link'
 import { FC } from 'react'
 
@@ -36,48 +38,58 @@ const Track: FC<Props> = (props) => {
   const [hours, minutes, seconds] = useTime({ ms: props.duration })
   return (
     <TrackWrapper key={props.id}>
-      <Div
-        styles={{
-          justifycontent: 'flex-start',
-          width: props.styles?.width?.song || '40%',
-          flexdirection: 'row',
-        }}
+      <AtomWrapper
+        css={css`
+          display: flex;
+          justify-content: flex-start;
+          width: ${props.styles?.width?.song || '40%'};
+          @media (max-width: 768px) {
+            width: 100%;
+          }
+        `}
       >
-        <Div
-          styles={{
-            width: '8px',
-            margin: ' 10px 20px',
-          }}
+        <AtomWrapper
+          css={css`
+            margin: 10px 20px;
+            @media (max-width: 568px) {
+              display: none;
+            }
+          `}
         >
-          <P
-            styles={{
-              margin: '0px 20px',
-              fontWeight: '600',
-              fontSize: '14px',
-            }}
+          <AtomText
+            as="p"
+            css={css`
+              font-size: 16px;
+              font-weight: 600;
+            `}
           >
             {props.count + 1}
-          </P>
-        </Div>
-        <div>
+          </AtomText>
+        </AtomWrapper>
+        <AtomWrapper
+          css={css`
+            @media (max-width: 568px) {
+              display: none;
+            }
+          `}
+        >
           {props.image && (
-            <Image
+            <AtomImage
               src={props.image || ''}
               width={50}
               height={55}
               alt={props.name}
-              styles={{
-                margin: '20px',
-                borderRadius: '5px',
-              }}
+              borderRadius="5px"
             />
           )}
-        </div>
-        <Div
-          styles={{
-            alignitems: 'flex-start',
-            margin: '0 20px',
-          }}
+        </AtomWrapper>
+        <AtomWrapper
+          css={css`
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            margin: 0 20px;
+          `}
         >
           <P styles={{ fontWeight: '600', margin: '5px 0' }}>
             {!props.album
@@ -87,11 +99,11 @@ const Track: FC<Props> = (props) => {
               : props.name}
           </P>
           {props.artists.length !== 0 && (
-            <Div
-              styles={{
-                justifycontent: 'flex-start',
-                flexdirection: 'row',
-              }}
+            <AtomWrapper
+              css={css`
+                display: flex;
+                justify-content: flex-start;
+              `}
             >
               {props?.artists?.map((artist, index) => (
                 <Link
@@ -116,12 +128,22 @@ const Track: FC<Props> = (props) => {
                   </a>
                 </Link>
               ))}
-            </Div>
+            </AtomWrapper>
           )}
-        </Div>
-      </Div>
+        </AtomWrapper>
+      </AtomWrapper>
       {Object.keys(props.album).length > 0 && (
-        <AlbumTrackWrapper album={props.styles?.width?.album as string}>
+        <AtomWrapper
+          css={css`
+            display: flex;
+            flex-direction: column;
+            alugin-items: flex-start;
+            width: ${props.styles?.width?.album || '50%'};
+            @media (max-width: 768px) {
+              display: none;
+            }
+          `}
+        >
           <Link
             href={{
               pathname: '/swap/album/[id]',
@@ -129,25 +151,43 @@ const Track: FC<Props> = (props) => {
             }}
             passHref
           >
-            <a>
-              <P
-                styles={{
-                  opacity: 0.5,
-                }}
+            <AtomWrapper
+              as="a"
+              css={css`
+                color: #ffffff;
+              `}
+            >
+              <AtomText
+                as="p"
+                css={css`
+                  opacity: 0.5;
+                `}
               >
                 {props.album.name && props?.album?.name?.length > 40
-                  ? props?.album?.name.slice(0, 40) + '...'
+                  ? props?.album?.name.slice(0, 50) + '...'
                   : props?.album?.name}
-              </P>
-            </a>
+              </AtomText>
+            </AtomWrapper>
           </Link>
-        </AlbumTrackWrapper>
+        </AtomWrapper>
       )}
 
-      <Button props={{ type: 'none' }}>
+      <Atombutton
+        css={css`
+          @media (max-width: 768px) {
+            display: none;
+          }
+        `}
+      >
         <Svg src={props.saved ? '/icons/fullheart' : '/icons/heart'} />
-      </Button>
-      <div>
+      </Atombutton>
+      <AtomWrapper
+        css={css`
+          @media (max-width: 568px) {
+            display: none;
+          }
+        `}
+      >
         <p>
           {' '}
           {hours ? `${hours} ${minutes}` : ''}{' '}
@@ -159,7 +199,7 @@ const Track: FC<Props> = (props) => {
               }`
             : ''}
         </p>
-      </div>
+      </AtomWrapper>
     </TrackWrapper>
   )
 }

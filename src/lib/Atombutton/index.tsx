@@ -14,7 +14,7 @@ const Atombutton = styled.button<AtombuttonProps>`
   outline: none;
   padding: 5px;
   cursor: pointer;
-  background-color: ${(props) => props?.backgroundColor};
+  background-color: ${(props) => props?.backgroundColor || 'transparent'};
 
   ${(props) => props?.css};
 `

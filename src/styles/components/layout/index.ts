@@ -28,6 +28,8 @@ export const Wrapper = styled.div`
   }
   @media (max-width: 768px) {
     margin: 2rem;
+    grid-column: 1/ -1;
+    overflow-x: hidden;
   }
   @media (max-width: 768px) {
     margin-left: 0;
