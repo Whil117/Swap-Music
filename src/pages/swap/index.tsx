@@ -31,16 +31,9 @@ const SwapPage = () => {
 
   return (
     <AtomWrapper
-      as="main"
       css={css`
-        margin: 60px 0 0 60px;
-        display: flex;
-        flex-direction: column;
-        alig-items: flex-start;
-        max-width: 1440px;
-        @media (max-width: 768px) {
-          margin: 2rem;
-        }
+        margin-top: 50px;
+        margin: 100px 40px 40px 40px;
       `}
     >
       <AtomWrapper>

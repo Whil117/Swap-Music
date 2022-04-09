@@ -5,8 +5,9 @@ export const Navbar = styled.nav`
   padding: 1rem 1.5rem;
   color: ${colors.white};
   width: 165px;
-  height: 100vh;
-  position: fixed;
+  z-index: 2;
+  grid-row: 1 / 2;
+  grid-column: 1 / 2;
   background: ${colors.black_quaternary};
   border-radius: 0px 10px 10px 0px;
   top: 0;

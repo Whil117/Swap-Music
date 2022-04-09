@@ -11,7 +11,7 @@ const Loading: FC<Props> = () => {
     <LoadingWrapper>
       <Svg
         src="/icons/loading"
-        customStyles={css`
+        css={css`
           position: fixed;
           z-index: 1;
           svg {

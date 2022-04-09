@@ -1,5 +1,5 @@
-import { SvgWrapper } from '@Whil/styles/components/Svg'
 import SvgProps from '@Whil/types/components/Svg'
+import AtomWrapper from 'lib/Atomwrapper'
 import dynamic from 'next/dynamic'
 import { FC, useMemo } from 'react'
 
@@ -10,9 +10,9 @@ const Svg: FC<SvgProps> = (props) => {
   )
   if (!Icon) return null
   return (
-    <SvgWrapper {...{ style: props.style, customStyle: props.customStyles }}>
+    <AtomWrapper css={props.css}>
       <Icon />
-    </SvgWrapper>
+    </AtomWrapper>
   )
 }
 

@@ -3,7 +3,7 @@ import Styles from '@Whil/types/styles'
 
 type SvgProps = {
   src: string
-  customStyles?: SerializedStyles
+  css?: SerializedStyles
   style?: Styles
 }
 export default SvgProps

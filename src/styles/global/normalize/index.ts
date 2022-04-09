@@ -13,6 +13,9 @@ const Normalize = css`
     margin: 0;
     font-family: 'Roboto Mono', sans-serif;
   }
+  p {
+    font-weight: 600;
+  }
   main {
     display: block;
   }
