@@ -1,5 +1,6 @@
+import { css } from '@emotion/react'
 import useTime, { UseTimeProps } from '@Hooks/useTime'
-import P from '@Whil/components/P'
+import AtomText from 'lib/AtomText'
 import { FC } from 'react'
 
 type Props = {
@@ -12,26 +13,18 @@ type Props = {
 const AtomTracksDuration: FC<Props> = (props) => {
   const [hours, minutes, seconds] = useTime(props.useTime)
   return (
-    <P
-      styles={{
-        opacity: 0.5,
-        margin: '0 5px',
-        width: 'auto',
-        fontSize: '15px',
-      }}
+    <AtomText
+      as="p"
+      css={css`
+        margin: 0 10px;
+        font-weight: 400;
+        display: flex;
+        align-items: center;
+      `}
     >
-      • {props.release && `${props.release.slice(0, 4)} •  `}{' '}
+      {props.release && `${props.release.slice(0, 4)} •  `}
       {props.totalTracks}
-      <P
-        styles={{
-          margin: '0 5px',
-          width: 'auto',
-          fontSize: '15px',
-        }}
-      >
-        {props.type || 'Songs'}
-      </P>
-      , {hours ? `${hours} hr ${minutes} min` : ''}{' '}
+      {props.type || ' Songs'}, {hours ? `${hours} hr ${minutes} min` : ''}{' '}
       {!hours
         ? `${minutes} Min ${
             seconds?.toFixed(0).length === 1
@@ -39,7 +32,7 @@ const AtomTracksDuration: FC<Props> = (props) => {
               : `${seconds?.toFixed()} Sec`
           }`
         : ''}
-    </P>
+    </AtomText>
   )
 }
 

@@ -1,16 +1,16 @@
+import AtomSectionHeader from '@Components/@atoms/AtomSection/Header'
 import OrganismBanner from '@Components/@organisms/OrganismBanner'
 import Card from '@Components/Cards/Card'
 import SectionProps from '@Components/List'
 import Track from '@Components/Track/Track'
-import { Cards } from '@Styles/components/Cards'
+import { css } from '@emotion/react'
 import { ArtistWrapper } from '@Styles/pages/swap/artist'
-import Button from '@Whil/components/Button'
-import Div from '@Whil/components/Div'
-import Svg from '@Whil/components/Svg'
+import AtomWrapper from 'lib/Atomwrapper'
 import spotifyAPI from 'lib/spotify/spotify'
 import { NextPageContext } from 'next'
 import { getSession } from 'next-auth/react'
-import { Dispatch, FC, SetStateAction } from 'react'
+import { FC } from 'react'
+import { SwiperSlide } from 'swiper/react'
 type Props = {
   Album: SpotifyApi.SingleAlbumResponse
   Artist: SpotifyApi.SingleArtistResponse
@@ -47,15 +47,16 @@ const Album: FC<Props> = ({
           ms,
         }}
       />
-      <Div
-        styles={{
-          display: 'flex',
-          flexdirection: 'row',
-          flexwrap: 'wrap',
-          width: '93%',
-          justifycontent: 'space-between',
-          margin: '20px 60px',
-        }}
+      <AtomWrapper
+        css={css`
+          display: flex;
+          alig-items: flex-start;
+          margin: 0 60px;
+          flex-direction: column;
+          @media (max-width: 768px) {
+            margin: 0 20px;
+          }
+        `}
       >
         {TracksAlbum.items.map((track, idx) => (
           <Track
@@ -77,67 +78,30 @@ const Album: FC<Props> = ({
             }}
           />
         ))}
-        <Div
-          styles={{
-            width: '100%',
-          }}
-        >
-          {data.map((item) => (
-            <Div
-              key={item.id}
-              styles={{
-                width: '100%',
-              }}
+
+        {data.map((item) => (
+          <AtomWrapper key={item.id}>
+            <SectionProps
+              Elements={({ setShow }) => (
+                <AtomSectionHeader setShow={setShow} title={item.title} />
+              )}
             >
-              <SectionProps
-                Elements={({
-                  show,
-                  setShow,
-                }: {
-                  show: boolean
-                  setShow: Dispatch<SetStateAction<boolean>>
-                }) => (
-                  <Div
-                    styles={{
-                      width: '100%',
-                      flexdirection: 'row',
-                      justifycontent: 'flex-start',
+              {item.assets?.map((artist) => (
+                <SwiperSlide key={artist.id} style={{ width: 'auto' }}>
+                  <Card
+                    {...{
+                      id: artist.id,
+                      type: artist.type,
+                      image: artist.images[0].url,
+                      name: artist.name,
                     }}
-                  >
-                    <h2>{item.title}</h2>
-                    <Button
-                      props={{ type: 'submit', style: { padding: '5px ' } }}
-                      click={() => setShow(!show)}
-                    >
-                      <Svg src="/icons/list" />
-                    </Button>
-                  </Div>
-                )}
-              >
-                {({ show }: { show: boolean }) => (
-                  <>
-                    <Cards {...{ show, width: true, assets: item.assets }}>
-                      {item.assets
-                        .filter((a) => a.name !== Album.name)
-                        ?.map((artist) => (
-                          <Card
-                            key={artist.id}
-                            {...{
-                              id: artist.id,
-                              type: artist.type,
-                              image: artist.images[0].url,
-                              name: artist.name,
-                            }}
-                          />
-                        ))}
-                    </Cards>
-                  </>
-                )}
-              </SectionProps>
-            </Div>
-          ))}
-        </Div>
-      </Div>
+                  />
+                </SwiperSlide>
+              ))}
+            </SectionProps>
+          </AtomWrapper>
+        ))}
+      </AtomWrapper>
     </ArtistWrapper>
   )
 }

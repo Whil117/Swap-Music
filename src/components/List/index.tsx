@@ -23,13 +23,76 @@ const SectionProps: FC<Props> = ({ children, Elements }) => {
       {Elements ? Elements({ show, setShow }) : null}
       {children ? (
         !show ? (
-          <AtomWrapper>
+          <AtomWrapper
+            css={css`
+              .swiper {
+                margin: 20px 0;
+                width: 100%;
+                height: auto;
+              }
+              .swiper-slide {
+                text-align: center;
+                font-size: 18px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+              }
+
+              .swiper-pagination-bullet-active {
+                background-color: white;
+              }
+              .swiper-slide img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+              }
+              .swiper-button-prev {
+                ::after {
+                  font-size: 42px;
+                  color: #ebebebeb;
+                }
+                top: 50%;
+                left: 3%;
+              }
+              .swiper-button-next {
+                ::after {
+                  font-size: 42px;
+                  color: #ebebebeb;
+                }
+                top: 50%;
+                right: 3%;
+              }
+            `}
+          >
             <Swiper
               modules={[Navigation, Pagination, Scrollbar, A11y]}
               slidesPerView={6}
-              spaceBetween={10}
+              centeredSlides={true}
+              centerInsufficientSlides={true}
+              centeredSlidesBounds={true}
+              breakpoints={{
+                320: {
+                  slidesPerView: 1,
+                },
+                480: {
+                  slidesPerView: 1,
+                },
+                568: {
+                  slidesPerView: 4,
+                },
+                640: {
+                  slidesPerView: 4,
+                },
+                768: {
+                  slidesPerView: 3,
+                },
+                1024: {
+                  slidesPerView: 5,
+                },
+              }}
               pagination={{
                 el: '.swiper-pagination',
+                clickable: true,
               }}
               navigation
             >

@@ -134,6 +134,7 @@ type Props = {
   css?: SerializedStyles
 }
 export const AtomText = styled.span<Props>`
+  color: ${(props) => props.color || '#fff'};
   ${(props) => props?.css};
 `
 

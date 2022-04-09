@@ -6,14 +6,10 @@ import AtomImage from 'lib/AtomImage'
 import AtomLink from 'lib/AtomLink'
 import AtomText from 'lib/AtomText'
 import AtomWrapper from 'lib/Atomwrapper'
-import { FC } from 'react'
+import { NextPage } from 'next'
 import { useSelector } from 'react-redux'
 
-type Props = {
-  color: string
-}
-
-const LikedSongs: FC<Props> = ({ color }) => {
+const LikedSongs: NextPage = () => {
   const user = useSelector(Selector)
   return (
     <AtomWrapper>
@@ -30,7 +26,7 @@ const LikedSongs: FC<Props> = ({ color }) => {
               rgba(90, 28, 28, 0) 0%,
               #121216 100%
             ),
-            ${color};
+            #007fff;
           @media (max-width: 768px) {
             padding: 0;
           }
@@ -50,11 +46,12 @@ const LikedSongs: FC<Props> = ({ color }) => {
         >
           <AtomWrapper
             css={css`
+              border-radius: 10px;
               display: flex;
               align-items: center;
               justify-content: center;
-              height: 145px;
-              width: 150px;
+              height: 200px;
+              width: 200px;
               background: rgba(0, 0, 0, 0.1);
               margin: 10px;
             `}
@@ -85,6 +82,9 @@ const LikedSongs: FC<Props> = ({ color }) => {
                 display: flex;
                 align-items: center;
                 justify-content: flex-start;
+                @media (max-width: 568px) {
+                  justify-content: center;
+                }
               `}
             >
               <AtomLink href="/swap/profile" passHref>
@@ -96,6 +96,9 @@ const LikedSongs: FC<Props> = ({ color }) => {
                     align-items: center;
                     color: #fff;
                     width: 100%;
+                    @media (max-width: 568px) {
+                      width: auto;
+                    }
                   `}
                 >
                   <AtomImage
@@ -141,38 +144,8 @@ const LikedSongs: FC<Props> = ({ color }) => {
           />
         ))}
       </AtomWrapper>
-
-      {/* <Div
-        styles={{
-          alignitems: 'flex-start',
-          width: '93%',
-          margin: '0 60px',
-        }}
-      >
-        {user.SavedTracks.items.map((item, index) => (
-          <Track
-            key={item.track.id}
-            {...{
-              id: item.track.id,
-              count: index,
-              name: item.track.name,
-              image: item.track.album.images[0].url,
-              artists: item.track.artists,
-              album: item.track.album,
-              duration: item.track.duration_ms,
-              saved: true,
-            }}
-          />
-        ))}
-      </Div> */}
     </AtomWrapper>
   )
 }
-export async function getServerSideProps() {
-  return {
-    props: {
-      color: '#007fff',
-    },
-  }
-}
+
 export default LikedSongs

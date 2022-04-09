@@ -164,7 +164,7 @@ const Track: FC<Props> = (props) => {
                 `}
               >
                 {props.album.name && props?.album?.name?.length > 40
-                  ? props?.album?.name.slice(0, 50) + '...'
+                  ? props?.album?.name.slice(0, 40) + '...'
                   : props?.album?.name}
               </AtomText>
             </AtomWrapper>

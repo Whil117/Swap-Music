@@ -1,13 +1,10 @@
 import AtomTracksDuration from '@Components/@atoms/AtomTracksDuration'
+import { css } from '@emotion/react'
 import { UseTimeProps } from '@Hooks/useTime'
-import {
-  LikedSongsProps,
-  LikedSongsWrapper,
-} from '@Styles/pages/swap/liked songs'
-import Div from '@Whil/components/Div'
-import Image from '@Whil/components/Image'
-import P from '@Whil/components/P'
-import Link from 'next/link'
+import AtomImage from 'lib/AtomImage'
+import AtomLink from 'lib/AtomLink'
+import AtomText from 'lib/AtomText'
+import AtomWrapper from 'lib/Atomwrapper'
 import { FC, useState } from 'react'
 import { ColorExtractor } from 'react-color-extractor'
 
@@ -34,48 +31,110 @@ const stringToHTML = (str?: string) => {
 const OrganismBanner: FC<Props> = (props) => {
   const [color, setColor] = useState<string[]>([])
   return (
-    <LikedSongsWrapper color={color[0]}>
-      <Div
-        styles={{
-          boxshadow: 'a',
-          justifycontent: 'flex-start',
-          flexdirection: 'row',
-        }}
+    <AtomWrapper
+      css={css`
+        height: 400px;
+        display: flex;
+        align-items: center;
+        padding: 30px 60px;
+        justify-content: center;
+        transition: all 0.3s ease;
+
+        background: linear-gradient(
+            180deg,
+            rgba(90, 28, 28, 0) 0%,
+            #121216 100%
+          ),
+          ${color};
+        @media (max-width: 768px) {
+          height: 600px;
+          padding: 0;
+        }
+      `}
+    >
+      <AtomWrapper
+        css={css`
+          display: flex;
+          align-items: center;
+          justify-content: flex-start;
+          width: 100%;
+          padding: 20px;
+          @media (max-width: 568px) {
+            flex-direction: column;
+            width: auto;
+            padding: 0;
+          }
+        `}
       >
         <ColorExtractor
           src={props.image_url}
           getColors={(colors: string[]) => setColor(colors)}
         />
 
-        <Image
+        <AtomImage
           src={props.image_url || 'https://via.placeholder.com/150/92c952'}
           width={240}
           height={240}
           alt={props.name}
-          styles={{
-            borderRadius: '5px',
-          }}
+          borderRadius="10px"
         />
-        <LikedSongsProps>
-          <h4>{props.type.toUpperCase()}</h4>
-          <h1>{props.title}</h1>
+        <AtomWrapper
+          css={css`
+            width: 900px;
+            margin: 0 50px;
+            @media (max-width: 768px) {
+              width: 400px;
+              margin: 0 20px;
+            }
+          `}
+        >
+          <AtomText
+            as="h4"
+            css={css`
+              @media (max-width: 568px) {
+                text-align: center;
+              }
+            `}
+          >
+            {props.type.toUpperCase()}
+          </AtomText>
+          <AtomText
+            as="h1"
+            css={css`
+              margin: 0;
+              font-size: 48px;
+              @media (max-width: 568px) {
+                font-size: 32px;
+                text-align: center;
+              }
+            `}
+          >
+            {props.title}
+          </AtomText>
           {props.desc && (
-            <P
-              styles={{
-                opacity: 0.75,
-              }}
+            <AtomText
+              as="p"
+              css={css`
+                opacity: 0.5;
+                text-align: center;
+              `}
             >
               {stringToHTML(props.desc).innerText}
-            </P>
+            </AtomText>
           )}
-          <Div
-            styles={{
-              width: '100%',
-              justifycontent: 'flex-start',
-              flexdirection: 'row',
-            }}
+          <AtomWrapper
+            css={css`
+              width: 100%;
+              display: flex;
+              justify-content: flex-start;
+              @media (max-width: 568px) {
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+              }
+            `}
           >
-            <Link
+            <AtomLink
               href={{
                 pathname: '/swap/artist/[id]',
                 query: { id: props.id },
@@ -83,38 +142,37 @@ const OrganismBanner: FC<Props> = (props) => {
               passHref
             >
               <a>
-                <P
-                  styles={{
-                    display: 'flex',
-                    alignitems: 'center',
-                    fontWeight: '600',
-                    margin: '20px 1px',
-                  }}
+                <AtomText
+                  as="p"
+                  css={css`
+                    display: flex;
+                    align-items: center;
+                    font-weight: 600;
+                    margin: 20px 1px;
+                  `}
                 >
                   {props.image_url_avatar && (
-                    <Image
+                    <AtomImage
                       src={props.image_url_avatar}
-                      width={30}
-                      height={30}
+                      width={100}
+                      height={100}
                       alt={props.name}
-                      styles={{
-                        borderRadius: '50%',
-                      }}
+                      borderRadius="50%"
                     />
                   )}
                   {props.name}
-                </P>
+                </AtomText>
               </a>
-            </Link>
+            </AtomLink>
             <AtomTracksDuration
               release={props.release_date}
               totalTracks={props.total_tracks}
               useTime={props.useTime}
             />
-          </Div>
-        </LikedSongsProps>
-      </Div>
-    </LikedSongsWrapper>
+          </AtomWrapper>
+        </AtomWrapper>
+      </AtomWrapper>
+    </AtomWrapper>
   )
 }
 
