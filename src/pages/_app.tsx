@@ -11,6 +11,7 @@ import 'swiper/css'
 import 'swiper/css/navigation'
 import 'swiper/css/pagination'
 import 'swiper/css/scrollbar'
+import { useState } from 'react'
 
 const MyApp = ({
   router,
@@ -18,6 +19,7 @@ const MyApp = ({
 
   pageProps: { hidratation, accessToken, session, ...pageProps },
 }: AppProps) => {
+  const [loading, setLoading] = useState<boolean>(false)
   return (
     <SessionProvider session={session}>
       <Provider store={store}>

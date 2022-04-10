@@ -12,7 +12,10 @@ export type AtombuttonProps = {
 const Atombutton = styled.button<AtombuttonProps>`
   border: none;
   outline: none;
-  padding: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 0px;
   cursor: pointer;
   background-color: ${(props) => props?.backgroundColor || 'transparent'};
 

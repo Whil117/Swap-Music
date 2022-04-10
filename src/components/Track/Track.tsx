@@ -7,7 +7,7 @@ import Atombutton from 'lib/Atombutton'
 import AtomImage from 'lib/AtomImage'
 import AtomText from 'lib/AtomText'
 import AtomWrapper from 'lib/Atomwrapper'
-import Link from 'next/link'
+import { useRouter } from 'next/router'
 import { FC } from 'react'
 
 type Props = {
@@ -36,6 +36,7 @@ type Props = {
 
 const Track: FC<Props> = (props) => {
   const [hours, minutes, seconds] = useTime({ ms: props.duration })
+  const router = useRouter()
   return (
     <TrackWrapper key={props.id}>
       <AtomWrapper
@@ -106,27 +107,34 @@ const Track: FC<Props> = (props) => {
               `}
             >
               {props?.artists?.map((artist, index) => (
-                <Link
-                  href={{
-                    pathname: '/swap/artist/[id]',
-                    query: { id: artist.id },
+                <Atombutton
+                  key={artist.id && artist?.id + index}
+                  onClick={() => {
+                    router
+                      .push({
+                        pathname: `/swap/artist/[id]`,
+                        query: {
+                          id: artist.id,
+                        },
+                      })
+                      .then(() => {
+                        document?.getElementById('view')?.scroll({
+                          top: 0,
+                        })
+                      })
                   }}
-                  passHref
-                  key={artist.id}
                 >
-                  <a>
-                    <P
-                      styles={{
-                        opacity: 0.5,
+                  <P
+                    styles={{
+                      opacity: 0.5,
 
-                        width: 'auto',
-                      }}
-                      key={artist.id}
-                    >
-                      {index === 0 ? artist.name : `, ${artist.name}`}
-                    </P>
-                  </a>
-                </Link>
+                      width: 'auto',
+                    }}
+                    key={artist.id}
+                  >
+                    {index === 0 ? artist.name : `, ${artist.name}`}
+                  </P>
+                </Atombutton>
               ))}
             </AtomWrapper>
           )}
@@ -144,31 +152,33 @@ const Track: FC<Props> = (props) => {
             }
           `}
         >
-          <Link
-            href={{
-              pathname: '/swap/album/[id]',
-              query: { id: props?.album?.id },
+          <Atombutton
+            onClick={() => {
+              router
+                .push({
+                  pathname: `/swap/album/[id]`,
+                  query: {
+                    id: props?.album?.id,
+                  },
+                })
+                .then(() => {
+                  document?.getElementById('view')?.scroll({
+                    top: 0,
+                  })
+                })
             }}
-            passHref
           >
-            <AtomWrapper
-              as="a"
+            <AtomText
+              as="p"
               css={css`
-                color: #ffffff;
+                opacity: 0.5;
               `}
             >
-              <AtomText
-                as="p"
-                css={css`
-                  opacity: 0.5;
-                `}
-              >
-                {props.album.name && props?.album?.name?.length > 40
-                  ? props?.album?.name.slice(0, 40) + '...'
-                  : props?.album?.name}
-              </AtomText>
-            </AtomWrapper>
-          </Link>
+              {props.album.name && props?.album?.name?.length > 40
+                ? props?.album?.name.slice(0, 40) + '...'
+                : props?.album?.name}
+            </AtomText>
+          </Atombutton>
         </AtomWrapper>
       )}
 

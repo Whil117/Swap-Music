@@ -9,7 +9,7 @@ export const Navbar = styled.nav`
   grid-row: 1 / 2;
   grid-column: 1 / 2;
   background: ${colors.black_quaternary};
-  border-radius: 0px 10px 10px 0px;
+  border-radius: 0px 10px 0px 0px;
   top: 0;
   @media (max-width: 768px) {
     display: none;

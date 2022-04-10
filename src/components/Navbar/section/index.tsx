@@ -16,7 +16,7 @@ const Section: FC<Props> = (props) => {
   return (
     <div>
       <NavbarSectionName>{props.section_name}</NavbarSectionName>
-      {props.options.map((option) => (
+      {props?.options?.map((option) => (
         <Link
           key={`section_option_${option.path}`}
           href={{

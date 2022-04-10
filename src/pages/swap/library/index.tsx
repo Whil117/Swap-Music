@@ -9,7 +9,7 @@ import { useRouter } from 'next/router'
 type Props = {}
 
 const Library: FC<Props> = () => {
-  const user = useSelector(Selector)
+  const user = useSelector((state: SelectFor) => state.user)
   const router = useRouter()
 
   return (

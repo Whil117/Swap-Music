@@ -12,10 +12,10 @@ type Props = {
   label?: string
   placeholder?: string
   type?: string
-  value?: string
+  value?: string | number
   onBlur?: (e: any) => void
   onChange?: (e: ChangeEvent<any>) => void
-  formik: FormikValues
+  formik?: FormikValues
   css?: SerializedStyles
 }
 
@@ -23,7 +23,7 @@ const AtomInputStyled = styled(motion.input)<Props>`
   font-size: 12px;
   font-weight: 600;
   margin: 0px 0px 0px 0px;
-  padding: 0px 0px 0px 15px;
+  padding: 0px;
   color: #1a1a1a;
   ::placeholder {
     color: #202124;
@@ -42,18 +42,20 @@ const AtomInputStyled = styled(motion.input)<Props>`
 const AtomInput = (props: Props) => {
   return (
     <>
-      <AtomText
-        as="label"
-        htmlFor={props.id}
-        css={css`
-          font-size: 12px;
-          font-weight: 600;
-          margin: 0px 0px 0px 0px;
-          padding: 0px 0px 0px 5px;
-        `}
-      >
-        {props.label}
-      </AtomText>
+      {props.label && (
+        <AtomText
+          as="label"
+          htmlFor={props.id}
+          css={css`
+            font-size: 12px;
+            font-weight: 600;
+            margin: 0px 0px 0px 0px;
+            padding: 0px 0px 0px 5px;
+          `}
+        >
+          {props.label}
+        </AtomText>
+      )}
       <AtomInputStyled
         {...props}
         value={lodash.get(props.formik?.values, props.id) ?? props.value}

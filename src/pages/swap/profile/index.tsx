@@ -7,7 +7,7 @@ import Selector from '@Types/redux/reducers/user/types'
 type Props = {}
 
 const Profile: FC<Props> = (props) => {
-  const user = useSelector(Selector)
+  const user = useSelector((state: SelectFor) => state.user)
   return (
     <AtomWrapper>
       <OrganismBanner

@@ -4,9 +4,10 @@ import { combineReducers, createStore } from 'redux'
 import { composeWithDevTools } from 'redux-devtools-extension'
 import { persistReducer, persistStore } from 'redux-persist'
 import user from '@Redux/reducers/user'
-
+import loading from '@Redux/reducers/loading'
 const rootReducer = combineReducers({
   user,
+  loading,
 })
 
 const persistConfig = {

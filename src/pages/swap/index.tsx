@@ -2,7 +2,7 @@ import AtomSectionHeader from '@Components/@atoms/AtomSection/Header'
 import Card from '@Components/Cards/Card'
 import SectionProps from '@Components/List'
 import { css } from '@emotion/react'
-import Selector from '@Types/redux/reducers/user/types'
+import { SelectFor } from '@Types/redux/reducers/user/types'
 import Greetings from '@Utils/greetings'
 import AtomSeoLayout from 'lib/AtomSeo'
 import AtomText from 'lib/AtomText'
@@ -10,7 +10,7 @@ import AtomWrapper from 'lib/Atomwrapper'
 import { useSelector } from 'react-redux'
 import { SwiperSlide } from 'swiper/react'
 const SwapPage = () => {
-  const user = useSelector(Selector)
+  const user = useSelector((state: SelectFor) => state.user)
 
   const data = [
     {
@@ -40,7 +40,7 @@ const SwapPage = () => {
       >
         <AtomWrapper>
           <AtomText as="h1">
-            {Greetings()} - {user.me?.display_name}!
+            {Greetings()} - {user?.me?.display_name}!
           </AtomText>
         </AtomWrapper>
         {data.map((item) => (
@@ -74,7 +74,7 @@ const SwapPage = () => {
               />
             )}
           >
-            {user.SavedAlbums.items?.map((artist, index) => (
+            {user?.SavedAlbums.items?.map((artist, index) => (
               <SwiperSlide key={index} style={{ width: 'auto' }}>
                 <Card
                   key={artist.album.id}

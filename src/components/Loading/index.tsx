@@ -1,14 +1,28 @@
 import { css } from '@emotion/react'
-import { LoadingWrapper } from '@Styles/components/layout/Hidratation/Loading'
 import colors from '@Styles/global/colors'
 import Svg from '@Whil/components/Svg'
+import AtomWrapper from 'lib/Atomwrapper'
 import { FC } from 'react'
 
 type Props = {}
 
 const Loading: FC<Props> = () => {
   return (
-    <LoadingWrapper>
+    <AtomWrapper
+      css={css`
+        background: ${colors.black_primary};
+        color: ${colors.black_primary};
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 999;
+      `}
+    >
       <Svg
         src="/icons/loading"
         css={css`
@@ -26,7 +40,7 @@ const Loading: FC<Props> = () => {
           }
         `}
       />
-    </LoadingWrapper>
+    </AtomWrapper>
   )
 }
 

@@ -7,7 +7,7 @@ import Selector from '@Types/redux/reducers/user/types'
 type Props = {}
 
 const Navbar: FC<Props> = () => {
-  const user = useSelector(Selector)
+  const user = useSelector((state: SelectFor) => state.user)
   const Sections = [
     {
       section_name: 'Menu',
@@ -41,7 +41,7 @@ const Navbar: FC<Props> = () => {
     },
     {
       section_name: 'Playlists',
-      options: user.Playlists?.items?.map((playlist) => ({
+      options: user?.Playlists?.items?.map((playlist) => ({
         name: playlist.name,
         path: `/swap/playlist/${playlist.id}`,
         icon: 'playlist',

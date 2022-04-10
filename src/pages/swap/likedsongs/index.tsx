@@ -1,6 +1,6 @@
 import Track from '@Components/Track/Track'
 import { css } from '@emotion/react'
-import Selector from '@Types/redux/reducers/user/types'
+import { SelectFor } from '@Types/redux/reducers/user/types'
 import Svg from '@Whil/components/Svg'
 import AtomImage from 'lib/AtomImage'
 import AtomLink from 'lib/AtomLink'
@@ -10,7 +10,7 @@ import { NextPage } from 'next'
 import { useSelector } from 'react-redux'
 
 const LikedSongs: NextPage = () => {
-  const user = useSelector(Selector)
+  const user = useSelector((state: SelectFor) => state.user)
   return (
     <AtomWrapper>
       <AtomWrapper
@@ -102,14 +102,14 @@ const LikedSongs: NextPage = () => {
                   `}
                 >
                   <AtomImage
-                    src={user.me?.images[0]?.url as string}
-                    alt={user.me?.display_name as string}
+                    src={user?.me?.images[0]?.url as string}
+                    alt={user?.me?.display_name as string}
                     borderRadius="50%"
                     width={35}
                     height={35}
                   />
                   <AtomText as="p">
-                    {user.me?.display_name} • {user.SavedTracks.total} Songs
+                    {user?.me?.display_name} • {user?.SavedTracks?.total} Songs
                   </AtomText>
                 </AtomWrapper>
               </AtomLink>
@@ -128,7 +128,7 @@ const LikedSongs: NextPage = () => {
           }
         `}
       >
-        {user.SavedTracks.items.map((item, index) => (
+        {user?.SavedTracks?.items?.map((item, index) => (
           <Track
             key={item.track.id}
             {...{
