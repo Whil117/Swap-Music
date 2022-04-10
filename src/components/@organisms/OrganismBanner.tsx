@@ -16,9 +16,9 @@ type Props = {
   image_url: string
   image_url_avatar?: string
   type: string
-  release_date: string
-  total_tracks: number
-  useTime: UseTimeProps
+  release_date?: string
+  total_tracks?: number
+  useTime?: UseTimeProps
 }
 
 const stringToHTML = (str?: string) => {
@@ -164,11 +164,13 @@ const OrganismBanner: FC<Props> = (props) => {
                 </AtomText>
               </a>
             </AtomLink>
-            <AtomTracksDuration
-              release={props.release_date}
-              totalTracks={props.total_tracks}
-              useTime={props.useTime}
-            />
+            {props.total_tracks && (
+              <AtomTracksDuration
+                release={props.release_date as string}
+                totalTracks={props.total_tracks}
+                useTime={props.useTime as UseTimeProps}
+              />
+            )}
           </AtomWrapper>
         </AtomWrapper>
       </AtomWrapper>

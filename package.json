@@ -15,7 +15,7 @@
     "@svgr/webpack": "^6.2.0",
     "@types/react-color": "^3.0.6",
     "apollo-server-micro": "^3.6.2",
-    "axios": "^0.25.0",
+    "axios": "^0.26.1",
     "formik": "^2.2.9",
     "framer-motion": "^5.0.0",
     "fs": "^0.0.1-security",

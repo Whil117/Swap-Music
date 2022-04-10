@@ -1,10 +1,9 @@
+import AtomSectionHeader from '@Components/@atoms/AtomSection/Header'
 import Card from '@Components/Cards/Card'
 import SectionProps from '@Components/List'
 import Track from '@Components/Track/Track'
-import { Cards } from '@Styles/components/Cards'
+import { css } from '@emotion/react'
 import {
-  AlbumsWrapper,
-  AlbumWrapper,
   ArtistBody,
   ArtistHeader,
   ArtistWrapper,
@@ -18,12 +17,13 @@ import Button from '@Whil/components/Button'
 import Div from '@Whil/components/Div'
 import Image from '@Whil/components/Image'
 import P from '@Whil/components/P'
-import Svg from '@Whil/components/Svg'
+import AtomWrapper from 'lib/Atomwrapper'
 import spotifyAPI from 'lib/spotify/spotify'
 import { NextPageContext } from 'next'
 import { getSession } from 'next-auth/react'
-import { Dispatch, FC, SetStateAction, useState } from 'react'
+import { FC, useState } from 'react'
 import { ColorExtractor } from 'react-color-extractor'
+import { SwiperSlide } from 'swiper/react'
 
 type Artist = {
   Artist: SpotifyApi.SingleArtistResponse
@@ -57,7 +57,7 @@ const Artist: FC<Artist> = ({
       <LikedSongsWrapper color={color[0]}>
         <ArtistHeader>
           <ColorExtractor
-            src={Artist.images[0].url}
+            src={Artist.images[0]?.url}
             getColors={(colors: string[]) => setColor(colors)}
           />
 
@@ -122,47 +122,41 @@ const Artist: FC<Artist> = ({
             {display ? 'Show More' : 'Show Less'}
           </Button>
         </Div>
+      </ArtistBody>
+      <AtomWrapper
+        css={css`
+          display: flex;
+          alig-items: flex-start;
+          margin: 0 60px;
+          flex-direction: column;
+          @media (max-width: 768px) {
+            margin: 0 20px;
+          }
+        `}
+      >
         {data.map((item) => (
-          <AlbumWrapper key={item.id}>
+          <AtomWrapper key={item.id}>
             <SectionProps
-              Elements={({
-                show,
-                setShow,
-              }: {
-                show: boolean
-                setShow: Dispatch<SetStateAction<boolean>>
-              }) => (
-                <AlbumsWrapper>
-                  <h2>{item.title}</h2>
-                  <Button
-                    props={{ type: 'submit', style: { padding: '5px ' } }}
-                    click={() => setShow(!show)}
-                  >
-                    <Svg src="/icons/list" />
-                  </Button>
-                </AlbumsWrapper>
+              Elements={({ setShow }) => (
+                <AtomSectionHeader setShow={setShow} title={item.title} />
               )}
             >
-              {({ show }: { show: boolean }) => (
-                <Cards {...{ show, width: true }}>
-                  {item.assets.map((artist) => (
-                    <Card
-                      key={artist.id}
-                      {...{
-                        id: artist.id,
-                        type: artist.type,
-                        image: artist?.images[0]?.url,
-                        name: artist.name,
-                      }}
-                    />
-                  ))}
-                </Cards>
-              )}
+              {item.assets?.map((artist) => (
+                <SwiperSlide key={artist.id} style={{ width: 'auto' }}>
+                  <Card
+                    {...{
+                      id: artist.id,
+                      type: artist.type,
+                      image: artist.images[0]?.url,
+                      name: artist.name,
+                    }}
+                  />
+                </SwiperSlide>
+              ))}
             </SectionProps>
-          </AlbumWrapper>
+          </AtomWrapper>
         ))}
-      </ArtistBody>
-      {/* <pre>{JSON.stringify(ArtistRelated, null, 3)}</pre> */}
+      </AtomWrapper>
     </ArtistWrapper>
   )
 }

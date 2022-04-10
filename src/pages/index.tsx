@@ -1,6 +1,8 @@
+import { clientId, clientSecret } from '@Assets/swap'
 import { css } from '@emotion/react'
 import * as S from '@Styles/pages'
 import Svg from '@Whil/components/Svg'
+import axios from 'axios'
 import { useFormik } from 'formik'
 import Atombutton from 'lib/Atombutton'
 import AtomInput from 'lib/AtomInput'
@@ -21,9 +23,10 @@ type SpotifyAuthProps = {
       type: string
     }
   }
+  access_token: string
 }
 
-const LandingPage = ({ providers }: SpotifyAuthProps) => {
+const LandingPage = ({ providers, access_token }: SpotifyAuthProps) => {
   const [show, setShow] = useState<boolean>(false)
   const formik = useFormik({
     initialValues: {
@@ -35,9 +38,7 @@ const LandingPage = ({ providers }: SpotifyAuthProps) => {
       name: Yup.string().required('Name is required'),
       email: Yup.string().required('Email is required'),
     }),
-    onSubmit: (values) => {
-      alert(JSON.stringify(values, null, 2))
-    },
+    onSubmit: (values) => {},
   })
   return (
     <S.LadingPageWrapper>
@@ -123,6 +124,20 @@ const FormProps = [
 export async function getServerSideProps(context: NextPageContext) {
   const providers = await getProviders()
   const redirect = await getSession(context)
+  const res = await axios('https://accounts.spotify.com/api/token', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded',
+      Authorization:
+        'Basic ' +
+        Buffer.from(clientId + ':' + clientSecret).toString('base64'),
+    },
+    data: 'grant_type=client_credentials',
+  })
+  const {
+    data: { access_token },
+  } = res
+  //get token from project spotify
   return redirect?.accessToken
     ? {
         redirect: {
@@ -134,6 +149,7 @@ export async function getServerSideProps(context: NextPageContext) {
     : {
         props: {
           providers,
+          access_token,
         },
       }
 }
