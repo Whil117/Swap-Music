@@ -1,9 +1,9 @@
 import * as S from '@Styles/components/Navbar'
+import { SelectFor } from '@Types/redux/reducers/user/types'
 import Svg from '@Whil/components/Svg'
 import { FC } from 'react'
 import { useSelector } from 'react-redux'
 import Section from './section'
-import Selector from '@Types/redux/reducers/user/types'
 type Props = {}
 
 const Navbar: FC<Props> = () => {

@@ -1,12 +1,12 @@
 import OrganismBanner from '@Components/@organisms/OrganismBanner'
+import { SelectFor } from '@Types/redux/reducers/user/types'
 import AtomWrapper from 'lib/Atomwrapper'
 import { FC } from 'react'
 import { useSelector } from 'react-redux'
-import Selector from '@Types/redux/reducers/user/types'
 
 type Props = {}
 
-const Profile: FC<Props> = (props) => {
+const Profile: FC<Props> = () => {
   const user = useSelector((state: SelectFor) => state.user)
   return (
     <AtomWrapper>

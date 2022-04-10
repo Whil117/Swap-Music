@@ -26,7 +26,7 @@ type SpotifyAuthProps = {
   access_token: string
 }
 
-const LandingPage = ({ providers, access_token }: SpotifyAuthProps) => {
+const LandingPage = ({ providers }: SpotifyAuthProps) => {
   const [show, setShow] = useState<boolean>(false)
   const formik = useFormik({
     initialValues: {
@@ -38,7 +38,7 @@ const LandingPage = ({ providers, access_token }: SpotifyAuthProps) => {
       name: Yup.string().required('Name is required'),
       email: Yup.string().required('Email is required'),
     }),
-    onSubmit: (values) => {},
+    onSubmit: () => {},
   })
   return (
     <S.LadingPageWrapper>

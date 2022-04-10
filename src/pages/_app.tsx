@@ -4,14 +4,13 @@ import Layout from '@Components/layout'
 import { persistor, store } from '@Redux/store'
 import { getSession, SessionProvider } from 'next-auth/react'
 import type { AppContext, AppProps } from 'next/app'
+import 'react-form-builder2/dist/app.css'
 import { Provider } from 'react-redux'
 import { PersistGate } from 'redux-persist/integration/react'
-import 'react-form-builder2/dist/app.css'
 import 'swiper/css'
 import 'swiper/css/navigation'
 import 'swiper/css/pagination'
 import 'swiper/css/scrollbar'
-import { useState } from 'react'
 
 const MyApp = ({
   router,
@@ -19,7 +18,6 @@ const MyApp = ({
 
   pageProps: { hidratation, accessToken, session, ...pageProps },
 }: AppProps) => {
-  const [loading, setLoading] = useState<boolean>(false)
   return (
     <SessionProvider session={session}>
       <Provider store={store}>

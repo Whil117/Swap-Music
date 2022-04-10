@@ -5,7 +5,7 @@ import { FC, useState } from 'react'
 
 type Props = {}
 
-const NavbarPlayer: FC<Props> = (props) => {
+const NavbarPlayer: FC<Props> = () => {
   const [volumen, setVolumen] = useState(50)
   return (
     <AtomWrapper
