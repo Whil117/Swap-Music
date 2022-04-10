@@ -41,7 +41,7 @@ export const LandingPageImg = styled.img`
       rgba(0, 0, 0, 0) 100%
     ),
     url(.png);
-  @media (max-width: 768px) {
+  @media (max-width: 1148px) {
     display: none;
   }
 `

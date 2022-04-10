@@ -129,9 +129,10 @@ type TagsTexts =
   | 'table'
 
 type Props = {
-  children: ReactNode
+  children?: ReactNode
   as: TagsTexts
   css?: SerializedStyles
+  htmlFor?: string
 }
 export const AtomText = styled.span<Props>`
   color: ${(props) => props.color || '#fff'};

@@ -17,6 +17,7 @@
     "apollo-server-micro": "^3.6.2",
     "axios": "^0.25.0",
     "formik": "^2.2.9",
+    "framer": "^2.1.1",
     "fs": "^0.0.1-security",
     "graphql": "^16.3.0",
     "js-cookie": "^3.0.1",
@@ -41,7 +42,8 @@
     "spotify-graphql": "^1.4.0",
     "spotify-web-api-node": "^5.0.2",
     "swiper": "^8.0.7",
-    "tls": "^0.0.1"
+    "tls": "^0.0.1",
+    "yup": "^0.32.11"
   },
   "devDependencies": {
     "@types/js-cookie": "^3.0.1",
