@@ -1,17 +1,19 @@
+import { SerializedStyles } from '@emotion/react'
 import styled from '@emotion/styled'
-import Image from 'next/image'
 
 type Props = {
   src: string
   alt: string
-  width: number
-  height: number
+  width: number | string
+  height: number | string
   borderRadius?: string
+  css?: SerializedStyles
 }
 
-const AtomImage = styled(Image)<Props>`
+const AtomImage = styled('img')<Props>`
   object-fit: cover;
   border-radius: ${(props) => props.borderRadius};
+  ${(props) => props?.css};
 `
 
 export default AtomImage

@@ -1,6 +1,7 @@
 import Hidratation from '@Components/layout/Hidratation'
 import Loading from '@Components/Loading'
 import Navbar from '@Components/Navbar'
+import NavbarPlayer from '@Components/Navbar/player'
 import { css } from '@emotion/react'
 import { Wrapper } from '@Styles/components/layout'
 import { SelectFor } from '@Types/redux/reducers/user/types'
@@ -8,7 +9,7 @@ import AtomImage from 'lib/AtomImage'
 import AtomWrapper from 'lib/Atomwrapper'
 import Link from 'next/link'
 import { NextRouter } from 'next/router'
-import { createContext, FC, RefObject } from 'react'
+import { createContext, FC, RefObject, useState } from 'react'
 import { useSelector } from 'react-redux'
 export type Props = {
   router: NextRouter
@@ -29,11 +30,12 @@ const Layout: FC<Props> = ({
   accessToken,
 }) => {
   const user = useSelector((state: SelectFor) => state.user)
+  const [show, setShow] = useState(true)
 
-  const { loading } = useSelector((state: SelectFor) => state.loading)
+  // const { loading } = useSelector((state: SelectFor) => state.loading)
 
   return (
-    <Hidratation {...{ hidratation, accessToken }}>
+    <Hidratation {...{ hidratation, accessToken, setShow }}>
       {pathname.includes('/swap') ? (
         <>
           <AtomWrapper
@@ -79,7 +81,10 @@ const Layout: FC<Props> = ({
                 >
                   <AtomWrapper as="a">
                     <AtomImage
-                      src={(user?.me?.images[0]?.url as string) || ''}
+                      src={
+                        (user?.me?.images[0]?.url as string) ||
+                        'https://via.placeholder.com/150/92c952'
+                      }
                       alt={user?.me?.display_name as string}
                       width={50}
                       height={50}
@@ -102,9 +107,9 @@ const Layout: FC<Props> = ({
                 {children}
               </AtomWrapper>
             </Wrapper>
-            {/* <NavbarPlayer /> */}
+            <NavbarPlayer />
           </AtomWrapper>
-          {loading && <Loading />}
+          {show && <Loading />}
         </>
       ) : (
         children

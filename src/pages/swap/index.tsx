@@ -74,7 +74,7 @@ const SwapPage = () => {
               />
             )}
           >
-            {user?.SavedAlbums.items?.map((artist, index) => (
+            {user?.SavedAlbums?.items?.map((artist, index) => (
               <SwiperSlide key={index} style={{ width: 'auto' }}>
                 <Card
                   key={artist.album.id}

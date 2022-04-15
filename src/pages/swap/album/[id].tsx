@@ -17,6 +17,7 @@ type Props = {
   TracksAlbum: SpotifyApi.AlbumTracksResponse
   DurationTracks: number
   ArtistAlbums: SpotifyApi.ArtistsAlbumsResponse
+  id: string
 }
 
 const Album: FC<Props> = ({
@@ -24,6 +25,7 @@ const Album: FC<Props> = ({
   TracksAlbum,
   ArtistAlbums,
   DurationTracks: ms,
+  id,
 }) => {
   const data = [
     {
@@ -86,18 +88,20 @@ const Album: FC<Props> = ({
                 <AtomSectionHeader setShow={setShow} title={item.title} />
               )}
             >
-              {item.assets?.map((artist) => (
-                <SwiperSlide key={artist.id} style={{ width: 'auto' }}>
-                  <Card
-                    {...{
-                      id: artist.id,
-                      type: artist.type,
-                      image: artist.images[0].url,
-                      name: artist.name,
-                    }}
-                  />
-                </SwiperSlide>
-              ))}
+              {item.assets
+                ?.filter((asset) => asset.id !== id)
+                ?.map((artist) => (
+                  <SwiperSlide key={artist.id} style={{ width: 'auto' }}>
+                    <Card
+                      {...{
+                        id: artist.id,
+                        type: artist.type,
+                        image: artist.images[0].url,
+                        name: artist.name,
+                      }}
+                    />
+                  </SwiperSlide>
+                ))}
             </SectionProps>
           </AtomWrapper>
         ))}
@@ -133,6 +137,7 @@ export async function getServerSideProps(context: NextPageContext) {
 
   return {
     props: {
+      id,
       Album,
       ArtistAlbums,
       DurationTracks,
