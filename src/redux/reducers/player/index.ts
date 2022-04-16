@@ -1,0 +1,56 @@
+/* eslint-disable no-unused-vars */
+export type Track = {
+  id: string
+  name: string
+  image: string
+  track: string
+  artist: {
+    name: string
+    id: string
+  }[]
+}
+export type PropsPlayerTracks = {
+  currentTrackId?: string
+  tracks?: SpotifyApi.TrackObjectSimplified[]
+  play?: boolean
+}
+
+type typesReducers = {
+  [key: string]: (
+    state: PropsPlayerTracks | {},
+    payload: PropsPlayerTracks
+  ) => PropsPlayerTracks
+}
+const typesReducers: typesReducers = {
+  SETPLAYERTRACKS: (state, payload) => ({
+    ...state,
+    currentTrackId: payload.currentTrackId,
+    tracks: payload.tracks,
+    play: payload.play,
+  }),
+  SETPLAY: (state, payload) => ({
+    ...state,
+    play: payload.play,
+  }),
+}
+
+export type ActionPlayerTracks = {
+  type: keyof typeof typesReducers
+  payload: PropsPlayerTracks
+}
+
+const reducer = (
+  state = {
+    currentTrackId: '',
+    tracks: [],
+    play: false,
+  },
+  action: ActionPlayerTracks
+) => {
+  const { type, payload } = action
+  const handler = typesReducers[type]
+  const newState = handler ? handler(state, payload) : state
+  return newState
+}
+
+export default reducer

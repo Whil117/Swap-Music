@@ -1,150 +1,393 @@
+/* eslint-disable no-unused-vars */
 import { css } from '@emotion/react'
 import { SelectFor } from '@Types/redux/reducers/user/types'
 import Svg from '@Whil/components/Svg'
 import Atombutton from 'lib/Atombutton'
 import AtomImage from 'lib/AtomImage'
 import AtomInput from 'lib/AtomInput'
+import AtomSeoLayout from 'lib/AtomSeo'
 import AtomText from 'lib/AtomText'
 import AtomWrapper from 'lib/Atomwrapper'
-import { FC, useState } from 'react'
+import spotifyAPI from 'lib/spotify/spotify'
+import { useSession } from 'next-auth/react'
+import { useRouter } from 'next/router'
+import {
+  ChangeEvent,
+  FC,
+  useEffect,
+  useLayoutEffect,
+  useReducer,
+  useRef,
+  useState,
+} from 'react'
 import { useSelector } from 'react-redux'
+import useTime from '@Hooks/useTime'
+export enum IActions {
+  ON_Play = 'ON_Play',
+  ON_Repeat = 'ON_Repeat',
+  ON_Aleatory = 'ON_Aleatory',
+  ON_Volumen = 'ON_Volumen',
+  ON_Loop = 'ON_Loop',
+}
 
-type Props = {}
+export type IPlayer = {
+  play?: boolean
+  repeat?: boolean
+  aleatory?: boolean
+  loop?: boolean
+  volumen?: number
+}
+export type IAction = {
+  type: IActions
+  payload: IPlayer
+}
 
-const NavbarPlayer: FC<Props> = () => {
-  const [volumen, setVolumen] = useState(50)
-  const user = useSelector((state: SelectFor) => state.user)
+const reducer = (state: IPlayer, action: IAction): IPlayer => {
+  switch (action.type) {
+    case IActions.ON_Play:
+      return { ...state, play: action.payload.play }
+    case IActions.ON_Repeat:
+      return { ...state, repeat: action.payload.repeat }
+    case IActions.ON_Aleatory:
+      return { ...state, aleatory: action.payload.aleatory }
+    case IActions.ON_Volumen:
+      return { ...state, volumen: action.payload.volumen }
+    case IActions.ON_Loop:
+      return { ...state, loop: action.payload.loop }
+    default:
+      return state
+  }
+}
+
+const NavbarPlayer: FC = () => {
+  const player = useSelector((state: SelectFor) => state.playerTracks)
+  const [track, setTrack] = useState<SpotifyApi.SingleTrackResponse>()
+  const [currentTime, setCurrentTime] = useState(0)
+  const audio = useRef<HTMLAudioElement>(null)
+  const [controls, dispatch] = useReducer(reducer, {
+    play: (player.play as boolean) || false,
+    repeat: false,
+    aleatory: false,
+    loop: false,
+    volumen: 25,
+  })
+  const router = useRouter()
+  const { data } = useSession()
+
+  const handlePlay = () => {
+    audio.current?.play()
+    if (audio.current) {
+      dispatch({
+        type: IActions.ON_Play,
+        payload: { ...controls, play: true },
+      })
+      audio.current.volume = (controls?.volumen as number) / 100
+    }
+  }
+  const handlePause = () => {
+    audio.current?.pause()
+    dispatch({
+      type: IActions.ON_Play,
+      payload: { ...controls, play: false },
+    })
+  }
+
+  useEffect(() => {
+    if (audio.current) {
+      audio.current.volume = (controls?.volumen as number) / 100
+    }
+  }, [controls.volumen])
+
+  useLayoutEffect(() => {
+    if (player.play) {
+      handlePlay()
+    } else {
+      handlePause()
+    }
+  }, [player.play])
+
+  useEffect(() => {
+    if (audio.current) {
+      audio.current.ontimeupdate = (event: any) => {
+        setCurrentTime(event?.target?.currentTime)
+      }
+    }
+    return () => {
+      if (audio.current) {
+        audio.current.ontimeupdate = null
+      }
+    }
+  }, [audio.current])
+
+  useEffect(() => {
+    if (data?.accessToken) {
+      spotifyAPI.setAccessToken(data?.accessToken as string)
+      spotifyAPI
+        .getTrack(player.currentTrackId as string)
+        .then(
+          (res) =>
+            res.body.preview_url
+              ? setTrack(res.body)
+              : setTrack({} as SpotifyApi.SingleTrackResponse),
+          setCurrentTime(0)
+        )
+    }
+  }, [data, player.currentTrackId])
+
   return (
-    <AtomWrapper
-      css={css`
-        /* height: 80px; */
-        padding: 20px;
-        grid-column: 1 / -1;
-        grid-row: 2;
-        background-color: #191922;
-        display: grid;
-        grid-template-columns: 1fr 1fr 1fr;
-        grid-template-rows: auto;
-        gap: 10px;
-      `}
+    <AtomSeoLayout
+      title={track?.name}
+      description={track?.name}
+      image={track?.album?.images[0]?.url}
     >
       <AtomWrapper
         css={css`
-          grid-column: 1 / 2;
+          padding: 15px;
+          grid-column: 1 / -1;
+          grid-row: 2;
+          background-color: #191922;
           display: grid;
-          /* gap: 10px; */
-          grid-template-rows: 40px 40px;
-          grid-template-columns: auto 1fr;
-          grid-column-gap: 10px;
+          grid-template-columns: 1fr 1fr 1fr;
+          grid-template-rows: auto;
+          gap: 10px;
         `}
       >
         <AtomWrapper
           css={css`
-            width: 80px;
-            grid-row: 1 /-1;
+            grid-column: 1 / 2;
+            display: grid;
+            grid-template-rows: 40px 40px;
+            grid-template-columns: auto 1fr;
+            grid-column-gap: 10px;
           `}
         >
-          <AtomImage
-            src={user.me.images[0].url}
-            alt={user.me.display_name}
-            borderRadius="10px"
-            width="100%"
-            height="100%"
+          <AtomWrapper
             css={css`
-              grid-row: 1 / -1;
+              width: 80px;
+              grid-row: 1 /-1;
+            `}
+          >
+            <AtomImage
+              src={track?.album?.images[0]?.url as string}
+              alt={track?.name as string}
+              borderRadius="10px"
+              width="100%"
+              height="100%"
+              css={css`
+                grid-row: 1 / -1;
+              `}
+            />
+          </AtomWrapper>
+          <AtomText
+            as="p"
+            css={css`
+              grid-column: 2;
+              grid-row: 1;
+              align-self: center;
+            `}
+          >
+            {track?.name}
+          </AtomText>
+          <AtomWrapper
+            css={css`
+              grid-column: 2;
+              grid-row: 2;
+              align-self: center;
+            `}
+          >
+            <AtomWrapper
+              css={css`
+                display: flex;
+                justify-content: flex-start;
+              `}
+            >
+              {track?.artists?.map((item, index) => (
+                <Atombutton
+                  key={item.id && item?.id + index}
+                  onClick={() => {
+                    router
+                      .push({
+                        pathname: `/swap/artist/[id]`,
+                        query: {
+                          id: item.id,
+                        },
+                      })
+                      .then(() => {
+                        document?.getElementById('view')?.scroll({
+                          top: 0,
+                        })
+                      })
+                  }}
+                >
+                  <AtomText
+                    as="p"
+                    css={css`
+                      opacity: 0.5;
+                    `}
+                    key={item.id}
+                  >
+                    {index === 0 ? item.name : `, ${item.name}`}
+                  </AtomText>
+                </Atombutton>
+              ))}
+            </AtomWrapper>
+          </AtomWrapper>
+        </AtomWrapper>
+        <AtomWrapper
+          css={css`
+            grid-column: 2/3;
+            display: grid;
+            grid-template-rows: repeat(2, auto);
+          `}
+        >
+          <AtomWrapper
+            css={css`
+              grid-row: 1;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              gap: 10px;
+            `}
+          >
+            {playerButtons.map((button) => (
+              <>
+                {typeof button.icon === 'object' ? (
+                  <Atombutton
+                    css={css`
+                      border: none;
+                      background-color: transparent;
+                      cursor: pointer;
+                      width: 62px;
+                      height: 48px;
+                      display: flex;
+                      align-items: center;
+                      justify-content: center;
+                    `}
+                    onClick={() => {
+                      controls.play ? handlePause() : handlePlay()
+                    }}
+                  >
+                    <Svg src={`/icons/${controls.play ? 'pause' : 'play'}`} />
+                  </Atombutton>
+                ) : (
+                  <Atombutton>
+                    <Svg src={`/icons/${button.icon}`} />
+                  </Atombutton>
+                )}
+              </>
+            ))}
+          </AtomWrapper>
+          <AtomWrapper
+            css={css`
+              width: 100%;
+              grid-row: 2;
+              display: grid;
+              grid-template-columns: auto 1fr auto;
+              align-items: center;
+            `}
+          >
+            <AtomText
+              as="p"
+              css={css`
+                margin: 0;
+                grid-column: 1;
+              `}
+            >
+              {Math.round(
+                audio.current?.currentTime ? audio.current.currentTime : 0
+              ) > 9
+                ? `0:${Math.round(
+                    audio.current?.currentTime ? audio.current.currentTime : 0
+                  )}`
+                : `0:0${Math.round(
+                    audio.current?.currentTime ? audio.current.currentTime : 0
+                  )}`}
+            </AtomText>
+            <AtomInput
+              id="player-reproductor"
+              type="range"
+              min="0"
+              max="30"
+              value={currentTime}
+              onChange={(event: any) => {
+                if (audio.current) {
+                  audio.current.currentTime = event.target.value
+                }
+              }}
+              css={css`
+                height: 15px;
+                grid-column: 2;
+                outline: none;
+              `}
+            />
+            {track?.preview_url && (
+              <audio
+                ref={audio}
+                // loop={player.play}
+                src={track?.preview_url as string}
+                autoPlay={controls.play}
+                onEnded={() => {
+                  dispatch({
+                    type: IActions.ON_Play,
+                    payload: {
+                      play: false,
+                    },
+                  })
+                }}
+              ></audio>
+            )}
+
+            <AtomText
+              as="p"
+              css={css`
+                margin: 0;
+                grid-column: 3;
+              `}
+            >
+              0:30
+            </AtomText>
+          </AtomWrapper>
+        </AtomWrapper>
+        <AtomWrapper
+          css={css`
+            grid-column: 3 / 4;
+            display: flex;
+            align-self: center;
+            justify-self: flex-end;
+            gap: 15px;
+          `}
+        >
+          {buttonsActions.map((item) => (
+            <Atombutton key={item.key}>
+              <Svg src={`/icons/${item.icon}`} />
+            </Atombutton>
+          ))}
+          <AtomInput
+            id="volumen"
+            type="range"
+            placeholder="Search"
+            value={controls.volumen}
+            onChange={(event: ChangeEvent<HTMLInputElement>) =>
+              dispatch({
+                type: IActions.ON_Volumen,
+                payload: {
+                  ...controls,
+                  volumen: parseInt(event.target.value),
+                },
+              })
+            }
+            css={css`
+              width: 150px;
+              height: 10px;
+              outline: none;
             `}
           />
         </AtomWrapper>
-        <AtomText
-          as="p"
-          css={css`
-            grid-column: 2;
-            grid-row: 1;
-          `}
-        >
-          {user.me.display_name}
-        </AtomText>
-        <AtomText
-          as="p"
-          css={css`
-            grid-column: 2;
-            grid-row: 2;
-            opacity: 0.5;
-          `}
-        >
-          {user.me.display_name}
-        </AtomText>
       </AtomWrapper>
-      <AtomWrapper
-        css={css`
-          grid-column: 2/3;
-          display: grid;
-          grid-template-rows: repeat(2, auto);
-        `}
-      >
-        <AtomWrapper
-          css={css`
-            grid-row: 1;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-          `}
-        >
-          {playerButtons.map((button) => (
-            <>
-              {typeof button.icon === 'object' ? (
-                <Atombutton>
-                  <Svg src={`/icons/${button.icon.pause}`} />
-                </Atombutton>
-              ) : (
-                <Atombutton>
-                  <Svg src={`/icons/${button.icon}`} />
-                </Atombutton>
-              )}
-            </>
-          ))}
-        </AtomWrapper>
-        <AtomInput
-          id="player-reproductor"
-          type="range"
-          placeholder="Search"
-          value={volumen}
-          onChange={(e) => setVolumen(e.target.value)}
-          css={css`
-            width: 100%;
-            grid-row: 2;
-          `}
-        />
-      </AtomWrapper>
-      <AtomWrapper
-        css={css`
-          grid-column: 3 / 4;
-          display: flex;
-          align-self: center;
-          justify-self: flex-end;
-          gap: 15px;
-        `}
-      >
-        {buttonsActions.map((item) => (
-          <Atombutton key={item.key}>
-            <Svg src={`/icons/${item.icon}`} />
-          </Atombutton>
-        ))}
-        <AtomInput
-          id="volumen"
-          type="range"
-          placeholder="Search"
-          value={volumen}
-          onChange={(e) => setVolumen(e.target.value)}
-          css={css`
-            width: 150px;
-          `}
-        />
-      </AtomWrapper>
-    </AtomWrapper>
+    </AtomSeoLayout>
   )
 }
+
 const buttonsActions = [
   {
     key: 1,
@@ -170,6 +413,11 @@ const buttonsActions = [
 const playerButtons = [
   {
     key: 1,
+    id: 'aleatory',
+    icon: 'aleatory',
+  },
+  {
+    key: 1,
     id: 'back',
     icon: 'back',
   },
@@ -185,6 +433,11 @@ const playerButtons = [
     key: 3,
     id: 'next',
     icon: 'next',
+  },
+  {
+    key: 1,
+    id: 'repeat',
+    icon: 'repeat',
   },
 ]
 

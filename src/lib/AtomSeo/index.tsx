@@ -5,6 +5,7 @@ export interface SeoProps {
   page?: string
   title?: string
   icon?: string
+  image?: string
   description?: string
   website?: string
   sameAs?: string[]
@@ -18,6 +19,7 @@ const AtomSeoLayout: FC<SeoProps> = ({
   title,
   icon,
   website,
+  image,
   keywords,
   description,
   name,
@@ -39,8 +41,8 @@ const AtomSeoLayout: FC<SeoProps> = ({
         />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="manifest" href="/manifest.json" />
-        <meta name="theme-color" content="#292929" />
-        <link rel="apple-touch-icon" href="/logo-96x96.png" />
+        <meta name="theme-color" content="#f80000" />
+        <link rel="apple-touch-icon" href={image} />
         <meta name="apple-mobile-web-app-status-bar" content="#90cdf4" />
         <meta name="description" content={description} />
         <meta name="author" content="Stackly Code" />
@@ -48,20 +50,18 @@ const AtomSeoLayout: FC<SeoProps> = ({
         <meta name="title" content={title} />
         <meta name="description" content={description} />
         <meta name="googlebot" content="index,follow" />
-
         <meta property="og:type" content="website" />
         <meta property="og:url" content={website} />
         <meta property="og:title" content={title} />
         <meta property="og:description" content={description} />
-        <meta property="og:image" content="/preview.png" />
-
+        <meta property="og:image" content={image} />
         <meta name="twitter:site" content="@StacklyCode" />
         <meta name="twitter:creator" content="@StacklyCode" />
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:url" content={website} />
         <meta name="twitter:title" content={title} />
         <meta name="twitter:description" content={description} />
-        <meta name="twitter:image" content="/preview.png" />
+        <meta name="twitter:image" content={image} />
         <link rel="manifest" href="manifest.webmanifest" />
         <script
           type="application/ld+json"
@@ -71,8 +71,8 @@ const AtomSeoLayout: FC<SeoProps> = ({
               '@type': `Organization`,
               name,
               alternateName,
-              url: website,
-              logo: `${website}logo-512x512.png`,
+              url: website || image,
+              logo: `${website}`,
               contactPoint: {
                 '@type': `ContactPoint`,
                 telephone: ``,

@@ -11,6 +11,8 @@ type Props = {
   id: string
   label?: string
   placeholder?: string
+  min?: string
+  max?: string
   type?: string
   value?: string | number
   onBlur?: (e: any) => void

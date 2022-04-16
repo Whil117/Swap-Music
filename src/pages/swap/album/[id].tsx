@@ -4,13 +4,17 @@ import Card from '@Components/Cards/Card'
 import SectionProps from '@Components/List'
 import Track from '@Components/Track/Track'
 import { css } from '@emotion/react'
+import { ActionPlayerTracks } from '@Redux/reducers/player'
 import { ArtistWrapper } from '@Styles/pages/swap/artist'
 import AtomWrapper from 'lib/Atomwrapper'
 import spotifyAPI from 'lib/spotify/spotify'
 import { NextPageContext } from 'next'
 import { getSession } from 'next-auth/react'
 import { FC } from 'react'
+import { useDispatch } from 'react-redux'
+import { Dispatch } from 'redux'
 import { SwiperSlide } from 'swiper/react'
+
 type Props = {
   Album: SpotifyApi.SingleAlbumResponse
   Artist: SpotifyApi.SingleArtistResponse
@@ -19,7 +23,22 @@ type Props = {
   ArtistAlbums: SpotifyApi.ArtistsAlbumsResponse
   id: string
 }
-
+const convertPlayerTracks = (
+  dispatch: Dispatch<ActionPlayerTracks>,
+  player: {
+    id: string
+    data: SpotifyApi.TrackObjectSimplified[]
+  }
+) => {
+  dispatch({
+    type: 'SETPLAYERTRACKS',
+    payload: {
+      tracks: player.data,
+      currentTrackId: player.id,
+      play: true,
+    },
+  })
+}
 const Album: FC<Props> = ({
   Album,
   TracksAlbum,
@@ -27,6 +46,7 @@ const Album: FC<Props> = ({
   DurationTracks: ms,
   id,
 }) => {
+  const dispatch = useDispatch<Dispatch<ActionPlayerTracks>>()
   const data = [
     {
       id: '1',
@@ -49,6 +69,7 @@ const Album: FC<Props> = ({
           ms,
         }}
       />
+
       <AtomWrapper
         css={css`
           display: flex;
@@ -72,11 +93,18 @@ const Album: FC<Props> = ({
               album: {},
               duration_ms: track.duration_ms,
               saved: false,
+
               styles: {
                 width: {
                   song: '90%',
                 },
               },
+            }}
+            onPlayer={() => {
+              convertPlayerTracks(dispatch, {
+                id: track?.id,
+                data: TracksAlbum?.items,
+              })
             }}
           />
         ))}

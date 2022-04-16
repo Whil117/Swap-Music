@@ -41,7 +41,7 @@ const Layout: FC<Props> = ({
           <AtomWrapper
             css={css`
               display: grid;
-              grid-template-columns: 206px 1440px auto;
+              grid-template-columns: 216px 1fr;
               grid-template-rows: 1fr auto;
               height: 100vh;
               @media (max-width: 768px) {
@@ -50,18 +50,6 @@ const Layout: FC<Props> = ({
             `}
           >
             <Navbar />
-            <AtomWrapper
-              css={css`
-                grid-column: 3;
-                @media (max-width: 768px) {
-                  display: none;
-                }
-              `}
-            >
-              {' '}
-              CONTACTS
-            </AtomWrapper>
-
             <Wrapper id="view">
               <AtomWrapper
                 css={css`

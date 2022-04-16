@@ -13,6 +13,7 @@ import { FC } from 'react'
 type Props = {
   id: string
   count: number
+  onPlayer?: () => void
   name: string
   image?: string
   artists: {
@@ -74,6 +75,9 @@ const Track: FC<Props> = (props) => {
             }
           `}
         >
+          <Atombutton onClick={props.onPlayer} backgroundColor="white">
+            click!
+          </Atombutton>
           {props.image && (
             <AtomImage
               src={props.image || ''}

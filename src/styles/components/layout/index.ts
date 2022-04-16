@@ -4,8 +4,10 @@ export const Wrapper = styled.div`
   /* padding: 20px; */
   /* position: absolute; */
   /* z-index: -1; */
+  /* max-width: 1440px; */
+  width: auto;
   display: flex;
-  grid-column: 2/3;
+  grid-column: 2;
   grid-row: 1 /2;
   position: relative;
   overflow: hidden;

@@ -4,7 +4,7 @@ import colors from '@Styles/global/colors'
 export const Navbar = styled.nav`
   padding: 1rem 1.5rem;
   color: ${colors.white};
-  width: 165px;
+  width: auto;
   z-index: 2;
   grid-row: 1 / 2;
   grid-column: 1 / 2;

@@ -104,11 +104,19 @@ const Hidratation: FC<Props> = ({
     if (hidratation) {
       DataUserFetching()
         .then((res) => {
-          setShow(false)
           dispatch({
-            type: 'HIDRATATION',
-            payload: res,
+            type: 'SETPLAY',
+            payload: {
+              play: false,
+            },
           })
+          setTimeout(() => {
+            setShow(false)
+            dispatch({
+              type: 'HIDRATATION',
+              payload: res,
+            })
+          }, 500)
         })
         .catch(() => {
           router.push('/')
