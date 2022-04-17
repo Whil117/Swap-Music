@@ -102,8 +102,6 @@ const NavbarPlayer: FC = () => {
   useLayoutEffect(() => {
     if (player.play) {
       handlePlay()
-    } else {
-      handlePause()
     }
   }, [player.play])
 
