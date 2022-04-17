@@ -74,10 +74,11 @@ const Album: FC<Props> = ({
         css={css`
           display: flex;
           alig-items: flex-start;
-          margin: 0 60px;
+          padding: 0 90px;
           flex-direction: column;
-          @media (max-width: 768px) {
-            margin: 0 20px;
+          gap: 20px;
+          @media (max-width: 980px) {
+            padding: 0 30px;
           }
         `}
       >
@@ -93,12 +94,6 @@ const Album: FC<Props> = ({
               album: {},
               duration_ms: track.duration_ms,
               saved: false,
-
-              styles: {
-                width: {
-                  song: '90%',
-                },
-              },
             }}
             onPlayer={() => {
               convertPlayerTracks(dispatch, {

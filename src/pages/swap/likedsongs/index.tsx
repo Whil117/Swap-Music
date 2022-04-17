@@ -18,7 +18,7 @@ const LikedSongs: NextPage = () => {
           height: 400px;
           display: flex;
           align-items: center;
-          padding: 30px 60px;
+          padding: 0px 90px;
           justify-content: flex-start;
           transition: all 0.3s ease;
           background: linear-gradient(
@@ -38,7 +38,6 @@ const LikedSongs: NextPage = () => {
             align-items: center;
             justify-content: flex-start;
             width: 100%;
-            padding: 20px;
             @media (max-width: 568px) {
               flex-direction: column;
             }
@@ -121,10 +120,11 @@ const LikedSongs: NextPage = () => {
         css={css`
           display: flex;
           alig-items: flex-start;
-          margin: 0 60px;
+          padding: 0 90px;
           flex-direction: column;
-          @media (max-width: 768px) {
-            margin: 0 20px;
+          gap: 20px;
+          @media (max-width: 980px) {
+            padding: 0 30px;
           }
         `}
       >

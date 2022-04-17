@@ -96,6 +96,7 @@ const NavbarPlayer: FC = () => {
     if (audio.current) {
       audio.current.volume = (controls?.volumen as number) / 100
     }
+    return () => {}
   }, [controls.volumen])
 
   useLayoutEffect(() => {
@@ -124,12 +125,11 @@ const NavbarPlayer: FC = () => {
       spotifyAPI.setAccessToken(data?.accessToken as string)
       spotifyAPI
         .getTrack(player.currentTrackId as string)
-        .then(
-          (res) =>
-            res.body.preview_url
-              ? setTrack(res.body)
-              : setTrack({} as SpotifyApi.SingleTrackResponse),
-          setCurrentTime(0)
+        .then((res) =>
+          res.body.preview_url
+            ? setTrack(res.body)
+            : (setTrack({} as SpotifyApi.SingleTrackResponse),
+              setCurrentTime(0))
         )
     }
   }, [data, player.currentTrackId])
@@ -150,6 +150,10 @@ const NavbarPlayer: FC = () => {
           grid-template-columns: 1fr 1fr 1fr;
           grid-template-rows: auto;
           gap: 10px;
+          @media (max-width: 980px) {
+            grid-template-columns: 1fr auto;
+            grid-template-rows: auto auto;
+          }
         `}
       >
         <AtomWrapper
@@ -159,12 +163,21 @@ const NavbarPlayer: FC = () => {
             grid-template-rows: 40px 40px;
             grid-template-columns: auto 1fr;
             grid-column-gap: 10px;
+            sadfsadf_sdaffds: asfsdaf;
+            @media (max-width: 980px) {
+              grid-template-rows: auto;
+              grid-row: 2;
+              grid-column: 1 / 2;
+            }
           `}
         >
           <AtomWrapper
             css={css`
               width: 80px;
               grid-row: 1 /-1;
+              @media (max-width: 980px) {
+                display: none;
+              }
             `}
           >
             <AtomImage
@@ -184,6 +197,10 @@ const NavbarPlayer: FC = () => {
               grid-column: 2;
               grid-row: 1;
               align-self: center;
+              @media (max-width: 980px) {
+                grid-row: 1;
+                grid-column: 1;
+              }
             `}
           >
             {track?.name}
@@ -193,6 +210,10 @@ const NavbarPlayer: FC = () => {
               grid-column: 2;
               grid-row: 2;
               align-self: center;
+              @media (max-width: 980px) {
+                grid-column: 2;
+                grid-row: 1;
+              }
             `}
           >
             <AtomWrapper
@@ -233,11 +254,35 @@ const NavbarPlayer: FC = () => {
             </AtomWrapper>
           </AtomWrapper>
         </AtomWrapper>
+        <Atombutton
+          css={css`
+            display: none;
+            @media (max-width: 980px) {
+              grid-column: 2;
+              grid-row: 2;
+              border: none;
+              background-color: transparent;
+              cursor: pointer;
+              width: 50px;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+            }
+          `}
+          onClick={() => {
+            controls.play ? handlePause() : handlePlay()
+          }}
+        >
+          <Svg src={`/icons/${controls.play ? 'pause' : 'play'}`} />
+        </Atombutton>
         <AtomWrapper
           css={css`
             grid-column: 2/3;
             display: grid;
             grid-template-rows: repeat(2, auto);
+            @media (max-width: 980px) {
+              grid-column: 1 / -1;
+            }
           `}
         >
           <AtomWrapper
@@ -262,6 +307,9 @@ const NavbarPlayer: FC = () => {
                       display: flex;
                       align-items: center;
                       justify-content: center;
+                      @media (max-width: 980px) {
+                        display: none;
+                      }
                     `}
                     onClick={() => {
                       controls.play ? handlePause() : handlePlay()
@@ -270,7 +318,13 @@ const NavbarPlayer: FC = () => {
                     <Svg src={`/icons/${controls.play ? 'pause' : 'play'}`} />
                   </Atombutton>
                 ) : (
-                  <Atombutton>
+                  <Atombutton
+                    css={css`
+                      @media (max-width: 980px) {
+                        display: none;
+                      }
+                    `}
+                  >
                     <Svg src={`/icons/${button.icon}`} />
                   </Atombutton>
                 )}
@@ -284,6 +338,9 @@ const NavbarPlayer: FC = () => {
               display: grid;
               grid-template-columns: auto 1fr auto;
               align-items: center;
+              @media (max-width: 980px) {
+                grid-row: 2;
+              }
             `}
           >
             <AtomText
@@ -291,6 +348,9 @@ const NavbarPlayer: FC = () => {
               css={css`
                 margin: 0;
                 grid-column: 1;
+                @media (max-width: 980px) {
+                  display: none;
+                }
               `}
             >
               {Math.round(
@@ -309,6 +369,7 @@ const NavbarPlayer: FC = () => {
               min="0"
               max="30"
               value={currentTime}
+              disabled
               onChange={(event: any) => {
                 if (audio.current) {
                   audio.current.currentTime = event.target.value
@@ -318,6 +379,11 @@ const NavbarPlayer: FC = () => {
                 height: 15px;
                 grid-column: 2;
                 outline: none;
+                @media (max-width: 980px) {
+                  height: 2px;
+                  grid-row: 1 / -1;
+                  grid-column: 1 / -1;
+                }
               `}
             />
             {track?.preview_url && (
@@ -342,6 +408,9 @@ const NavbarPlayer: FC = () => {
               css={css`
                 margin: 0;
                 grid-column: 3;
+                @media (max-width: 980px) {
+                  display: none;
+                }
               `}
             >
               0:30
@@ -355,6 +424,9 @@ const NavbarPlayer: FC = () => {
             align-self: center;
             justify-self: flex-end;
             gap: 15px;
+            @media (max-width: 980px) {
+              display: none;
+            }
           `}
         >
           {buttonsActions.map((item) => (

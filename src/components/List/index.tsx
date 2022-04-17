@@ -67,9 +67,6 @@ const SectionProps: FC<Props> = ({ children, Elements }) => {
             <Swiper
               modules={[Navigation, Pagination, Scrollbar, A11y]}
               slidesPerView={6}
-              centeredSlides={true}
-              centerInsufficientSlides={true}
-              centeredSlidesBounds={true}
               breakpoints={{
                 320: {
                   slidesPerView: 1,
@@ -78,16 +75,22 @@ const SectionProps: FC<Props> = ({ children, Elements }) => {
                   slidesPerView: 1,
                 },
                 568: {
-                  slidesPerView: 4,
+                  slidesPerView: 2,
                 },
                 640: {
-                  slidesPerView: 4,
+                  slidesPerView: 2,
                 },
                 768: {
                   slidesPerView: 3,
                 },
                 1024: {
-                  slidesPerView: 5,
+                  slidesPerView: 3,
+                },
+                1440: {
+                  slidesPerView: 4,
+                },
+                1920: {
+                  slidesPerView: 6,
                 },
               }}
               pagination={{

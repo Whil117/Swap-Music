@@ -36,7 +36,7 @@ const OrganismBanner: FC<Props> = (props) => {
         height: 400px;
         display: flex;
         align-items: center;
-        padding: 30px 60px;
+        padding: 0px 90px;
         justify-content: center;
         transition: all 0.3s ease;
 
@@ -58,7 +58,6 @@ const OrganismBanner: FC<Props> = (props) => {
           align-items: center;
           justify-content: flex-start;
           width: 100%;
-          padding: 20px;
           @media (max-width: 568px) {
             flex-direction: column;
             width: auto;

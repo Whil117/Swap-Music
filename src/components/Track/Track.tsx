@@ -1,14 +1,12 @@
 import { css } from '@emotion/react'
 import useTime from '@Hooks/useTime'
-import { TrackWrapper } from '@Styles/components/Track'
 import P from '@Whil/components/P'
-import Svg from '@Whil/components/Svg'
 import Atombutton from 'lib/Atombutton'
 import AtomImage from 'lib/AtomImage'
 import AtomText from 'lib/AtomText'
 import AtomWrapper from 'lib/Atomwrapper'
 import { useRouter } from 'next/router'
-import { FC } from 'react'
+import { FC, useEffect, useState } from 'react'
 
 type Props = {
   id: string
@@ -38,8 +36,30 @@ type Props = {
 const Track: FC<Props> = (props) => {
   const [hours, minutes, seconds] = useTime({ ms: props.duration })
   const router = useRouter()
+  const [screenWidth, setscreenWidth] = useState<number>(0)
+
+  useEffect(() => {
+    const updateHeight = () => {
+      const w = document.documentElement.clientWidth
+      setscreenWidth(w)
+    }
+    updateHeight()
+    window.addEventListener(`resize`, updateHeight)
+  }, [])
   return (
-    <TrackWrapper key={props.id}>
+    <AtomWrapper
+      css={css`
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
+        align-items: center;
+        cursor: ${screenWidth <= 980 ? 'pointer' : 'default'};
+      `}
+      key={props.id}
+      onClick={
+        screenWidth <= 980 ? () => props.onPlayer && props.onPlayer() : () => {}
+      }
+    >
       <AtomWrapper
         css={css`
           display: flex;
@@ -186,7 +206,7 @@ const Track: FC<Props> = (props) => {
         </AtomWrapper>
       )}
 
-      <Atombutton
+      {/* <Atombutton
         css={css`
           @media (max-width: 768px) {
             display: none;
@@ -194,7 +214,7 @@ const Track: FC<Props> = (props) => {
         `}
       >
         <Svg src={props.saved ? '/icons/fullheart' : '/icons/heart'} />
-      </Atombutton>
+      </Atombutton> */}
       <AtomWrapper
         css={css`
           @media (max-width: 568px) {
@@ -214,7 +234,7 @@ const Track: FC<Props> = (props) => {
             : ''}
         </p>
       </AtomWrapper>
-    </TrackWrapper>
+    </AtomWrapper>
   )
 }
 

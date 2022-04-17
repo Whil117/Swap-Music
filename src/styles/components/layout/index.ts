@@ -28,12 +28,10 @@ export const Wrapper = styled.div`
     background: #b3b3b3;
     box-shadow: 0 0 2px 1px rgba(0, 0, 0, 0.2);
   }
-  @media (max-width: 768px) {
+  @media (max-width: 980px) {
     margin: 2rem;
     grid-column: 1/ -1;
     overflow-x: hidden;
-  }
-  @media (max-width: 768px) {
     margin-left: 0;
     margin: 0;
   }

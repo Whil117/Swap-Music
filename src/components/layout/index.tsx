@@ -44,7 +44,7 @@ const Layout: FC<Props> = ({
               grid-template-columns: 216px 1fr;
               grid-template-rows: 1fr auto;
               height: 100vh;
-              @media (max-width: 768px) {
+              @media (max-width: 980px) {
                 grid-template-columns: 1fr;
               }
             `}
@@ -87,7 +87,7 @@ const Layout: FC<Props> = ({
                   width: 100%;
                   z-index: 1;
                   top: 0;
-                  @media (max-width: 768px) {
+                  @media (max-width: 980px) {
                     grid-column: 1 / -1;
                   }
                 `}

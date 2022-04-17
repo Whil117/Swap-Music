@@ -11,7 +11,7 @@ export const Navbar = styled.nav`
   background: ${colors.black_quaternary};
   border-radius: 0px 10px 0px 0px;
   top: 0;
-  @media (max-width: 768px) {
+  @media (max-width: 980px) {
     display: none;
   }
 `

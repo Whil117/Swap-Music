@@ -18,6 +18,7 @@ type Props = {
   onBlur?: (e: any) => void
   onChange?: (e: ChangeEvent<any>) => void
   formik?: FormikValues
+  disabled?: boolean
   css?: SerializedStyles
 }
 
