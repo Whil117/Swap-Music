@@ -1,3 +1,4 @@
+import { css } from '@emotion/react'
 import SvgProps from '@Whil/types/components/Svg'
 import AtomWrapper from 'lib/Atomwrapper'
 import dynamic from 'next/dynamic'
@@ -10,7 +11,15 @@ const Svg: FC<SvgProps> = (props) => {
   )
   if (!Icon) return null
   return (
-    <AtomWrapper css={props.css}>
+    <AtomWrapper
+      css={css`
+        svg {
+          width: ${props.width || '24px'};
+          height: ${props.height || '24px'};
+        }
+        ${props.css}
+      `}
+    >
       <Icon />
     </AtomWrapper>
   )

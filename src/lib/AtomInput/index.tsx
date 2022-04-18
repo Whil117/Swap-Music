@@ -62,7 +62,7 @@ const AtomInput = (props: Props) => {
       <AtomInputStyled
         {...props}
         value={lodash.get(props.formik?.values, props.id) ?? props.value}
-        onChange={props.formik?.handleChange ?? props.onChange}
+        onChange={props.onChange ?? props.formik?.handleChange}
         onBlur={(e) => {
           props.formik?.handleBlur(e)
           props.onBlur?.(e)

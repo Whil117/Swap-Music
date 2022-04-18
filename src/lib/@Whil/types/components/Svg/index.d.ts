@@ -5,5 +5,7 @@ type SvgProps = {
   src: string
   css?: SerializedStyles
   style?: Styles
+  width?: string
+  height?: string
 }
 export default SvgProps
