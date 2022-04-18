@@ -1,15 +1,14 @@
 import OrganismBanner from '@Components/@organisms/OrganismBanner'
 import { ArtistWrapper } from '@Styles/pages/swap/artist'
 import spotifyAPI from 'lib/spotify/spotify'
-import { NextPageContext } from 'next'
+import { NextPageContext, NextPageFC } from 'next'
 import { getSession } from 'next-auth/react'
-import { FC } from 'react'
 
 type Props = {
   Playlist: SpotifyApi.SinglePlaylistResponse
 }
 
-const Playlist: FC<Props> = ({ Playlist }) => {
+const Playlist: NextPageFC<Props> = ({ Playlist }) => {
   return (
     <ArtistWrapper>
       <OrganismBanner
@@ -44,5 +43,6 @@ export async function getServerSideProps(context: NextPageContext) {
     },
   }
 }
+Playlist.Layout = 'swap'
 
 export default Playlist

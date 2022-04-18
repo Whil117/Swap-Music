@@ -1,7 +1,7 @@
 import { css } from '@emotion/react'
 import colors from '@Styles/global/colors'
-import Image from '@Whil/components/Image'
 import Atombutton from 'lib/Atombutton'
+import AtomImage from 'lib/AtomImage'
 import AtomText from 'lib/AtomText'
 import { useRouter } from 'next/router'
 import { FC } from 'react'
@@ -53,14 +53,12 @@ const Card: FC<Card> = (props) => {
         }
       `}
     >
-      <Image
+      <AtomImage
         src={props.image || 'https://via.placeholder.com/150'}
         alt={props.name}
-        width={200}
-        height={200}
-        styles={{
-          borderRadius: ImageTypes.includes(props.type) ? '5px' : '50%',
-        }}
+        width="200px"
+        height="200px"
+        borderRadius={ImageTypes.includes(props.type) ? '5px' : '50%'}
       />
       {props.name.length > 35 ? (
         <AtomText

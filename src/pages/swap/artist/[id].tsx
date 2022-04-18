@@ -19,9 +19,9 @@ import Image from '@Whil/components/Image'
 import P from '@Whil/components/P'
 import AtomWrapper from 'lib/Atomwrapper'
 import spotifyAPI from 'lib/spotify/spotify'
-import { NextPageContext } from 'next'
+import { NextPageContext, NextPageFC } from 'next'
 import { getSession } from 'next-auth/react'
-import { FC, useState } from 'react'
+import { useState } from 'react'
 import { ColorExtractor } from 'react-color-extractor'
 import { SwiperSlide } from 'swiper/react'
 
@@ -32,7 +32,7 @@ type Artist = {
   ArtistRelated: SpotifyApi.ArtistsRelatedArtistsResponse
 }
 
-const Artist: FC<Artist> = ({
+const Artist: NextPageFC<Artist> = ({
   Artist,
   Popular,
   ArtistAlbums,
@@ -189,5 +189,5 @@ export async function getServerSideProps(context: NextPageContext) {
     },
   }
 }
-
+Artist.Layout = 'swap'
 export default Artist

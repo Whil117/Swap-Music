@@ -1,9 +1,8 @@
-// import { baseUrl } from 'lib/spotify/spotify'
 import HeadApp from '@Components/HeadApp'
 import Layout from '@Components/layout'
 import { persistor, store } from '@Redux/store'
 import { getSession, SessionProvider } from 'next-auth/react'
-import type { AppContext, AppProps } from 'next/app'
+import type { AppContext, AppPropsWithLayout } from 'next/app'
 import 'react-form-builder2/dist/app.css'
 import { Provider } from 'react-redux'
 import { PersistGate } from 'redux-persist/integration/react'
@@ -15,14 +14,16 @@ import 'swiper/css/scrollbar'
 const MyApp = ({
   router,
   Component,
-
   pageProps: { hidratation, accessToken, session, ...pageProps },
-}: AppProps) => {
+}: AppPropsWithLayout) => {
   return (
     <SessionProvider session={session}>
       <Provider store={store}>
         <PersistGate loading={null} persistor={persistor}>
-          <Layout {...{ router, hidratation, accessToken }}>
+          <Layout
+            Layout={Component.Layout}
+            {...{ router, hidratation, accessToken }}
+          >
             <HeadApp>
               <Component {...pageProps} />
             </HeadApp>

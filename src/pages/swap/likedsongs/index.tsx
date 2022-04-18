@@ -6,10 +6,10 @@ import AtomImage from 'lib/AtomImage'
 import AtomLink from 'lib/AtomLink'
 import AtomText from 'lib/AtomText'
 import AtomWrapper from 'lib/Atomwrapper'
-import { NextPage } from 'next'
+import { NextPageFCProps } from 'next'
 import { useSelector } from 'react-redux'
 
-const LikedSongs: NextPage = () => {
+const LikedSongs: NextPageFCProps = () => {
   const user = useSelector((state: SelectFor) => state.user)
   return (
     <AtomWrapper>
@@ -147,5 +147,5 @@ const LikedSongs: NextPage = () => {
     </AtomWrapper>
   )
 }
-
+LikedSongs.Layout = 'swap'
 export default LikedSongs

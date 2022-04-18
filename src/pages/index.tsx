@@ -8,7 +8,7 @@ import Atombutton from 'lib/Atombutton'
 import AtomInput from 'lib/AtomInput'
 import AtomText from 'lib/AtomText'
 import AtomWrapper from 'lib/Atomwrapper'
-import { NextPageContext } from 'next'
+import { NextPageContext, NextPageFC } from 'next'
 import { getProviders, getSession, signIn } from 'next-auth/react'
 import { useState } from 'react'
 import * as Yup from 'yup'
@@ -26,7 +26,7 @@ type SpotifyAuthProps = {
   access_token: string
 }
 
-const LandingPage = ({ providers }: SpotifyAuthProps) => {
+const LandingPage: NextPageFC<SpotifyAuthProps> = ({ providers }) => {
   const [show, setShow] = useState<boolean>(false)
   const formik = useFormik({
     initialValues: {
@@ -153,5 +153,6 @@ export async function getServerSideProps(context: NextPageContext) {
         },
       }
 }
+LandingPage.Layout = 'swap'
 
 export default LandingPage

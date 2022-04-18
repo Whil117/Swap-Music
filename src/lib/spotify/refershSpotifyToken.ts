@@ -7,7 +7,6 @@ export default async function refreshSpotifyToken(token: any) {
     spotifyAPI.setRefreshToken(token.refreshToken)
 
     const data = await spotifyAPI.refreshAccessToken()
-    console.log('[NextAuth]: Token refreshed')
     return {
       ...token,
       accessToken: data.body.access_token ?? token.accessToken,
@@ -15,7 +14,6 @@ export default async function refreshSpotifyToken(token: any) {
       accessTokenExpires: Date.now() + data.body.expires_in * 1000,
     }
   } catch (error) {
-    console.error(error)
     return {
       ...token,
       error: 'Refresh Token',

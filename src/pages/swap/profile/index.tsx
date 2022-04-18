@@ -1,12 +1,13 @@
 import OrganismBanner from '@Components/@organisms/OrganismBanner'
 import { SelectFor } from '@Types/redux/reducers/user/types'
 import AtomWrapper from 'lib/Atomwrapper'
+import { NextPageFC } from 'next'
 import { FC } from 'react'
 import { useSelector } from 'react-redux'
 
 type Props = {}
 
-const Profile: FC<Props> = () => {
+const Profile: FC & NextPageFC<Props> = () => {
   const user = useSelector((state: SelectFor) => state.user)
   return (
     <AtomWrapper>
@@ -20,5 +21,5 @@ const Profile: FC<Props> = () => {
     </AtomWrapper>
   )
 }
-
+Profile.Layout = 'swap'
 export default Profile

@@ -7,9 +7,10 @@ import Greetings from '@Utils/greetings'
 import AtomSeoLayout from 'lib/AtomSeo'
 import AtomText from 'lib/AtomText'
 import AtomWrapper from 'lib/Atomwrapper'
+import { NextPageFCProps } from 'next'
 import { useSelector } from 'react-redux'
 import { SwiperSlide } from 'swiper/react'
-const SwapPage = () => {
+const SwapPage: NextPageFCProps = () => {
   const user = useSelector((state: SelectFor) => state.user)
 
   const data = [
@@ -93,5 +94,5 @@ const SwapPage = () => {
     </AtomSeoLayout>
   )
 }
-
+SwapPage.Layout = 'swap'
 export default SwapPage

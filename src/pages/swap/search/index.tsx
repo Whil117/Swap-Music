@@ -1,13 +1,12 @@
-import { FC } from 'react'
+import { NextPageFCProps } from 'next'
 
-type Props = {}
-
-const SearchPage: FC<Props> = () => {
+const SearchPage: NextPageFCProps = () => {
   return (
     <div>
       <h1>SearchPage</h1>
     </div>
   )
 }
+SearchPage.Layout = 'swap'
 
 export default SearchPage

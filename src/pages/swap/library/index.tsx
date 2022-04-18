@@ -3,12 +3,11 @@ import { SelectFor } from '@Types/redux/reducers/user/types'
 import Button from '@Whil/components/Button'
 import Div from '@Whil/components/Div'
 import P from '@Whil/components/P'
+import { NextPageFCProps } from 'next'
 import { useRouter } from 'next/router'
-import { FC } from 'react'
 import { useSelector } from 'react-redux'
-type Props = {}
 
-const Library: FC<Props> = () => {
+const Library: NextPageFCProps = () => {
   const user = useSelector((state: SelectFor) => state.user)
   const router = useRouter()
 
@@ -86,5 +85,6 @@ const Library: FC<Props> = () => {
     </Div>
   )
 }
+Library.Layout = 'swap'
 
 export default Library

@@ -1,4 +1,5 @@
 import { css } from '@emotion/react'
+import useScreen from '@Hooks/useScreen'
 import useTime from '@Hooks/useTime'
 import P from '@Whil/components/P'
 import Atombutton from 'lib/Atombutton'
@@ -6,7 +7,7 @@ import AtomImage from 'lib/AtomImage'
 import AtomText from 'lib/AtomText'
 import AtomWrapper from 'lib/Atomwrapper'
 import { useRouter } from 'next/router'
-import { FC, useEffect, useState } from 'react'
+import { FC } from 'react'
 
 type Props = {
   id: string
@@ -36,16 +37,8 @@ type Props = {
 const Track: FC<Props> = (props) => {
   const [hours, minutes, seconds] = useTime({ ms: props.duration })
   const router = useRouter()
-  const [screenWidth, setscreenWidth] = useState<number>(0)
 
-  useEffect(() => {
-    const updateHeight = () => {
-      const w = document.documentElement.clientWidth
-      setscreenWidth(w)
-    }
-    updateHeight()
-    window.addEventListener(`resize`, updateHeight)
-  }, [])
+  const screen = useScreen()
   return (
     <AtomWrapper
       css={css`
@@ -53,11 +46,11 @@ const Track: FC<Props> = (props) => {
         justify-content: space-between;
         width: 100%;
         align-items: center;
-        cursor: ${screenWidth <= 980 ? 'pointer' : 'default'};
+        cursor: ${screen <= 980 ? 'pointer' : 'default'};
       `}
       key={props.id}
       onClick={
-        screenWidth <= 980 ? () => props.onPlayer && props.onPlayer() : () => {}
+        screen <= 980 ? () => props.onPlayer && props.onPlayer() : () => {}
       }
     >
       <AtomWrapper

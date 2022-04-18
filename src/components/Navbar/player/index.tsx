@@ -22,6 +22,7 @@ import {
 } from 'react'
 import { useSelector } from 'react-redux'
 import useTime from '@Hooks/useTime'
+import useScreen from '@Hooks/useScreen'
 export enum IActions {
   ON_Play = 'ON_Play',
   ON_Repeat = 'ON_Repeat',
@@ -73,7 +74,7 @@ const NavbarPlayer: FC = () => {
   })
   const router = useRouter()
   const { data } = useSession()
-
+  const screen = useScreen()
   const handlePlay = () => {
     audio.current?.play()
     if (audio.current) {
@@ -103,6 +104,7 @@ const NavbarPlayer: FC = () => {
     if (player.play) {
       handlePlay()
     }
+    return () => {}
   }, [player.play])
 
   useEffect(() => {
@@ -151,6 +153,7 @@ const NavbarPlayer: FC = () => {
           @media (max-width: 980px) {
             grid-template-columns: 1fr auto;
             grid-template-rows: auto auto;
+            padding: 0 15px 15px 15px;
           }
         `}
       >
@@ -198,6 +201,7 @@ const NavbarPlayer: FC = () => {
               @media (max-width: 980px) {
                 grid-row: 1;
                 grid-column: 1;
+                font-size: 1rem;
               }
             `}
           >
@@ -222,7 +226,7 @@ const NavbarPlayer: FC = () => {
             >
               {track?.artists?.map((item, index) => (
                 <Atombutton
-                  key={item.id && item?.id + index}
+                  key={item.id && item?.id}
                   onClick={() => {
                     router
                       .push({
@@ -242,6 +246,9 @@ const NavbarPlayer: FC = () => {
                     as="p"
                     css={css`
                       opacity: 0.5;
+                      @media (max-width: 980px) {
+                        font-size: 0.8rem;
+                      }
                     `}
                     key={item.id}
                   >
@@ -271,7 +278,15 @@ const NavbarPlayer: FC = () => {
             controls.play ? handlePause() : handlePlay()
           }}
         >
-          <Svg src={`/icons/${controls.play ? 'pause' : 'play'}`} />
+          <Svg
+            src={`/icons/${controls.play ? 'pause' : 'play'}`}
+            css={css`
+              svg {
+                width: 30px;
+                height: 30px;
+              }
+            `}
+          />
         </Atombutton>
         <AtomWrapper
           css={css`
@@ -367,7 +382,7 @@ const NavbarPlayer: FC = () => {
               min="0"
               max="30"
               value={currentTime}
-              disabled
+              disabled={screen <= 980}
               onChange={(event: any) => {
                 if (audio.current) {
                   audio.current.currentTime = event.target.value
@@ -377,10 +392,23 @@ const NavbarPlayer: FC = () => {
                 height: 15px;
                 grid-column: 2;
                 outline: none;
+
                 @media (max-width: 980px) {
                   height: 2px;
                   grid-row: 1 / -1;
                   grid-column: 1 / -1;
+                  ::-webkit-slider-thumb {
+                    margin-top: -6.95px;
+                    width: 23px;
+                    height: 23px;
+                    /* display: none; */
+                    opacity: 0;
+                    background: rgba(241, 86, 209, 0.1);
+                    border: 2.5px solid #83e584;
+                    border-radius: 12px;
+                    cursor: pointer;
+                    -webkit-appearance: none;
+                  }
                 }
               `}
             />

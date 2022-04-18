@@ -8,9 +8,8 @@ import { ActionPlayerTracks } from '@Redux/reducers/player'
 import { ArtistWrapper } from '@Styles/pages/swap/artist'
 import AtomWrapper from 'lib/Atomwrapper'
 import spotifyAPI from 'lib/spotify/spotify'
-import { NextPageContext } from 'next'
+import { NextPageContext, NextPageFC } from 'next'
 import { getSession } from 'next-auth/react'
-import { FC } from 'react'
 import { useDispatch } from 'react-redux'
 import { Dispatch } from 'redux'
 import { SwiperSlide } from 'swiper/react'
@@ -39,7 +38,7 @@ const convertPlayerTracks = (
     },
   })
 }
-const Album: FC<Props> = ({
+const Album: NextPageFC<Props> = ({
   Album,
   TracksAlbum,
   ArtistAlbums,
@@ -169,4 +168,5 @@ export async function getServerSideProps(context: NextPageContext) {
     },
   }
 }
+Album.Layout = 'swap'
 export default Album
