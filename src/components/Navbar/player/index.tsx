@@ -70,7 +70,7 @@ const NavbarPlayer: FC = () => {
     repeat: false,
     aleatory: false,
     loop: false,
-    volumen: 25,
+    volumen: 5,
   })
   const router = useRouter()
   const { data } = useSession()

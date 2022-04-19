@@ -14,8 +14,8 @@ const Svg: FC<SvgProps> = (props) => {
     <AtomWrapper
       css={css`
         svg {
-          width: ${props.width || '24px'};
-          height: ${props.height || '24px'};
+          width: ${props.width || ''};
+          height: ${props.height || ''};
         }
         ${props.css}
       `}

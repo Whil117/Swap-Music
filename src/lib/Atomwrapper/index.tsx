@@ -8,6 +8,8 @@ export type AtomWrapperProps = {
   href?: string
   width?: string
   htmlFor?: string
+  value?: string
+  disabled?: boolean
 }
 
 export const AtomWrapper = styled.div<AtomWrapperProps>`
