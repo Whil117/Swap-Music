@@ -82,7 +82,7 @@ const SwapPublic: FC<PropsLayout> = (props) => {
                 {props.children}
               </AtomWrapper>
             </Wrapper>
-            <NavbarPlayer />
+            <NavbarPlayer accessToken={props.accessToken} />
           </AtomWrapper>
           {show && <Loading />}
         </>

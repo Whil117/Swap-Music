@@ -29,7 +29,6 @@ const NewArtist: NextPageFCProps = () => {
       alert(JSON.stringify(values, null, 2))
     },
   })
-  console.log(formik.values)
 
   return (
     <AtomWrapper>
@@ -62,7 +61,7 @@ const NewArtist: NextPageFCProps = () => {
           id="musical_genre"
           formik={formik}
           options={typesMusicGenre}
-          value="DEFAULT"
+          // value="DEFAULT"
           type="select"
           label="Musical Genre"
         />

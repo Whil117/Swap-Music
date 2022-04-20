@@ -140,6 +140,11 @@ const LikedSongs: NextPageFCProps = () => {
               album: item.track.album,
               duration: item.track.duration_ms,
               saved: true,
+              styles: {
+                width: {
+                  song: '40%',
+                },
+              },
             }}
           />
         ))}

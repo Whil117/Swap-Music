@@ -58,7 +58,7 @@ const OrganismBanner: FC<Props> = (props) => {
           align-items: center;
           justify-content: flex-start;
           width: 100%;
-          @media (max-width: 568px) {
+          @media (max-width: 778px) {
             flex-direction: column;
             width: auto;
             padding: 0;
@@ -81,16 +81,16 @@ const OrganismBanner: FC<Props> = (props) => {
           css={css`
             width: 900px;
             margin: 0 50px;
-            @media (max-width: 768px) {
-              width: 400px;
-              margin: 0 20px;
+            @media (max-width: 980px) {
+              width: 100%;
+              margin: 0 10px;
             }
           `}
         >
           <AtomText
             as="h4"
             css={css`
-              @media (max-width: 568px) {
+              @media (max-width: 778px) {
                 text-align: center;
               }
             `}
@@ -102,8 +102,11 @@ const OrganismBanner: FC<Props> = (props) => {
             css={css`
               margin: 0;
               font-size: 48px;
-              @media (max-width: 568px) {
-                font-size: 32px;
+              @media (max-width: 890px) {
+                font-size: 36px;
+              }
+              @media (max-width: 778px) {
+                font-size: 28px;
                 text-align: center;
               }
             `}
@@ -126,7 +129,7 @@ const OrganismBanner: FC<Props> = (props) => {
               width: 100%;
               display: flex;
               justify-content: flex-start;
-              @media (max-width: 568px) {
+              @media (max-width: 778px) {
                 flex-direction: column;
                 align-items: center;
                 justify-content: center;

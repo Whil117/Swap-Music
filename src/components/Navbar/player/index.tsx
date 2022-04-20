@@ -1,5 +1,6 @@
 /* eslint-disable no-unused-vars */
 import { css } from '@emotion/react'
+import useScreen from '@Hooks/useScreen'
 import { SelectFor } from '@Types/redux/reducers/user/types'
 import Svg from '@Whil/components/Svg'
 import Atombutton from 'lib/Atombutton'
@@ -9,7 +10,6 @@ import AtomSeoLayout from 'lib/AtomSeo'
 import AtomText from 'lib/AtomText'
 import AtomWrapper from 'lib/Atomwrapper'
 import spotifyAPI from 'lib/spotify/spotify'
-import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/router'
 import {
   ChangeEvent,
@@ -21,8 +21,6 @@ import {
   useState,
 } from 'react'
 import { useSelector } from 'react-redux'
-import useTime from '@Hooks/useTime'
-import useScreen from '@Hooks/useScreen'
 export enum IActions {
   ON_Play = 'ON_Play',
   ON_Repeat = 'ON_Repeat',
@@ -60,20 +58,19 @@ const reducer = (state: IPlayer, action: IAction): IPlayer => {
   }
 }
 
-const NavbarPlayer: FC = () => {
+const NavbarPlayer: FC<{ accessToken?: string }> = ({ accessToken }) => {
   const player = useSelector((state: SelectFor) => state.playerTracks)
   const [track, setTrack] = useState<SpotifyApi.SingleTrackResponse>()
   const [currentTime, setCurrentTime] = useState(0)
   const audio = useRef<HTMLAudioElement>(null)
   const [controls, dispatch] = useReducer(reducer, {
-    play: (player.play as boolean) || false,
+    play: false,
     repeat: false,
     aleatory: false,
     loop: false,
     volumen: 5,
   })
   const router = useRouter()
-  const { data } = useSession()
   const screen = useScreen()
   const handlePlay = () => {
     audio.current?.play()
@@ -121,8 +118,8 @@ const NavbarPlayer: FC = () => {
   }, [audio.current])
 
   useEffect(() => {
-    if (data?.accessToken) {
-      spotifyAPI.setAccessToken(data?.accessToken as string)
+    if (accessToken && player.currentTrackId) {
+      spotifyAPI.setAccessToken(accessToken as string)
       spotifyAPI
         .getTrack(player.currentTrackId as string)
         .then((res) =>
@@ -132,7 +129,7 @@ const NavbarPlayer: FC = () => {
               setCurrentTime(0))
         )
     }
-  }, [data, player.currentTrackId])
+  }, [accessToken, player.currentTrackId])
 
   return (
     <AtomSeoLayout

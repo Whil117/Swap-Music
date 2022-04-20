@@ -57,13 +57,14 @@ const Track: FC<Props> = (props) => {
         css={css`
           display: flex;
           justify-content: flex-start;
-          width: ${props.styles?.width?.song || '40%'};
+          width: ${props.styles?.width?.song || '100%'};
           @media (max-width: 768px) {
             width: 100%;
           }
         `}
       >
-        <AtomWrapper
+        <Atombutton
+          onClick={props.onPlayer}
           css={css`
             margin: 10px 20px;
             @media (max-width: 568px) {
@@ -80,7 +81,7 @@ const Track: FC<Props> = (props) => {
           >
             {props.count + 1}
           </AtomText>
-        </AtomWrapper>
+        </Atombutton>
         <AtomWrapper
           css={css`
             @media (max-width: 568px) {
@@ -88,9 +89,6 @@ const Track: FC<Props> = (props) => {
             }
           `}
         >
-          <Atombutton onClick={props.onPlayer} backgroundColor="white">
-            click!
-          </Atombutton>
           {props.image && (
             <AtomImage
               src={props.image || ''}
