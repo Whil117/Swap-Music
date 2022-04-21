@@ -37,6 +37,7 @@ const SwapPage: NextPageFCProps = () => {
         css={css`
           margin-top: 50px;
           margin: 100px 40px 40px 40px;
+          max-width: 1440px;
         `}
       >
         <AtomWrapper>

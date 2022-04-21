@@ -42,127 +42,115 @@ const Track: FC<Props> = (props) => {
   return (
     <AtomWrapper
       css={css`
-        display: flex;
-        justify-content: space-between;
+        display: grid;
+        /* grid-template-columns: 50px 70px 1fr 1fr 50px; */
+        grid-template-columns: ${
+          props.image ? '50px 70px 1fr 1fr 50px' : '50px  1fr 50px'
+        };
+        gap: 10px;
         width: 100%;
         align-items: center;
         cursor: ${screen <= 980 ? 'pointer' : 'default'};
+        @media (max-width: 568px) {
+          grid-template-columns: 1fr;
+        }
+        }
       `}
       key={props.id}
       onClick={
         screen <= 980 ? () => props.onPlayer && props.onPlayer() : () => {}
       }
     >
-      <AtomWrapper
+      <Atombutton
+        onClick={props.onPlayer}
         css={css`
-          display: flex;
-          justify-content: flex-start;
-          width: ${props.styles?.width?.song || '100%'};
-          @media (max-width: 768px) {
-            width: 100%;
+          grid-column: 1;
+          justify-self: center;
+          align-self: center;
+          @media (max-width: 568px) {
+            display: none;
           }
         `}
       >
-        <Atombutton
-          onClick={props.onPlayer}
+        <AtomText
+          as="p"
           css={css`
-            margin: 10px 20px;
+            font-size: 16px;
+            font-weight: 600;
+          `}
+        >
+          {props.count + 1}
+        </AtomText>
+      </Atombutton>
+      {props.image && (
+        <AtomImage
+          src={props.image || ''}
+          width="100%"
+          height="100%"
+          alt={props.name}
+          borderRadius="5px"
+          css={css`
+            grid-column: 2 / 3;
             @media (max-width: 568px) {
               display: none;
             }
           `}
-        >
-          <AtomText
-            as="p"
+        />
+      )}
+      <AtomWrapper
+        css={css`
+          grid-column: ${props.image ? '3 / 4' : '2 / 5'};
+          @media (max-width: 568px) {
+            grid-column: 1 / -1;
+          }
+        `}
+      >
+        <AtomText as="p">{props.name}</AtomText>
+        {props.artists.length !== 0 && (
+          <AtomWrapper
             css={css`
-              font-size: 16px;
-              font-weight: 600;
+              display: flex;
+              justify-content: flex-start;
             `}
           >
-            {props.count + 1}
-          </AtomText>
-        </Atombutton>
-        <AtomWrapper
-          css={css`
-            @media (max-width: 568px) {
-              display: none;
-            }
-          `}
-        >
-          {props.image && (
-            <AtomImage
-              src={props.image || ''}
-              width={50}
-              height={55}
-              alt={props.name}
-              borderRadius="5px"
-            />
-          )}
-        </AtomWrapper>
-        <AtomWrapper
-          css={css`
-            display: flex;
-            flex-direction: column;
-            align-items: flex-start;
-            margin: 0 20px;
-          `}
-        >
-          <P styles={{ fontWeight: '600', margin: '5px 0' }}>
-            {!props.album
-              ? props.name
-              : Object.keys(props.album).length > 0 && props.name.length > 40
-              ? props.name.slice(0, 40) + '...'
-              : props.name}
-          </P>
-          {props.artists.length !== 0 && (
-            <AtomWrapper
-              css={css`
-                display: flex;
-                justify-content: flex-start;
-              `}
-            >
-              {props?.artists?.map((artist, index) => (
-                <Atombutton
-                  key={artist.id && artist?.id + index}
-                  onClick={() => {
-                    router
-                      .push({
-                        pathname: `/swap/artist/[id]`,
-                        query: {
-                          id: artist.id,
-                        },
+            {props?.artists?.map((artist, index) => (
+              <Atombutton
+                key={artist.id && artist?.id + index}
+                onClick={() => {
+                  router
+                    .push({
+                      pathname: `/swap/artist/[id]`,
+                      query: {
+                        id: artist.id,
+                      },
+                    })
+                    .then(() => {
+                      document?.getElementById('view')?.scroll({
+                        top: 0,
                       })
-                      .then(() => {
-                        document?.getElementById('view')?.scroll({
-                          top: 0,
-                        })
-                      })
-                  }}
-                >
-                  <P
-                    styles={{
-                      opacity: 0.5,
+                    })
+                }}
+              >
+                <P
+                  styles={{
+                    opacity: 0.5,
 
-                      width: 'auto',
-                    }}
-                    key={artist.id}
-                  >
-                    {index === 0 ? artist.name : `, ${artist.name}`}
-                  </P>
-                </Atombutton>
-              ))}
-            </AtomWrapper>
-          )}
-        </AtomWrapper>
+                    width: 'auto',
+                  }}
+                  key={artist.id}
+                >
+                  {index === 0 ? artist.name : `, ${artist.name}`}
+                </P>
+              </Atombutton>
+            ))}
+          </AtomWrapper>
+        )}
       </AtomWrapper>
       {Object.keys(props.album).length > 0 && (
         <AtomWrapper
           css={css`
-            display: flex;
-            flex-direction: column;
-            alugin-items: flex-start;
-            width: ${props.styles?.width?.album || '50%'};
-            @media (max-width: 768px) {
+            grid-column: 4 / 5;
+            @media (max-width: 568px) {
               display: none;
             }
           `}
@@ -189,9 +177,7 @@ const Track: FC<Props> = (props) => {
                 opacity: 0.5;
               `}
             >
-              {props.album.name && props?.album?.name?.length > 40
-                ? props?.album?.name.slice(0, 40) + '...'
-                : props?.album?.name}
+              {props?.album?.name}
             </AtomText>
           </Atombutton>
         </AtomWrapper>
@@ -208,14 +194,16 @@ const Track: FC<Props> = (props) => {
       </Atombutton> */}
       <AtomWrapper
         css={css`
+          grid-column: 5 / 6;
+          align-self: center;
+          justify-self: center;
           @media (max-width: 568px) {
             display: none;
           }
         `}
       >
-        <p>
-          {' '}
-          {hours ? `${hours} ${minutes}` : ''}{' '}
+        <AtomText as="p">
+          {hours ? `${hours} ${minutes}` : ''}
           {!hours
             ? `${minutes}:${
                 seconds?.toFixed(0).length === 1
@@ -223,7 +211,7 @@ const Track: FC<Props> = (props) => {
                   : seconds?.toFixed()
               }`
             : ''}
-        </p>
+        </AtomText>
       </AtomWrapper>
     </AtomWrapper>
   )

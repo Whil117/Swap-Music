@@ -41,11 +41,7 @@ const SectionProps: FC<Props> = ({ children, Elements }) => {
               .swiper-pagination-bullet-active {
                 background-color: white;
               }
-              .swiper-slide img {
-                width: 100%;
-                height: 100%;
-                object-fit: cover;
-              }
+
               .swiper-button-prev {
                 ::after {
                   font-size: 42px;
@@ -72,7 +68,7 @@ const SectionProps: FC<Props> = ({ children, Elements }) => {
                   slidesPerView: 1,
                 },
                 480: {
-                  slidesPerView: 1,
+                  slidesPerView: 2,
                 },
                 568: {
                   slidesPerView: 2,
@@ -109,7 +105,7 @@ const SectionProps: FC<Props> = ({ children, Elements }) => {
               display: flex;
               flex-direction: row;
               flex-wrap: wrap;
-              justify-content: space-between;
+              justify-content: flex-start;
             `}
           >
             {children}

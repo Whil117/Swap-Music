@@ -37,12 +37,11 @@ const OrganismBanner: FC<Props> = (props) => {
         display: flex;
         align-items: center;
         padding: 0px 90px;
-        justify-content: center;
+        justify-content: flex-start;
         transition: all 0.3s ease;
-
         background: linear-gradient(
             180deg,
-            rgba(90, 28, 28, 0) 0%,
+            rgba(100, 100, 100, 0) 0%,
             #121216 100%
           ),
           ${color};
@@ -57,7 +56,9 @@ const OrganismBanner: FC<Props> = (props) => {
           display: flex;
           align-items: center;
           justify-content: flex-start;
-          width: 100%;
+          width: 1440px;
+          gap: 20px;
+
           @media (max-width: 778px) {
             flex-direction: column;
             width: auto;
@@ -72,15 +73,14 @@ const OrganismBanner: FC<Props> = (props) => {
 
         <AtomImage
           src={props.image_url || 'https://via.placeholder.com/150/92c952'}
-          width={240}
-          height={240}
+          width={260}
+          height={260}
           alt={props.name}
           borderRadius="10px"
         />
         <AtomWrapper
           css={css`
-            width: 900px;
-            margin: 0 50px;
+            /* width: 900px; */
             @media (max-width: 980px) {
               width: 100%;
               margin: 0 10px;

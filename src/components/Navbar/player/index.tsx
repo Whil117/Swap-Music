@@ -139,7 +139,7 @@ const NavbarPlayer: FC<{ accessToken?: string }> = ({ accessToken }) => {
     >
       <AtomWrapper
         css={css`
-          padding: 15px;
+          padding: 10px;
           grid-column: 1 / -1;
           grid-row: 2;
           background-color: #191922;

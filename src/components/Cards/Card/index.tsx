@@ -56,8 +56,8 @@ const Card: FC<Card> = (props) => {
       <AtomImage
         src={props.image || 'https://via.placeholder.com/150'}
         alt={props.name}
-        width="200px"
-        height="200px"
+        width="180px"
+        height="180px"
         borderRadius={ImageTypes.includes(props.type) ? '5px' : '50%'}
       />
       {props.name.length > 35 ? (
