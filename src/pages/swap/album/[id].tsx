@@ -73,7 +73,6 @@ const Album: NextPageFC<Props> = ({
         css={css`
           display: flex;
           alig-items: flex-start;
-          width: 1440px;
           padding: 0 90px;
           flex-direction: column;
           gap: 20px;

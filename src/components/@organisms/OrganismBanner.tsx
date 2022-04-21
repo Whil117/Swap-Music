@@ -46,6 +46,7 @@ const OrganismBanner: FC<Props> = (props) => {
           ),
           ${color};
         @media (max-width: 768px) {
+          justify-content: center;
           height: 600px;
           padding: 0;
         }
