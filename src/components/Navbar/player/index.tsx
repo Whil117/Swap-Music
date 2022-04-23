@@ -109,7 +109,7 @@ const NavbarPlayer: FC<{ accessToken?: string }> = ({ accessToken }) => {
   useEffect(() => {
     if (audio.current) {
       audio.current.ontimeupdate = (event: any) => {
-        setCurrentTime(event?.target?.currentTime)
+        setCurrentTime(Math.round(event?.target?.currentTime))
       }
     }
     return () => {

@@ -18,12 +18,6 @@ export const Navbar = styled.nav`
 export const NavbarSection = styled.a`
   display: flex;
   align-items: center;
-  margin-left: 1rem;
-  p {
-    color: ${colors.white};
-    font-size: 14px;
-    margin-left: 0.5rem;
-  }
 `
 export const NavbarSectionName = styled.p`
   font-size: 13px;

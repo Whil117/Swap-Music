@@ -1,4 +1,4 @@
-import { NavbarSection, NavbarSectionName } from '@Styles/components/Navbar'
+import { NavbarSection } from '@Styles/components/Navbar'
 import Svg from '@Whil/components/Svg'
 import Link from 'next/link'
 import { FC } from 'react'
@@ -15,7 +15,6 @@ type Props = {
 const Section: FC<Props> = (props) => {
   return (
     <div>
-      <NavbarSectionName>{props.section_name}</NavbarSectionName>
       {props?.options?.map((option) => (
         <Link
           key={`section_option_${option.path}`}

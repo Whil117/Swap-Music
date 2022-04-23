@@ -1,6 +1,6 @@
 import Loading from '@Components/Loading'
-import Navbar from '@Components/Navbar'
 import NavbarPlayer from '@Components/Navbar/player'
+import Navbar from '@Components/Navbar/public'
 import { css } from '@emotion/react'
 import { Wrapper } from '@Styles/components/layout'
 import { SelectFor } from '@Types/redux/reducers/user/types'
