@@ -11,7 +11,7 @@ export type Track = {
 }
 export type PropsPlayerTracks = {
   currentTrackId?: string
-  tracks?: SpotifyApi.TrackObjectSimplified[]
+  tracks?: SpotifyApi.TrackObjectSimplified[] | SpotifyApi.PlaylistTrackObject[]
   play?: boolean
 }
 

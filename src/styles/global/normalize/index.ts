@@ -11,7 +11,7 @@ const Normalize = css`
     background: ${colors.black_primary};
     color: ${colors.white};
     margin: 0;
-    font-family: 'Roboto Mono', sans-serif;
+    font-family: 'Roboto', sans-serif;
   }
   p {
     font-weight: 600;

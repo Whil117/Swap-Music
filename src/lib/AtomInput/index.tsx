@@ -6,7 +6,7 @@ import { motion } from 'framer-motion'
 import AtomText from 'lib/AtomText'
 import AtomWrapper from 'lib/Atomwrapper'
 import lodash from 'lodash'
-import { ChangeEvent } from 'react'
+import { ChangeEvent, Ref } from 'react'
 
 type Props = {
   id: string
@@ -27,6 +27,7 @@ type Props = {
   }[]
   defaultText?: string
   css?: SerializedStyles
+  ref?: Ref<any>
 }
 
 const AtomInputStyled = styled(motion.input)<Props>`

@@ -54,7 +54,10 @@ const Card: FC<Card> = (props) => {
       `}
     >
       <AtomImage
-        src={props.image || 'https://via.placeholder.com/150'}
+        src={
+          props.image ??
+          'https://firebasestorage.googleapis.com/v0/b/swap-4f04f.appspot.com/o/images%2FFrame%2094.svg?alt=media&token=e9c9283e-808b-40ac-ba7b-3ce37452a9a2'
+        }
         alt={props.name}
         width="180px"
         height="180px"

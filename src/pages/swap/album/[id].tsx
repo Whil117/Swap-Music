@@ -60,7 +60,10 @@ const Album: NextPageFC<Props> = ({
         title={Album.name}
         id={Album.artists[0].id}
         name={Album.artists[0].name}
-        image_url={Album.images[0].url}
+        image_url={
+          Album.images[0].url ??
+          'https://firebasestorage.googleapis.com/v0/b/swap-4f04f.appspot.com/o/images%2FFrame%2094.svg?alt=media&token=e9c9283e-808b-40ac-ba7b-3ce37452a9a2'
+        }
         type={Album.album_type}
         release_date={Album.release_date}
         total_tracks={Album.total_tracks}
@@ -134,12 +137,10 @@ const Album: NextPageFC<Props> = ({
 export async function getServerSideProps(context: NextPageContext) {
   const { id } = context.query
   const Session = await getSession(context)
-
   spotifyAPI.setAccessToken(Session?.accessToken as string)
 
   const Album = await spotifyAPI.getAlbum(id as string).then((res) => res.body)
   const ArtistId = Album?.artists?.find((artist) => artist?.id)?.id
-
   const DurationTracks = Album.tracks.items.reduce(
     (acc, curr) => acc + curr.duration_ms,
     0

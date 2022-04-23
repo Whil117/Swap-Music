@@ -30,6 +30,7 @@ const stringToHTML = (str?: string) => {
 
 const OrganismBanner: FC<Props> = (props) => {
   const [color, setColor] = useState<string[]>([])
+
   return (
     <AtomWrapper
       css={css`
