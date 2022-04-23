@@ -12,7 +12,6 @@ import { useSelector } from 'react-redux'
 import { SwiperSlide } from 'swiper/react'
 const SwapPage: NextPageFCProps = () => {
   const user = useSelector((state: SelectFor) => state.user)
-  console.log('asfasdf')
   const data = [
     {
       id: '1',
