@@ -36,7 +36,6 @@
       "p4-changelist": "echo \"[Husky] p4-changelist\"",
       "p4-prepare-changelist": "echo \"[Husky] p4-prepare-changelist\"",
       "p4-post-changelist": "echo \"[Husky] p4-post-changelist\"",
-      "p4-pre-submit": "echo \"[Husky] p4-pre-submit\"",
       "post-index-change": "echo \"[Husky] post-index-change\""
     }
   },
