@@ -1,7 +1,5 @@
 /* eslint-disable no-unused-vars */
 import { css } from '@emotion/react'
-import styled from '@emotion/styled'
-import useScreen from '@Hooks/useScreen'
 import reducerplayer, { initialState } from '@Redux/reducers/player/controls'
 import { SelectFor } from '@Types/redux/reducers/user/types'
 import Svg from '@Whil/components/Svg'
@@ -9,130 +7,25 @@ import { atom } from 'jotai'
 import { useReducerAtom } from 'jotai/utils'
 import Atombutton from 'lib/Atombutton'
 import AtomImage from 'lib/AtomImage'
-import AtomInput from 'lib/AtomInput'
 import AtomSeoLayout from 'lib/AtomSeo'
 import AtomText from 'lib/AtomText'
 import AtomWrapper from 'lib/Atomwrapper'
 import spotifyAPI from 'lib/spotify/spotify'
 import { useRouter } from 'next/router'
-import { ChangeEvent, FC, useEffect, useRef, useState } from 'react'
+import { FC, useEffect, useRef, useState } from 'react'
 import { ColorExtractor } from 'react-color-extractor'
 import { useSelector } from 'react-redux'
+import Progressbar from './progressbar'
+import BarVolumen from './volumen.bar'
 
 const countAtom = atom(initialState)
-
-type Props = {
-  controls: {
-    play: boolean
-    repeat: boolean
-    aleatory: boolean
-    loop: boolean
-    volumen: number
-    color: string
-    currentTime: number
-  }
-}
-
-const CustomInput = styled.input<Props>`
-  height: 6px;
-  grid-column: 2;
-  outline: none;
-  -webkit-appearance: none;
-  cursor: pointer;
-  background: rgb(92 86 86 / 60%);
-  border: none;
-  border-radius: 5px;
-  background-image: linear-gradient(
-    ${({ controls }) => controls.color},
-    ${({ controls }) => controls.color}
-  );
-  background-repeat: no-repeat;
-  background-size: ${({ controls }) =>
-      Math.floor(((controls.currentTime - 0) * 100) / 30 - 0)}%
-    100%;
-  ::-webkit-slider-thumb {
-    -webkit-appearance: none;
-    height: 15px;
-    width: 15px;
-    border-radius: 50%;
-    background: ${({ controls }) => controls.color};
-    cursor: pointer;
-    box-shadow: 0 0 2px 0 #555;
-    transition: background 0.3s ease-in-out;
-  }
-  ::-moz-range-thumb {
-    -webkit-appearance: none;
-    height: 20px;
-    border-radius: 50%;
-    background: ${({ controls }) => controls.color};
-    cursor: pointer;
-    box-shadow: 0 0 2px 0 #555;
-    transition: background 0.3s ease-in-out;
-  }
-  ::-ms-thumb {
-    -webkit-appearance: none;
-    height: 20px;
-    width: 20px;
-    border-radius: 50%;
-    background: ${({ controls }) => controls.color};
-    cursor: ew-resize;
-    box-shadow: 0 0 2px 0 #555;
-    transition: background 0.3s ease-in-out;
-  }
-  ::-webkit-slider-thumb:hover {
-    background: ${({ controls }) => controls.color};
-  }
-  ::-moz-range-thumb:hover {
-    background: ${({ controls }) => controls.color};
-  }
-  ::-ms-thumb:hover {
-    background: ${({ controls }) => controls.color};
-  }
-
-  ::-webkit-slider-runnable-track {
-    -webkit-appearance: none;
-    box-shadow: none;
-    border: none;
-    background: transparent;
-  }
-  ::-moz-range-track {
-    -webkit-appearance: none;
-    box-shadow: none;
-    border: none;
-    background: transparent;
-  }
-  ::-ms-track {
-    -webkit-appearance: none;
-    box-shadow: none;
-    border: none;
-    background: transparent;
-  }
-  @media (max-width: 980px) {
-    height: 2px;
-    grid-row: 1 / -1;
-    grid-column: 1 / -1;
-    ::-webkit-slider-thumb {
-      margin-top: -6.95px;
-      width: 23px;
-      height: 23px;
-      opacity: 0;
-      background: rgba(241, 86, 209, 0.1);
-      border: 2.5px solid #83e584;
-      border-radius: 12px;
-      cursor: pointer;
-      -webkit-appearance: none;
-    }
-  }
-`
 
 const NavbarPlayer: FC<{ accessToken?: string }> = ({ accessToken }) => {
   const player = useSelector((state: SelectFor) => state.playerTracks)
   const [track, setTrack] = useState<SpotifyApi.SingleTrackResponse>()
   const audio = useRef<HTMLAudioElement>(null)
-  // const [controls, dispatch] = useReducer(reducerplayer, initialState)
   const [controls, dispatch] = useReducerAtom(countAtom, reducerplayer)
   const router = useRouter()
-  const screen = useScreen()
 
   const handlePlay = () => {
     audio.current?.play()
@@ -152,48 +45,20 @@ const NavbarPlayer: FC<{ accessToken?: string }> = ({ accessToken }) => {
   }
 
   useEffect(() => {
-    if (audio.current) {
-      audio.current.volume = (controls?.volumen as number) / 100
-    }
-  }, [controls.volumen])
-
-  useEffect(() => {
-    if (audio.current) {
-      audio.current.ontimeupdate = (event: any) => {
-        dispatch({
-          type: 'CURRENT_TIME',
-          payload: { ...controls, currentTime: event.target.currentTime },
-        })
-      }
-    }
-    return () => {
-      if (audio.current) {
-        audio.current.ontimeupdate = null
-      }
-    }
-  }, [audio.current])
-
-  useEffect(() => {
     if (accessToken && player.currentTrackId) {
       spotifyAPI.setAccessToken(accessToken as string)
-      spotifyAPI.getTrack(player.currentTrackId ?? '').then((res) =>
-        res.body.preview_url
-          ? setTrack(res.body)
-          : (setTrack({} as SpotifyApi.SingleTrackResponse),
-            dispatch({
-              type: 'CURRENT_TIME',
-              payload: { ...controls, currentTime: 0 },
-            }))
-      )
+      spotifyAPI
+        .getTrack(player.currentTrackId ?? '')
+        .then((res) =>
+          res.body.preview_url
+            ? setTrack(res.body)
+            : setTrack({} as SpotifyApi.SingleTrackResponse)
+        )
     }
   }, [accessToken, player.currentTrackId])
 
   return (
-    <AtomSeoLayout
-      title={track?.name}
-      icon="../public/icons/favicon"
-      image={track?.album?.images[0]?.url}
-    >
+    <AtomSeoLayout title={track?.name} image={track?.album?.images[0]?.url}>
       <AtomWrapper
         css={css`
           padding: 10px;
@@ -413,82 +278,13 @@ const NavbarPlayer: FC<{ accessToken?: string }> = ({ accessToken }) => {
               </>
             ))}
           </AtomWrapper>
-          <AtomWrapper
-            css={css`
-              width: 100%;
-              grid-row: 2;
-              display: grid;
-              grid-template-columns: auto 1fr auto;
-              align-items: center;
-              @media (max-width: 980px) {
-                grid-row: 2;
-              }
-            `}
-          >
-            <AtomText
-              as="p"
-              css={css`
-                margin: 0;
-                grid-column: 1;
-                @media (max-width: 980px) {
-                  display: none;
-                }
-              `}
-            >
-              {Math.round(
-                audio.current?.currentTime ? audio.current.currentTime : 0
-              ) > 9
-                ? `0:${Math.round(
-                    audio.current?.currentTime ? audio.current.currentTime : 0
-                  )}`
-                : `0:0${Math.round(
-                    audio.current?.currentTime ? audio.current.currentTime : 0
-                  )}`}
-            </AtomText>
-            <CustomInput
-              id="player-reproductor"
-              type="range"
-              min="0"
-              max="30"
-              controls={controls}
-              value={controls.currentTime}
-              disabled={screen <= 980}
-              onChange={(event) => {
-                if (audio.current) {
-                  audio.current.currentTime = Number(event.target.value)
-                }
-              }}
-            />
-            {track?.preview_url && (
-              <audio
-                ref={audio}
-                // loop={player.play}
-                src={track?.preview_url as string}
-                autoPlay={controls.play}
-                onEnded={() => {
-                  dispatch({
-                    type: 'PLAY',
-                    payload: {
-                      play: false,
-                    },
-                  })
-                }}
-              ></audio>
-            )}
-
-            <AtomText
-              as="p"
-              css={css`
-                margin: 0;
-                grid-column: 3;
-                @media (max-width: 980px) {
-                  display: none;
-                }
-              `}
-            >
-              0:30
-            </AtomText>
-          </AtomWrapper>
+          <Progressbar
+            audio={audio}
+            track={track?.preview_url as string}
+            colorbar={controls.color}
+            dispatch={dispatch}
+            autoplay={controls.play}
+          />
         </AtomWrapper>
         <AtomWrapper
           css={css`
@@ -508,94 +304,11 @@ const NavbarPlayer: FC<{ accessToken?: string }> = ({ accessToken }) => {
               <Svg src={`/icons/${item.icon}`} />
             </Atombutton>
           ))}
-          <AtomInput
-            id="volumen"
-            type="range"
-            placeholder="Search"
-            value={controls.volumen}
-            onChange={(event: ChangeEvent<HTMLInputElement>) =>
-              dispatch({
-                type: 'VOLUMEN',
-                payload: {
-                  ...controls,
-                  volumen: parseInt(event.target.value),
-                },
-              })
-            }
-            css={css`
-              width: 150px;
-              height: 6px;
-              outline: none;
-              grid-column: 2;
-              outline: none;
-              -webkit-appearance: none;
-              background: rgb(92 86 86 / 60%);
-              border: none;
-              border-radius: 5px;
-              background-image: linear-gradient(
-                ${controls.color},
-                ${controls.color}
-              );
-              background-repeat: no-repeat;
-              background-size: ${controls.volumen}% 100%;
-              ::-webkit-slider-thumb {
-                -webkit-appearance: none;
-                height: 15px;
-                width: 15px;
-                border-radius: 50%;
-                background: ${controls.color};
-                cursor: pointer;
-                box-shadow: 0 0 2px 0 #555;
-                transition: background 0.3s ease-in-out;
-              }
-              ::-moz-range-thumb {
-                -webkit-appearance: none;
-                height: 20px;
-                border-radius: 50%;
-                background: ${controls.color};
-                cursor: pointer;
-                box-shadow: 0 0 2px 0 #555;
-                transition: background 0.3s ease-in-out;
-              }
-              ::-ms-thumb {
-                -webkit-appearance: none;
-                height: 20px;
-                width: 20px;
-                border-radius: 50%;
-                background: ${controls.color};
-                cursor: pointer;
-                box-shadow: 0 0 2px 0 #555;
-                transition: background 0.3s ease-in-out;
-              }
-              ::-webkit-slider-thumb:hover {
-                background: ${controls.color};
-              }
-              ::-moz-range-thumb:hover {
-                background: ${controls.color};
-              }
-              ::-ms-thumb:hover {
-                background: ${controls.color};
-              }
-
-              ::-webkit-slider-runnable-track {
-                -webkit-appearance: none;
-                box-shadow: none;
-                border: none;
-                background: transparent;
-              }
-              ::-moz-range-track {
-                -webkit-appearance: none;
-                box-shadow: none;
-                border: none;
-                background: transparent;
-              }
-              ::-ms-track {
-                -webkit-appearance: none;
-                box-shadow: none;
-                border: none;
-                background: transparent;
-              }
-            `}
+          <BarVolumen
+            audio={audio}
+            dispatch={dispatch}
+            color={controls.color}
+            volumen={controls.volumen}
           />
         </AtomWrapper>
       </AtomWrapper>
