@@ -154,11 +154,6 @@ const NavbarPlayer: FC<{ accessToken?: string }> = ({ accessToken }) => {
     if (audio.current) {
       audio.current.volume = (controls?.volumen as number) / 100
     }
-    return () => {
-      if (audio.current) {
-        audio.current.volume = 0
-      }
-    }
   }, [controls.volumen])
 
   useEffect(() => {
