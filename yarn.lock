@@ -3875,6 +3875,11 @@ gifwrap@^0.9.2:
     image-q "^1.1.1"
     omggif "^1.0.10"
 
+git-format-staged@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/git-format-staged/-/git-format-staged-3.0.0.tgz#66fe89fcb537f78e8129412dc0b2511b34d49e32"
+  integrity sha512-cdDJxV06qY8ucBsW/uIFR4PYN/kDHl43nG8yg+VPPaDeLAf8hEPhEIJTeJ+yRClxcDSpoTmDPiFZUoxFx1wPCg==
+
 glob-parent@^5.1.2:
   version "5.1.2"
   resolved "https://registry.npmjs.org/glob-parent/-/glob-parent-5.1.2.tgz"
