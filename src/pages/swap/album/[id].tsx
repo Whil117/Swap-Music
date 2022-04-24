@@ -26,6 +26,7 @@ const convertPlayerTracks = (
   dispatch: Dispatch<ActionPlayerTracks>,
   player: {
     id: string
+    position: number
     data: SpotifyApi.TrackObjectSimplified[]
   }
 ) => {
@@ -33,6 +34,7 @@ const convertPlayerTracks = (
     type: 'SETPLAYERTRACKS',
     payload: {
       tracks: player.data,
+      position: player.position,
       currentTrackId: player.id,
       play: true,
     },
@@ -100,6 +102,7 @@ const Album: NextPageFC<Props> = ({
             onPlayer={() => {
               convertPlayerTracks(dispatch, {
                 id: track?.id,
+                position: idx,
                 data: TracksAlbum?.items,
               })
             }}

@@ -13,6 +13,7 @@ export type PropsPlayerTracks = {
   currentTrackId?: string
   tracks?: SpotifyApi.TrackObjectSimplified[] | SpotifyApi.PlaylistTrackObject[]
   play?: boolean
+  position?: number
 }
 
 type typesReducers = {
@@ -26,6 +27,7 @@ const typesReducers: typesReducers = {
     ...state,
     currentTrackId: payload.currentTrackId,
     tracks: payload.tracks,
+    position: payload.position,
     play: payload.play,
   }),
   SETPLAY: (state, payload) => ({
@@ -43,6 +45,7 @@ const reducer = (
   state = {
     currentTrackId: '',
     tracks: [],
+    position: 0,
     play: false,
   },
   action: ActionPlayerTracks

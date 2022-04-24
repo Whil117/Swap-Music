@@ -18,6 +18,17 @@ import { useSelector } from 'react-redux'
 import Progressbar from './progressbar'
 import BarVolumen from './volumen.bar'
 
+const strAtom = atom(
+  localStorage.getItem('controls') ?? JSON.stringify(initialState)
+)
+const controlsAtomWithPersistence = atom(
+  (get) => get(strAtom),
+  (get, set, value) => {
+    set(strAtom, value)
+    localStorage.setItem('controls', value)
+  }
+)
+
 const countAtom = atom(initialState)
 
 const NavbarPlayer: FC<{ accessToken?: string }> = ({ accessToken }) => {
@@ -34,6 +45,16 @@ const NavbarPlayer: FC<{ accessToken?: string }> = ({ accessToken }) => {
         type: 'PLAY',
         payload: { ...controls, play: true },
       })
+      navigator.mediaSession.metadata = new MediaMetadata({
+        title: track?.name,
+        artist: track?.artists[0].name,
+        album: track?.album.name,
+        artwork: track?.album.images.map((image) => ({
+          src: image.url,
+          sizes: `${image.width}x${image.height}`,
+          type: 'image/jpeg',
+        })),
+      })
     }
   }
   const handlePause = () => {
@@ -43,6 +64,39 @@ const NavbarPlayer: FC<{ accessToken?: string }> = ({ accessToken }) => {
       payload: { ...controls, play: false },
     })
   }
+
+  const handleAudioRepeat = () => {
+    dispatch({
+      type: 'REPEAT',
+      payload: { ...controls, repeat: !controls.repeat },
+    })
+  }
+  const handleAleatory = () => {
+    dispatch({
+      type: 'ALEATORY',
+      payload: { ...controls, aleatory: !controls.aleatory },
+    })
+  }
+  const handleNext = () => {
+    handlePlay()
+    dispatch({
+      type: 'NEXT',
+      payload: { ...controls, play: true },
+    })
+  }
+
+  // useEffect(() => {
+  //   navigator.mediaSession.metadata = new MediaMetadata({
+  //     title: track?.name,
+  //     artist: track?.artists[0].name,
+  //     album: track?.album.name,
+  //     artwork: track?.album.images.map((image) => ({
+  //       src: image.url,
+  //       sizes: `${image.width}x${image.height}`,
+  //       type: 'image/jpeg',
+  //     })),
+  //   })
+  // }, [track])
 
   useEffect(() => {
     if (accessToken && player.currentTrackId) {
@@ -258,6 +312,11 @@ const NavbarPlayer: FC<{ accessToken?: string }> = ({ accessToken }) => {
                         display: none;
                       }
                     `}
+                    // onPointerUp={() => {
+                    //   if (button.action) {
+                    //     button.action()
+                    //   }
+                    // }}
                     onClick={() => {
                       controls.play ? handlePause() : handlePlay()
                     }}
