@@ -1,9 +1,12 @@
 /* eslint-disable no-unused-vars */
 import { css } from '@emotion/react'
+import styled from '@emotion/styled'
 import useScreen from '@Hooks/useScreen'
-import colors from '@Styles/global/colors'
+import reducerplayer, { initialState } from '@Redux/reducers/player/controls'
 import { SelectFor } from '@Types/redux/reducers/user/types'
 import Svg from '@Whil/components/Svg'
+import { atom } from 'jotai'
+import { useReducerAtom } from 'jotai/utils'
 import Atombutton from 'lib/Atombutton'
 import AtomImage from 'lib/AtomImage'
 import AtomInput from 'lib/AtomInput'
@@ -11,83 +14,138 @@ import AtomText from 'lib/AtomText'
 import AtomWrapper from 'lib/Atomwrapper'
 import spotifyAPI from 'lib/spotify/spotify'
 import { useRouter } from 'next/router'
-import {
-  ChangeEvent,
-  FC,
-  useEffect,
-  useLayoutEffect,
-  useReducer,
-  useRef,
-  useState,
-} from 'react'
+import { ChangeEvent, FC, useEffect, useRef, useState } from 'react'
 import { ColorExtractor } from 'react-color-extractor'
 import { useSelector } from 'react-redux'
-export enum IActions {
-  ON_Play = 'ON_Play',
-  ON_Repeat = 'ON_Repeat',
-  ON_Aleatory = 'ON_Aleatory',
-  ON_Volumen = 'ON_Volumen',
-  ON_Loop = 'ON_Loop',
-}
 
-export type IPlayer = {
-  play?: boolean
-  repeat?: boolean
-  aleatory?: boolean
-  loop?: boolean
-  volumen?: number
-}
-export type IAction = {
-  type: IActions
-  payload: IPlayer
-}
+const countAtom = atom(initialState)
 
-const reducer = (state: IPlayer, action: IAction): IPlayer => {
-  switch (action.type) {
-    case IActions.ON_Play:
-      return { ...state, play: action.payload.play }
-    case IActions.ON_Repeat:
-      return { ...state, repeat: action.payload.repeat }
-    case IActions.ON_Aleatory:
-      return { ...state, aleatory: action.payload.aleatory }
-    case IActions.ON_Volumen:
-      return { ...state, volumen: action.payload.volumen }
-    case IActions.ON_Loop:
-      return { ...state, loop: action.payload.loop }
-    default:
-      return state
+type Props = {
+  controls: {
+    play: boolean
+    repeat: boolean
+    aleatory: boolean
+    loop: boolean
+    volumen: number
+    color: string
+    currentTime: number
   }
 }
 
+const CustomInput = styled.input<Props>`
+  height: 6px;
+  grid-column: 2;
+  outline: none;
+  -webkit-appearance: none;
+  cursor: pointer;
+  background: rgb(92 86 86 / 60%);
+  border: none;
+  border-radius: 5px;
+  background-image: linear-gradient(
+    ${({ controls }) => controls.color},
+    ${({ controls }) => controls.color}
+  );
+  background-repeat: no-repeat;
+  background-size: ${({ controls }) =>
+      Math.floor(((controls.currentTime - 0) * 100) / 30 - 0)}%
+    100%;
+  ::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    height: 15px;
+    width: 15px;
+    border-radius: 50%;
+    background: ${({ controls }) => controls.color};
+    cursor: pointer;
+    box-shadow: 0 0 2px 0 #555;
+    transition: background 0.3s ease-in-out;
+  }
+  ::-moz-range-thumb {
+    -webkit-appearance: none;
+    height: 20px;
+    border-radius: 50%;
+    background: ${({ controls }) => controls.color};
+    cursor: pointer;
+    box-shadow: 0 0 2px 0 #555;
+    transition: background 0.3s ease-in-out;
+  }
+  ::-ms-thumb {
+    -webkit-appearance: none;
+    height: 20px;
+    width: 20px;
+    border-radius: 50%;
+    background: ${({ controls }) => controls.color};
+    cursor: ew-resize;
+    box-shadow: 0 0 2px 0 #555;
+    transition: background 0.3s ease-in-out;
+  }
+  ::-webkit-slider-thumb:hover {
+    background: ${({ controls }) => controls.color};
+  }
+  ::-moz-range-thumb:hover {
+    background: ${({ controls }) => controls.color};
+  }
+  ::-ms-thumb:hover {
+    background: ${({ controls }) => controls.color};
+  }
+
+  ::-webkit-slider-runnable-track {
+    -webkit-appearance: none;
+    box-shadow: none;
+    border: none;
+    background: transparent;
+  }
+  ::-moz-range-track {
+    -webkit-appearance: none;
+    box-shadow: none;
+    border: none;
+    background: transparent;
+  }
+  ::-ms-track {
+    -webkit-appearance: none;
+    box-shadow: none;
+    border: none;
+    background: transparent;
+  }
+  @media (max-width: 980px) {
+    height: 2px;
+    grid-row: 1 / -1;
+    grid-column: 1 / -1;
+    ::-webkit-slider-thumb {
+      margin-top: -6.95px;
+      width: 23px;
+      height: 23px;
+      opacity: 0;
+      background: rgba(241, 86, 209, 0.1);
+      border: 2.5px solid #83e584;
+      border-radius: 12px;
+      cursor: pointer;
+      -webkit-appearance: none;
+    }
+  }
+`
+
 const NavbarPlayer: FC<{ accessToken?: string }> = ({ accessToken }) => {
   const player = useSelector((state: SelectFor) => state.playerTracks)
-  const [color, setColor] = useState(colors.green_light)
   const [track, setTrack] = useState<SpotifyApi.SingleTrackResponse>()
-  const [currentTime, setCurrentTime] = useState(0)
   const audio = useRef<HTMLAudioElement>(null)
-  const [controls, dispatch] = useReducer(reducer, {
-    play: false,
-    repeat: false,
-    aleatory: false,
-    loop: false,
-    volumen: 5,
-  })
+  // const [controls, dispatch] = useReducer(reducerplayer, initialState)
+  const [controls, dispatch] = useReducerAtom(countAtom, reducerplayer)
   const router = useRouter()
   const screen = useScreen()
+
   const handlePlay = () => {
     audio.current?.play()
     if (audio.current) {
       dispatch({
-        type: IActions.ON_Play,
+        type: 'PLAY',
         payload: { ...controls, play: true },
       })
-      audio.current.volume = (controls?.volumen as number) / 100
     }
   }
   const handlePause = () => {
     audio.current?.pause()
     dispatch({
-      type: IActions.ON_Play,
+      type: 'PLAY',
       payload: { ...controls, play: false },
     })
   }
@@ -96,20 +154,20 @@ const NavbarPlayer: FC<{ accessToken?: string }> = ({ accessToken }) => {
     if (audio.current) {
       audio.current.volume = (controls?.volumen as number) / 100
     }
-    return () => {}
-  }, [controls.volumen])
-
-  useLayoutEffect(() => {
-    if (player.play) {
-      handlePlay()
+    return () => {
+      if (audio.current) {
+        audio.current.volume = 0
+      }
     }
-    return () => {}
-  }, [player.play])
+  }, [controls.volumen])
 
   useEffect(() => {
     if (audio.current) {
       audio.current.ontimeupdate = (event: any) => {
-        setCurrentTime(Math.round(event?.target?.currentTime))
+        dispatch({
+          type: 'CURRENT_TIME',
+          payload: { ...controls, currentTime: event.target.currentTime },
+        })
       }
     }
     return () => {
@@ -122,14 +180,15 @@ const NavbarPlayer: FC<{ accessToken?: string }> = ({ accessToken }) => {
   useEffect(() => {
     if (accessToken && player.currentTrackId) {
       spotifyAPI.setAccessToken(accessToken as string)
-      spotifyAPI
-        .getTrack(player.currentTrackId ?? '')
-        .then((res) =>
-          res.body.preview_url
-            ? setTrack(res.body)
-            : (setTrack({} as SpotifyApi.SingleTrackResponse),
-              setCurrentTime(0))
-        )
+      spotifyAPI.getTrack(player.currentTrackId ?? '').then((res) =>
+        res.body.preview_url
+          ? setTrack(res.body)
+          : (setTrack({} as SpotifyApi.SingleTrackResponse),
+            dispatch({
+              type: 'CURRENT_TIME',
+              payload: { ...controls, currentTime: 0 },
+            }))
+      )
     }
   }, [accessToken, player.currentTrackId])
 
@@ -157,7 +216,10 @@ const NavbarPlayer: FC<{ accessToken?: string }> = ({ accessToken }) => {
           'https://firebasestorage.googleapis.com/v0/b/swap-4f04f.appspot.com/o/images%2FFrame%2094.svg?alt=media&token=e9c9283e-808b-40ac-ba7b-3ce37452a9a2'
         }
         getColors={(colors: string[]) => {
-          setColor(colors[0])
+          dispatch({
+            type: 'COLOR',
+            payload: { ...controls, color: colors[0] },
+          })
         }}
       />
       <AtomWrapper
@@ -382,108 +444,19 @@ const NavbarPlayer: FC<{ accessToken?: string }> = ({ accessToken }) => {
                   audio.current?.currentTime ? audio.current.currentTime : 0
                 )}`}
           </AtomText>
-          <AtomInput
+          <CustomInput
             id="player-reproductor"
             type="range"
             min="0"
             max="30"
-            value={currentTime}
+            controls={controls}
+            value={controls.currentTime}
             disabled={screen <= 980}
             onChange={(event) => {
               if (audio.current) {
-                audio.current.currentTime = event.target.value
+                audio.current.currentTime = Number(event.target.value)
               }
             }}
-            css={css`
-              height: 6px;
-              grid-column: 2;
-              outline: none;
-              -webkit-appearance: none;
-              cursor: pointer;
-              background: rgb(92 86 86 / 60%);
-              border: none;
-              border-radius: 5px;
-              background-image: linear-gradient(${color}, ${color});
-              background-repeat: no-repeat;
-              background-size: ${Math.floor(
-                  ((currentTime - 0) * 100) / 30 - 0
-                )}%
-                100%;
-              ::-webkit-slider-thumb {
-                -webkit-appearance: none;
-                height: 15px;
-                width: 15px;
-                border-radius: 50%;
-                background: ${color};
-                cursor: pointer;
-                box-shadow: 0 0 2px 0 #555;
-                transition: background 0.3s ease-in-out;
-              }
-              ::-moz-range-thumb {
-                -webkit-appearance: none;
-                height: 20px;
-                border-radius: 50%;
-                background: ${color};
-                cursor: pointer;
-                box-shadow: 0 0 2px 0 #555;
-                transition: background 0.3s ease-in-out;
-              }
-              ::-ms-thumb {
-                -webkit-appearance: none;
-                height: 20px;
-                width: 20px;
-                border-radius: 50%;
-                background: ${color};
-                cursor: ew-resize;
-                box-shadow: 0 0 2px 0 #555;
-                transition: background 0.3s ease-in-out;
-              }
-              ::-webkit-slider-thumb:hover {
-                background: ${color};
-              }
-              ::-moz-range-thumb:hover {
-                background: ${color};
-              }
-              ::-ms-thumb:hover {
-                background: ${color};
-              }
-
-              ::-webkit-slider-runnable-track {
-                -webkit-appearance: none;
-                box-shadow: none;
-                border: none;
-                background: transparent;
-              }
-              ::-moz-range-track {
-                -webkit-appearance: none;
-                box-shadow: none;
-                border: none;
-                background: transparent;
-              }
-              ::-ms-track {
-                -webkit-appearance: none;
-                box-shadow: none;
-                border: none;
-                background: transparent;
-              }
-              @media (max-width: 980px) {
-                height: 2px;
-                grid-row: 1 / -1;
-                grid-column: 1 / -1;
-                ::-webkit-slider-thumb {
-                  margin-top: -6.95px;
-                  width: 23px;
-                  height: 23px;
-                  /* display: none; */
-                  opacity: 0;
-                  background: rgba(241, 86, 209, 0.1);
-                  border: 2.5px solid #83e584;
-                  border-radius: 12px;
-                  cursor: pointer;
-                  -webkit-appearance: none;
-                }
-              }
-            `}
           />
           {track?.preview_url && (
             <audio
@@ -493,7 +466,7 @@ const NavbarPlayer: FC<{ accessToken?: string }> = ({ accessToken }) => {
               autoPlay={controls.play}
               onEnded={() => {
                 dispatch({
-                  type: IActions.ON_Play,
+                  type: 'PLAY',
                   payload: {
                     play: false,
                   },
@@ -522,6 +495,7 @@ const NavbarPlayer: FC<{ accessToken?: string }> = ({ accessToken }) => {
           display: flex;
           align-self: center;
           justify-self: flex-end;
+          align-items: center;
           gap: 15px;
           @media (max-width: 980px) {
             display: none;
@@ -540,7 +514,7 @@ const NavbarPlayer: FC<{ accessToken?: string }> = ({ accessToken }) => {
           value={controls.volumen}
           onChange={(event: ChangeEvent<HTMLInputElement>) =>
             dispatch({
-              type: IActions.ON_Volumen,
+              type: 'VOLUMEN',
               payload: {
                 ...controls,
                 volumen: parseInt(event.target.value),
@@ -557,7 +531,10 @@ const NavbarPlayer: FC<{ accessToken?: string }> = ({ accessToken }) => {
             background: rgb(92 86 86 / 60%);
             border: none;
             border-radius: 5px;
-            background-image: linear-gradient(${color}, ${color});
+            background-image: linear-gradient(
+              ${controls.color},
+              ${controls.color}
+            );
             background-repeat: no-repeat;
             background-size: ${controls.volumen}% 100%;
             ::-webkit-slider-thumb {
@@ -565,7 +542,7 @@ const NavbarPlayer: FC<{ accessToken?: string }> = ({ accessToken }) => {
               height: 15px;
               width: 15px;
               border-radius: 50%;
-              background: ${color};
+              background: ${controls.color};
               cursor: pointer;
               box-shadow: 0 0 2px 0 #555;
               transition: background 0.3s ease-in-out;
@@ -574,7 +551,7 @@ const NavbarPlayer: FC<{ accessToken?: string }> = ({ accessToken }) => {
               -webkit-appearance: none;
               height: 20px;
               border-radius: 50%;
-              background: ${color};
+              background: ${controls.color};
               cursor: pointer;
               box-shadow: 0 0 2px 0 #555;
               transition: background 0.3s ease-in-out;
@@ -584,19 +561,19 @@ const NavbarPlayer: FC<{ accessToken?: string }> = ({ accessToken }) => {
               height: 20px;
               width: 20px;
               border-radius: 50%;
-              background: ${color};
+              background: ${controls.color};
               cursor: pointer;
               box-shadow: 0 0 2px 0 #555;
               transition: background 0.3s ease-in-out;
             }
             ::-webkit-slider-thumb:hover {
-              background: ${color};
+              background: ${controls.color};
             }
             ::-moz-range-thumb:hover {
-              background: ${color};
+              background: ${controls.color};
             }
             ::-ms-thumb:hover {
-              background: ${color};
+              background: ${controls.color};
             }
 
             ::-webkit-slider-runnable-track {
