@@ -21,13 +21,6 @@ import BarVolumen from './volumen.bar'
 const strAtom = atom(
   localStorage.getItem('controls') ?? JSON.stringify(initialState)
 )
-const controlsAtomWithPersistence = atom(
-  (get) => get(strAtom),
-  (get, set, value) => {
-    set(strAtom, value)
-    localStorage.setItem('controls', value)
-  }
-)
 
 const countAtom = atom(initialState)
 
