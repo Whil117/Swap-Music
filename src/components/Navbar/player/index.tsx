@@ -5,6 +5,7 @@ import useScreen from '@Hooks/useScreen'
 import reducerplayer, { initialState } from '@Redux/reducers/player/controls'
 import { SelectFor } from '@Types/redux/reducers/user/types'
 import Svg from '@Whil/components/Svg'
+import { useColor } from 'color-thief-react'
 import { atom } from 'jotai'
 import { useReducerAtom } from 'jotai/utils'
 import Atombutton from 'lib/Atombutton'
@@ -128,8 +129,14 @@ const NavbarPlayer: FC<{ accessToken?: string }> = ({ accessToken }) => {
   const player = useSelector((state: SelectFor) => state.playerTracks)
   const [track, setTrack] = useState<SpotifyApi.SingleTrackResponse>()
   const audio = useRef<HTMLAudioElement>(null)
+
   // const [controls, dispatch] = useReducer(reducerplayer, initialState)
+
   const [controls, dispatch] = useReducerAtom(countAtom, reducerplayer)
+  const { data, loading, error } = useColor(
+    'https://storage.googleapis.com/cdn-bucket-ixulabs-platform/AMC-001/images/DRAMC.png',
+    'hex'
+  )
   const router = useRouter()
   const screen = useScreen()
 
