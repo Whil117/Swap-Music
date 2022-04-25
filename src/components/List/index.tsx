@@ -26,11 +26,13 @@ const SectionProps: FC<Props> = ({ children, Elements }) => {
           <AtomWrapper
             css={css`
               .swiper {
-                margin: 20px 0;
+                /* gap: 20px; */
+                /* margin: 20px 0; */
                 width: 100%;
                 height: auto;
               }
               .swiper-slide {
+                gap: 20px;
                 text-align: center;
                 font-size: 18px;
                 display: flex;
@@ -91,7 +93,7 @@ const SectionProps: FC<Props> = ({ children, Elements }) => {
               }}
               pagination={{
                 el: '.swiper-pagination',
-                clickable: true,
+                clickable: false,
               }}
               navigation
             >
@@ -105,6 +107,7 @@ const SectionProps: FC<Props> = ({ children, Elements }) => {
               display: flex;
               flex-direction: row;
               flex-wrap: wrap;
+              gap: 20px;
               justify-content: flex-start;
             `}
           >

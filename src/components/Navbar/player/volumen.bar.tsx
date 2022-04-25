@@ -1,31 +1,35 @@
 /* eslint-disable no-unused-vars */
 import { css } from '@emotion/react'
-import { ActionPlayer } from '@Redux/reducers/player/controls'
+import { useAtom } from 'jotai'
 import AtomInput from 'lib/AtomInput'
-import { ChangeEvent, FC, RefObject, useEffect, useState } from 'react'
+import { ChangeEvent, FC, RefObject, useEffect } from 'react'
+import { controlsAtom } from '.'
 
 type Props = {
-  dispatch: (action: ActionPlayer) => void
   volumen: number
   color: string
   audio: RefObject<HTMLAudioElement>
 }
 
-const BarVolumen: FC<Props> = ({ audio, dispatch, color }) => {
-  const [volumen, setvolumen] = useState<number>(25)
+const BarVolumen: FC<Props> = ({ audio, color }) => {
+  const [volumen, setvolumen] = useAtom(controlsAtom)
   useEffect(() => {
     if (audio.current) {
-      audio.current.volume = Number(volumen as unknown as number) / 100
+      audio.current.volume = Number(volumen?.volumen as unknown as number) / 100
     }
+    return () => {}
   }, [volumen])
   return (
     <AtomInput
       id="volumen"
       type="range"
       placeholder="Search"
-      value={volumen}
+      value={volumen.volumen}
       onChange={(event: ChangeEvent<HTMLInputElement>) =>
-        setvolumen(parseInt(event.target.value))
+        setvolumen({
+          ...volumen,
+          volumen: Number(event.target.value),
+        })
       }
       css={css`
         width: 150px;
@@ -39,7 +43,7 @@ const BarVolumen: FC<Props> = ({ audio, dispatch, color }) => {
         border-radius: 5px;
         background-image: linear-gradient(${color}, ${color});
         background-repeat: no-repeat;
-        background-size: ${volumen}% 100%;
+        background-size: ${volumen.volumen}% 100%;
         ::-webkit-slider-thumb {
           -webkit-appearance: none;
           height: 15px;

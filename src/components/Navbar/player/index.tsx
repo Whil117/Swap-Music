@@ -22,13 +22,13 @@ const strAtom = atom(
   localStorage.getItem('controls') ?? JSON.stringify(initialState)
 )
 
-const countAtom = atom(initialState)
+export const controlsAtom = atom(initialState)
 
 const NavbarPlayer: FC<{ accessToken?: string }> = ({ accessToken }) => {
   const player = useSelector((state: SelectFor) => state.playerTracks)
   const [track, setTrack] = useState<SpotifyApi.SingleTrackResponse>()
   const audio = useRef<HTMLAudioElement>(null)
-  const [controls, dispatch] = useReducerAtom(countAtom, reducerplayer)
+  const [controls, dispatch] = useReducerAtom(controlsAtom, reducerplayer)
   const router = useRouter()
   //crea un evento para guardar la imagen del album
   const handlePlay = () => {
@@ -48,6 +48,7 @@ const NavbarPlayer: FC<{ accessToken?: string }> = ({ accessToken }) => {
           type: 'image/jpeg',
         })),
       })
+      audio.current.volume = controls.volumen / 100
     }
   }
   const handlePause = () => {
@@ -359,7 +360,6 @@ const NavbarPlayer: FC<{ accessToken?: string }> = ({ accessToken }) => {
           ))}
           <BarVolumen
             audio={audio}
-            dispatch={dispatch}
             color={controls.color}
             volumen={controls.volumen}
           />
