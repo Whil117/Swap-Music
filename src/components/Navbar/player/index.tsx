@@ -30,7 +30,7 @@ const NavbarPlayer: FC<{ accessToken?: string }> = ({ accessToken }) => {
   const audio = useRef<HTMLAudioElement>(null)
   const [controls, dispatch] = useReducerAtom(countAtom, reducerplayer)
   const router = useRouter()
-
+  //crea un evento para guardar la imagen del album
   const handlePlay = () => {
     audio.current?.play()
     if (audio.current) {
@@ -166,6 +166,7 @@ const NavbarPlayer: FC<{ accessToken?: string }> = ({ accessToken }) => {
               }
               alt={track?.name as string}
               borderRadius="10px"
+              id="IMAGE"
               width="100%"
               height="100%"
               css={css`

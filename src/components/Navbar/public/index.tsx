@@ -22,7 +22,7 @@ const Sections = [
     icon: 'search',
   },
   {
-    name: 'My Library',
+    name: 'Your Library',
     path: '/swap/library',
     icon: 'library',
   },
@@ -39,6 +39,7 @@ const Navbar: FC<Props> = () => {
     <AtomWrapper
       as="nav"
       css={css`
+        gap: 10px;
         padding: 1rem 1.5rem;
         color: ${colors.white};
         width: auto;
@@ -47,7 +48,7 @@ const Navbar: FC<Props> = () => {
         grid-column: 1 / 2;
         background: #1a1c1e;
         display: grid;
-        grid-template-rows: auto auto auto 1fr;
+        grid-template-rows: 65px auto auto 1fr;
         border-radius: 0px 10px 0px 0px;
         top: 0;
         @media (max-width: 980px) {
@@ -59,6 +60,7 @@ const Navbar: FC<Props> = () => {
         as="h1"
         css={css`
           grid-row: 1 / 2;
+          gap: 2px;
           align-self: center;
           display: flex;
           align-items: center;
@@ -85,6 +87,8 @@ const Navbar: FC<Props> = () => {
           >
             <AtomText
               as="a"
+              margin="15px 0"
+              fontSize="18px"
               css={css`
                 display: flex;
                 align-items: center;
@@ -96,7 +100,6 @@ const Navbar: FC<Props> = () => {
                 as="p"
                 css={css`
                   color: ${colors.white};
-                  font-size: 16px;
                   font-weight: 500;
                 `}
               >
@@ -134,7 +137,10 @@ const Navbar: FC<Props> = () => {
             >
               <AtomText
                 as="a"
+                margin="15px 0"
+                fontSize="18px"
                 css={css`
+                  opacity: 0.5;
                   display: flex;
                   align-items: center;
                   gap: 15px;

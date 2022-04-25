@@ -64,17 +64,10 @@ const Playlist: NextPageFC<Props> = ({ Playlist }) => {
       >
         {Playlist.tracks.items.map((track, idx) => (
           <Track
+            {...{ ...track.track }}
+            position={idx}
             key={track.track.id}
-            {...{
-              id: track.track.id,
-              count: idx,
-              name: track.track.name,
-              artists: track.track.artists,
-              duration: track.track.duration_ms,
-              album: {},
-              duration_ms: track.track.duration_ms,
-              saved: false,
-            }}
+            withImage
             onPlayer={() => {
               convertPlayerTracks(dispatch, {
                 id: track?.track.id,

@@ -5,12 +5,13 @@ import { getSession, SessionProvider } from 'next-auth/react'
 import type { AppContext, AppPropsWithLayout } from 'next/app'
 import 'react-form-builder2/dist/app.css'
 import { Provider } from 'react-redux'
+import 'react-toastify/dist/ReactToastify.css'
 import { PersistGate } from 'redux-persist/integration/react'
 import 'swiper/css'
 import 'swiper/css/navigation'
 import 'swiper/css/pagination'
 import 'swiper/css/scrollbar'
-
+import '../styles/global/style.css'
 const MyApp = ({
   router,
   Component,

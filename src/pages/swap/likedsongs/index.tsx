@@ -130,22 +130,10 @@ const LikedSongs: NextPageFCProps = () => {
       >
         {user?.SavedTracks?.items?.map((item, index) => (
           <Track
+            {...{ ...item.track }}
             key={item.track.id}
-            {...{
-              id: item.track.id,
-              count: index,
-              name: item.track.name,
-              image: item.track.album.images[0].url,
-              artists: item.track.artists,
-              album: item.track.album,
-              duration: item.track.duration_ms,
-              saved: true,
-              styles: {
-                width: {
-                  song: '40%',
-                },
-              },
-            }}
+            position={index}
+            withImage
           />
         ))}
       </AtomWrapper>

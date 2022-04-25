@@ -132,9 +132,15 @@ type Props = {
   children?: ReactNode
   as: TagsTexts
   css?: SerializedStyles
+  padding?: string
+  margin?: string
   htmlFor?: string
+  fontSize?: string
 }
 export const AtomText = styled.span<Props>`
+  font-size: ${(props) => props.fontSize};
+  margin: ${(props) => (props.margin ? `${props.margin}` : '0 0 0 0')};
+  padding: ${(props) => (props.padding ? `${props.padding}` : '0 0 0 0')};
   color: ${(props) => props.color || '#fff'};
   ${(props) => props?.css};
 `

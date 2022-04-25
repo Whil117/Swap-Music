@@ -8,10 +8,11 @@ import AtomText from 'lib/AtomText'
 import AtomWrapper from 'lib/Atomwrapper'
 import { useRouter } from 'next/router'
 import { FC } from 'react'
+import { toast } from 'react-toastify'
 
 type Props = {
   id: string
-  count: number
+  position: number
   onPlayer?: () => void
   name: string
   image?: string
@@ -19,33 +20,31 @@ type Props = {
     name?: string
     id?: string
   }[]
-  album: {
+  album?: {
     id?: string
     name?: string
+    images?: {
+      url?: string
+    }[]
   }
-  duration: number
-  saved?: boolean
-  styles?: {
-    width?: {
-      song?: string
-      album?: string
-      part3?: string
-    }
-  }
+  preview_url: string | null
+  duration_ms: number
+  withImage?: boolean
 }
 
 const Track: FC<Props> = (props) => {
-  const [hours, minutes, seconds] = useTime({ ms: props.duration })
+  const [hours, minutes, seconds] = useTime({ ms: props.duration_ms })
   const router = useRouter()
 
   const screen = useScreen()
+
   return (
     <AtomWrapper
       css={css`
         display: grid;
         /* grid-template-columns: 50px 70px 1fr 1fr 50px; */
         grid-template-columns: ${
-          props.image ? '50px 70px 1fr 1fr 50px' : '50px  1fr 50px'
+          props.withImage ? '50px 70px 1fr 1fr 50px' : '50px  1fr 50px'
         };
         gap: 10px;
         width: 100%;
@@ -58,15 +57,44 @@ const Track: FC<Props> = (props) => {
       `}
       key={props.id}
       onClick={
-        screen <= 980 ? () => props.onPlayer && props.onPlayer() : () => {}
+        screen <= 980
+          ? () =>
+              props.onPlayer && props.preview_url
+                ? props.onPlayer()
+                : toast.error('This song isn`t available', {
+                    position: 'top-center',
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                  })
+          : () => {}
       }
     >
       <Atombutton
-        onClick={props.onPlayer}
+        onClick={
+          props.preview_url
+            ? props.onPlayer
+            : () => {
+                toast.error('This song isn`t available', {
+                  position: 'top-center',
+                  autoClose: 5000,
+                  hideProgressBar: false,
+                  closeOnClick: true,
+                  pauseOnHover: true,
+                  draggable: true,
+                  progress: undefined,
+                })
+              }
+        }
         css={css`
           grid-column: 1;
           justify-self: center;
           align-self: center;
+          margin: 0;
+          padding: 0;
           @media (max-width: 568px) {
             display: none;
           }
@@ -75,18 +103,20 @@ const Track: FC<Props> = (props) => {
         <AtomText
           as="p"
           css={css`
+            margin: 0;
+            padding: 0;
             font-size: 16px;
             font-weight: 600;
           `}
         >
-          {props.count + 1}
+          {props.position + 1}
         </AtomText>
       </Atombutton>
-      {props.image && (
+      {props.withImage && props?.album?.images && (
         <AtomImage
-          src={props.image || ''}
-          width="100%"
-          height="100%"
+          src={(props?.album?.images[0].url as string) ?? ''}
+          width="60px"
+          height="60px"
           alt={props.name}
           borderRadius="5px"
           css={css`
@@ -99,7 +129,7 @@ const Track: FC<Props> = (props) => {
       )}
       <AtomWrapper
         css={css`
-          grid-column: ${props.image ? '3 / 4' : '2 / 5'};
+          grid-column: ${props.withImage ? '3 / 4' : '2 / 3'};
           @media (max-width: 568px) {
             grid-column: 1 / -1;
           }
@@ -146,7 +176,7 @@ const Track: FC<Props> = (props) => {
           </AtomWrapper>
         )}
       </AtomWrapper>
-      {Object.keys(props.album).length > 0 && (
+      {Object.keys(props.album ?? {}).length > 0 && (
         <AtomWrapper
           css={css`
             grid-column: 4 / 5;
@@ -194,7 +224,7 @@ const Track: FC<Props> = (props) => {
       </Atombutton> */}
       <AtomWrapper
         css={css`
-          grid-column: 5 / 6;
+          grid-column: ${props.withImage ? '5 / 6' : '3 /4'};
           align-self: center;
           justify-self: center;
           @media (max-width: 568px) {

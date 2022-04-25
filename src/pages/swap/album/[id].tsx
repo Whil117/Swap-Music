@@ -80,7 +80,7 @@ const Album: NextPageFC<Props> = ({
           alig-items: flex-start;
           padding: 0 90px;
           flex-direction: column;
-          gap: 20px;
+          gap: 25px;
           @media (max-width: 980px) {
             padding: 0 30px;
           }
@@ -88,17 +88,9 @@ const Album: NextPageFC<Props> = ({
       >
         {TracksAlbum.items.map((track, idx) => (
           <Track
+            {...track}
             key={track.id}
-            {...{
-              id: track.id,
-              count: idx,
-              name: track.name,
-              artists: track.artists,
-              duration: track.duration_ms,
-              album: {},
-              duration_ms: track.duration_ms,
-              saved: false,
-            }}
+            position={idx}
             onPlayer={() => {
               convertPlayerTracks(dispatch, {
                 id: track?.id,
