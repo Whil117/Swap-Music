@@ -19,7 +19,6 @@
     "@types/react-color": "^3.0.6",
     "apollo-server-micro": "^3.6.7",
     "axios": "^0.26.1",
-    "colorthief": "^2.3.2",
     "dotenv": "^16.0.0",
     "formik": "^2.2.9",
     "framer-motion": "^5.0.0",
