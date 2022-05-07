@@ -102,7 +102,7 @@ const Hidratation: FC<Props> = ({
 
   useEffect(() => {
     if (hidratation) {
-      DataUserFetching()
+      Promise.all([DataUserFetching()])
         .then((res) => {
           setShow(false)
           dispatch({
@@ -113,7 +113,7 @@ const Hidratation: FC<Props> = ({
           })
           dispatch({
             type: 'HIDRATATION',
-            payload: res,
+            payload: { ...res[0] },
           })
         })
         .catch(() => {
