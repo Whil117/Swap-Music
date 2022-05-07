@@ -11,10 +11,10 @@ import { FC } from 'react'
 import { toast } from 'react-toastify'
 
 type Props = {
-  id: string
-  position: number
+  id?: string
+  position?: number
   onPlayer?: () => void
-  name: string
+  name?: string
   image?: string
   artists: {
     name?: string
@@ -27,8 +27,8 @@ type Props = {
       url?: string
     }[]
   }
-  preview_url: string | null
-  duration_ms: number
+  preview_url?: string | null
+  duration_ms?: number
   withImage?: boolean
 }
 
@@ -109,7 +109,7 @@ const Track: FC<Props> = (props) => {
             font-weight: 600;
           `}
         >
-          {props.position + 1}
+          {(props.position as number) + 1}
         </AtomText>
       </Atombutton>
       {props.withImage && props?.album?.images && (
@@ -117,7 +117,7 @@ const Track: FC<Props> = (props) => {
           src={(props?.album?.images[0]?.url as string) ?? ''}
           width="60px"
           height="60px"
-          alt={props.name}
+          alt={props.name as string}
           borderRadius="5px"
           css={css`
             grid-column: 2 / 3;
