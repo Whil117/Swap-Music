@@ -1,88 +1,53 @@
-import Card from '@Components/Cards/Card'
-import { SelectFor } from '@Types/redux/reducers/user/types'
-import Button from '@Whil/components/Button'
-import Div from '@Whil/components/Div'
-import P from '@Whil/components/P'
+import { stepsId } from '@Components/@atoms/AtomBarScroll'
+import Step1 from '@Components/library/step1'
+import Step2 from '@Components/library/step2'
+import Step3 from '@Components/library/step3'
+import Step4 from '@Components/library/step4'
+import { css } from '@emotion/react'
+import { atom, useAtom } from 'jotai'
+import AtomWrapper from 'lib/Atomwrapper'
 import { NextPageFCProps } from 'next'
-import { useRouter } from 'next/router'
-import { useSelector } from 'react-redux'
+
+const steps = atom({
+  Playlists: {
+    title: 'Playlists',
+    component: <Step1 />,
+  },
+  Podcasts: {
+    title: 'Podcasts',
+    component: <Step2 />,
+  },
+  Artists: {
+    title: 'Artists',
+    component: <Step3 />,
+  },
+  Albums: {
+    title: 'Albums',
+    component: <Step4 />,
+  },
+})
+
+type Steps = { [key: string]: { title: string; component: JSX.Element } }
 
 const Library: NextPageFCProps = () => {
-  const user = useSelector((state: SelectFor) => state.user)
-  const router = useRouter()
-
+  const [step] = useAtom<Steps>(steps)
+  const [stepById] = useAtom(stepsId)
   return (
-    <Div
-      styles={{
-        margin: '60px 0 0 60px',
-        alignitems: 'flex-start',
-      }}
+    <AtomWrapper
+      css={css`
+        margin-top: 100px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 0px 90px;
+        @media (max-width: 1024px) {
+          padding: 0px 20px;
+        }
+      `}
     >
-      <h1>Library</h1>
-      <div>
-        <h2>Playlists</h2>
-        <Div
-          styles={{
-            justifycontent: 'flex-start',
-            flexdirection: 'row',
-            flexwrap: 'wrap',
-          }}
-        >
-          <Button
-            click={() => router.push('/swap/likedsongs')}
-            props={{
-              type: 'submit',
-              style: {
-                justifycontent: 'flex-start',
-                alignitems: 'flex-end',
-                width: '420px',
-                height: '284px',
-              },
-            }}
-          >
-            <Div
-              styles={{
-                boxshadow: 'a',
-                flexdirection: 'column',
-                justifycontent: 'end',
-                alignitems: 'baseline',
-              }}
-            >
-              <P
-                styles={{
-                  fontSize: '32px',
-                  fontWeight: 'bold',
-                  margin: '10px 0',
-                }}
-              >
-                Liked Songs
-              </P>
-              <P
-                styles={{
-                  color: 'white',
-                  fontSize: '18px',
-                  fontWeight: '400',
-                  textalign: 'initial',
-                }}
-              >
-                {user.SavedTracks.total} Liked Songs
-              </P>
-            </Div>
-          </Button>
-          {user.Playlists.items.map((item) => (
-            <Card
-              key={item.id}
-              {...{
-                id: item.id,
-                type: item.type,
-                image: item?.images[0]?.url,
-                name: item.name,
-              }}
-            />
-          ))}
-        </Div>
-      </div>
-    </Div>
+      {step[stepById]?.component}
+    </AtomWrapper>
   )
 }
 Library.Layout = 'swap'

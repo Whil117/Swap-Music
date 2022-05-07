@@ -2,20 +2,27 @@ import { colorBanner, titleBanner } from '@Components/@organisms/OrganismBanner'
 import { css } from '@emotion/react'
 import { SelectFor } from '@Types/redux/reducers/user/types'
 import { atom, useAtom } from 'jotai'
+import Atombutton from 'lib/Atombutton'
 import AtomImage from 'lib/AtomImage'
 import AtomText from 'lib/AtomText'
 import AtomWrapper from 'lib/Atomwrapper'
 import Link from 'next/link'
+import { useRouter } from 'next/router'
 import { FC, useEffect } from 'react'
 import { useSelector } from 'react-redux'
 
 const scrollAtom = atom<number>(0)
 
+export const stepsId = atom('Playlists')
+
 const AtomBarScroll: FC = () => {
   const user = useSelector((state: SelectFor) => state.user)
   const [colors] = useAtom(colorBanner)
   const [scrollPosition, setScrollPosition] = useAtom(scrollAtom)
+  const [steps, setSteps] = useAtom(stepsId)
   const [title] = useAtom(titleBanner)
+  const router = useRouter()
+
   useEffect(() => {
     document?.getElementById('view')?.addEventListener(
       'scroll',
@@ -40,7 +47,9 @@ const AtomBarScroll: FC = () => {
         `}
         padding: 10px 20px;
         display: flex;
-        justify-content: ${scrollPosition >= 280
+        justify-content: ${router.asPath.includes('swap/library')
+          ? 'space-between'
+          : scrollPosition >= 280
           ? 'space-between'
           : 'flex-end'};
         align-items: center;
@@ -49,6 +58,33 @@ const AtomBarScroll: FC = () => {
         z-index: 2;
       `}
     >
+      {router.asPath.includes('swap/library') && (
+        <AtomWrapper
+          css={css`
+            display: flex;
+          `}
+        >
+          {['Playlists', 'Podcasts', 'Artists', 'Albums'].map((step, index) => (
+            <Atombutton
+              key={step + index}
+              onClick={() => {
+                setSteps(step)
+              }}
+              css={css`
+                border-radius: 5px;
+                color: white;
+                font-weight: bold;
+                padding: 10px;
+                background-color: ${steps === step
+                  ? 'rgba(255,255,255,0.25)'
+                  : 'transparent'};
+              `}
+            >
+              {step}
+            </Atombutton>
+          ))}
+        </AtomWrapper>
+      )}
       {scrollPosition >= 280 && (
         <AtomText
           as="p"

@@ -76,19 +76,6 @@ const NavbarPlayer: FC<{ accessToken?: string }> = ({ accessToken }) => {
     })
   }
 
-  // useEffect(() => {
-  //   navigator.mediaSession.metadata = new MediaMetadata({
-  //     title: track?.name,
-  //     artist: track?.artists[0].name,
-  //     album: track?.album.name,
-  //     artwork: track?.album.images.map((image) => ({
-  //       src: image.url,
-  //       sizes: `${image.width}x${image.height}`,
-  //       type: 'image/jpeg',
-  //     })),
-  //   })
-  // }, [track])
-
   useEffect(() => {
     if (accessToken && player.currentTrackId) {
       spotifyAPI.setAccessToken(accessToken as string)
