@@ -5,6 +5,7 @@ import AtomInput from 'lib/AtomInput'
 import AtomText from 'lib/AtomText'
 import AtomWrapper from 'lib/Atomwrapper'
 import { NextPageFCProps } from 'next'
+
 import * as Yup from 'yup'
 
 const NewArtist: NextPageFCProps = () => {

@@ -12,5 +12,10 @@ module.exports = {
     });
 
     return config;
-  }
+  },
+  exclude: [/\.m?jsx?$/, /\.html$/, /\.json$/, /\.tsx?$/],
+  loader: require.resolve("file-loader"),
+  options: {
+    name: "static/media/[name].[hash:8].[ext]",
+  },
 }

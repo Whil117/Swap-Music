@@ -1,11 +1,9 @@
 /* eslint-disable no-unused-vars */
-import { css } from '@emotion/react'
-import { Formik, FormikValues } from 'formik'
+import { FormikValues } from 'formik'
 import Atomdragandrop from 'lib/Atomdragandrop'
-import AtomInput from 'lib/AtomInput'
 import AtomText from 'lib/AtomText'
 import AtomWrapper from 'lib/Atomwrapper'
-import { FC, useEffect, useState } from 'react'
+import { FC } from 'react'
 
 type Props = {
   formik: FormikValues

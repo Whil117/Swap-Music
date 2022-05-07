@@ -1,12 +1,12 @@
 /* eslint-disable no-unused-vars */
 import { css, SerializedStyles } from '@emotion/react'
 import styled from '@emotion/styled'
-import { Formik, FormikValues } from 'formik'
+import { FormikValues } from 'formik'
 import { motion } from 'framer-motion'
 import AtomText from 'lib/AtomText'
 import AtomWrapper from 'lib/Atomwrapper'
 import lodash from 'lodash'
-import { ChangeEvent, useEffect, useState } from 'react'
+import { ChangeEvent, useState } from 'react'
 
 type Props = {
   id: string
