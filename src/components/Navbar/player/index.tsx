@@ -3,7 +3,6 @@ import { css } from '@emotion/react'
 import reducerplayer, { initialState } from '@Redux/reducers/player/controls'
 import { SelectFor } from '@Types/redux/reducers/user/types'
 import Svg from '@Whil/components/Svg'
-import colorThief from 'colorthief'
 import { atom } from 'jotai'
 import { useReducerAtom } from 'jotai/utils'
 import Atombutton from 'lib/Atombutton'
@@ -27,11 +26,6 @@ const NavbarPlayer: FC<{ accessToken?: string }> = ({ accessToken }) => {
   const img = useRef<HTMLImageElement>(null)
   const [controls, dispatch] = useReducerAtom(controlsAtom, reducerplayer)
   const router = useRouter()
-  const declareColor = new colorThief()
-
-  useEffect(() => {
-    console.log(colorThief())
-  }, [img])
 
   //crea un evento para guardar la imagen del album
   const handlePlay = () => {
