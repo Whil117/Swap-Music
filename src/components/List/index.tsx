@@ -93,7 +93,7 @@ const SectionProps: FC<Props> = ({ children, Elements }) => {
               }}
               pagination={{
                 el: '.swiper-pagination',
-                clickable: false,
+                clickable: true,
               }}
               navigation
             >

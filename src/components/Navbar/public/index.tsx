@@ -46,7 +46,7 @@ const Navbar: FC<Props> = () => {
         z-index: 2;
         grid-row: 1 / 2;
         grid-column: 1 / 2;
-        background: #1a1c1e;
+        background: #191922;
         display: grid;
         grid-template-rows: 65px auto auto 1fr;
         border-radius: 0px 10px 0px 0px;
@@ -100,7 +100,7 @@ const Navbar: FC<Props> = () => {
                 as="p"
                 css={css`
                   color: ${colors.white};
-                  font-weight: 500;
+                  font-weight: 400;
                 `}
               >
                 {section.name}
@@ -153,7 +153,7 @@ const Navbar: FC<Props> = () => {
                     css={css`
                       color: ${colors.white};
                       font-size: 16px;
-                      font-weight: 500;
+                      font-weight: 300;
                     `}
                   >
                     {section.name.slice(0, 13)}...
@@ -164,7 +164,7 @@ const Navbar: FC<Props> = () => {
                     css={css`
                       color: ${colors.white};
                       font-size: 16px;
-                      font-weight: 500;
+                      font-weight: 300;
                     `}
                   >
                     {section.name}

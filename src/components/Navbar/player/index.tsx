@@ -3,6 +3,7 @@ import { css } from '@emotion/react'
 import reducerplayer, { initialState } from '@Redux/reducers/player/controls'
 import { SelectFor } from '@Types/redux/reducers/user/types'
 import Svg from '@Whil/components/Svg'
+import colorThief from 'colorthief'
 import { atom } from 'jotai'
 import { useReducerAtom } from 'jotai/utils'
 import Atombutton from 'lib/Atombutton'
@@ -17,19 +18,21 @@ import { ColorExtractor } from 'react-color-extractor'
 import { useSelector } from 'react-redux'
 import Progressbar from './progressbar'
 import BarVolumen from './volumen.bar'
-
-const strAtom = atom(
-  localStorage.getItem('controls') ?? JSON.stringify(initialState)
-)
-
 export const controlsAtom = atom(initialState)
 
 const NavbarPlayer: FC<{ accessToken?: string }> = ({ accessToken }) => {
   const player = useSelector((state: SelectFor) => state.playerTracks)
   const [track, setTrack] = useState<SpotifyApi.SingleTrackResponse>()
   const audio = useRef<HTMLAudioElement>(null)
+  const img = useRef<HTMLImageElement>(null)
   const [controls, dispatch] = useReducerAtom(controlsAtom, reducerplayer)
   const router = useRouter()
+  const declareColor = new colorThief()
+
+  useEffect(() => {
+    console.log(colorThief())
+  }, [img])
+
   //crea un evento para guardar la imagen del album
   const handlePlay = () => {
     audio.current?.play()
@@ -161,6 +164,7 @@ const NavbarPlayer: FC<{ accessToken?: string }> = ({ accessToken }) => {
             `}
           >
             <AtomImage
+              ref={img}
               src={
                 (track?.album?.images[0]?.url as string) ??
                 'https://firebasestorage.googleapis.com/v0/b/swap-4f04f.appspot.com/o/images%2FFrame%2094.svg?alt=media&token=e9c9283e-808b-40ac-ba7b-3ce37452a9a2'

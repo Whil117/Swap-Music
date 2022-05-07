@@ -114,7 +114,7 @@ const Track: FC<Props> = (props) => {
       </Atombutton>
       {props.withImage && props?.album?.images && (
         <AtomImage
-          src={(props?.album?.images[0].url as string) ?? ''}
+          src={(props?.album?.images[0]?.url as string) ?? ''}
           width="60px"
           height="60px"
           alt={props.name}
