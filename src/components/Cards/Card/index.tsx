@@ -53,11 +53,26 @@ const Card: FC<Card> = (props) => {
         }
         @media (max-width: 520px) {
           width: 190px;
+          height: 240px;
           margin: 5px;
           /* height: 180px; */
         }
         @media (max-width: 465px) {
-          width: 160px;
+          width: 180px;
+          /* height: 180px; */
+        }
+        @media (max-width: 445px) {
+          width: 170px;
+          /* height: 180px; */
+        }
+        @media (max-width: 425px) {
+          width: 150px;
+          height: 220px;
+          /* height: 180px; */
+        }
+        @media (max-width: 375px) {
+          width: 130px;
+          height: 220px;
           /* height: 180px; */
         }
       `}
@@ -74,11 +89,18 @@ const Card: FC<Card> = (props) => {
         css={css`
           @media (max-width: 520px) {
             width: 170px;
-            height: 150px;
+            height: 170px;
           }
-          @media (max-width: 465px) {
-            width: 140px;
-            /* height: 130px; */
+
+          @media (max-width: 445px) {
+            width: 160px;
+            height: 160px;
+            /* height: 180px; */
+          }
+          @media (max-width: 425px) {
+            width: 130px;
+            height: 130px;
+            /* height: 180px; */
           }
         `}
       />
