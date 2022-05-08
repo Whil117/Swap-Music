@@ -15,6 +15,8 @@ const scrollAtom = atom<number>(0)
 
 export const stepsId = atom('Playlists')
 
+const validPathsSongs = ['album', 'artist', 'playlist', 'likedsongs', 'profile']
+
 const AtomBarScroll: FC = () => {
   const user = useSelector((state: SelectFor) => state.user)
   const [colors] = useAtom(colorBanner)
@@ -24,24 +26,34 @@ const AtomBarScroll: FC = () => {
   const router = useRouter()
 
   useEffect(() => {
-    document?.getElementById('view')?.addEventListener(
-      'scroll',
-      () => {
-        setScrollPosition(document?.getElementById('view')?.scrollTop as number)
-      },
-      { passive: true }
-    )
-    return () => {
-      document?.getElementById('view')?.removeEventListener('scroll', () => {
-        setScrollPosition(document?.getElementById('view')?.scrollTop as number)
-      })
+    if (validPathsSongs.includes(router.pathname.split('/')[2])) {
+      document?.getElementById('view')?.addEventListener(
+        'scroll',
+        () => {
+          setScrollPosition(
+            document?.getElementById('view')?.scrollTop as number
+          )
+        },
+        { passive: true }
+      )
     }
-  }, [])
+
+    return () => {
+      if (validPathsSongs.includes(router.pathname.split('/')[2])) {
+        document?.getElementById('view')?.removeEventListener('scroll', () => {
+          setScrollPosition(
+            document?.getElementById('view')?.scrollTop as number
+          )
+        })
+      }
+    }
+  }, [router.pathname])
 
   return (
     <AtomWrapper
       css={css`
-        ${scrollPosition >= 280 &&
+        ${validPathsSongs.includes(router.pathname.split('/')[2]) &&
+        scrollPosition >= 280 &&
         css`
           background: ${colors[0]};
         `}
@@ -49,7 +61,8 @@ const AtomBarScroll: FC = () => {
         display: flex;
         justify-content: ${router.asPath.includes('swap/library')
           ? 'space-between'
-          : scrollPosition >= 280
+          : validPathsSongs.includes(router.pathname.split('/')[2]) &&
+            scrollPosition >= 280
           ? 'space-between'
           : 'flex-end'};
         align-items: center;
@@ -85,22 +98,23 @@ const AtomBarScroll: FC = () => {
           ))}
         </AtomWrapper>
       )}
-      {scrollPosition >= 280 && (
-        <AtomText
-          as="p"
-          fontSize="24px"
-          css={css`
-            @media (max-width: 768px) {
-              font-size: 18px;
-            }
-            @media (max-width: 480px) {
-              font-size: 14px;
-            }
-          `}
-        >
-          {title}
-        </AtomText>
-      )}
+      {validPathsSongs.includes(router.pathname.split('/')[2]) &&
+        scrollPosition >= 280 && (
+          <AtomText
+            as="p"
+            fontSize="24px"
+            css={css`
+              @media (max-width: 768px) {
+                font-size: 18px;
+              }
+              @media (max-width: 480px) {
+                font-size: 14px;
+              }
+            `}
+          >
+            {title}
+          </AtomText>
+        )}
       <Link
         href={{
           pathname: '/swap/profile',
