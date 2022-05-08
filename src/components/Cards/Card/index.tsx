@@ -51,6 +51,15 @@ const Card: FC<Card> = (props) => {
           box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
           background: ${colors.black_quaternary};
         }
+        @media (max-width: 520px) {
+          width: 190px;
+          margin: 5px;
+          /* height: 180px; */
+        }
+        @media (max-width: 465px) {
+          width: 160px;
+          /* height: 180px; */
+        }
       `}
     >
       <AtomImage
@@ -62,6 +71,16 @@ const Card: FC<Card> = (props) => {
         width="180px"
         height="180px"
         borderRadius={ImageTypes.includes(props.type) ? '5px' : '50%'}
+        css={css`
+          @media (max-width: 520px) {
+            width: 170px;
+            height: 150px;
+          }
+          @media (max-width: 465px) {
+            width: 140px;
+            /* height: 130px; */
+          }
+        `}
       />
       {props.name.length > 35 ? (
         <AtomText
