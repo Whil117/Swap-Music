@@ -2,7 +2,7 @@
 import { css } from '@emotion/react'
 import AtomWrapper from 'lib/Atomwrapper'
 import { Dispatch, FC, ReactNode, SetStateAction, useState } from 'react'
-import { A11y, Navigation, Pagination, Scrollbar } from 'swiper'
+import { Pagination } from 'swiper'
 import { Swiper } from 'swiper/react'
 type Props = {
   Elements: ({
@@ -33,11 +33,18 @@ const SectionProps: FC<Props> = ({ children, Elements }) => {
               }
               .swiper-slide {
                 gap: 20px;
+                width: auto !important;
                 text-align: center;
                 font-size: 18px;
                 display: flex;
                 align-items: center;
                 justify-content: center;
+              }
+              .swiper-slide-active {
+                width: auto !important;
+              }
+              .swiper-slide-next {
+                width: auto !important;
               }
 
               .swiper-pagination-bullet-active {
@@ -63,7 +70,7 @@ const SectionProps: FC<Props> = ({ children, Elements }) => {
             `}
           >
             <Swiper
-              modules={[Navigation, Pagination, Scrollbar, A11y]}
+              modules={[Pagination]}
               slidesPerView={6}
               breakpoints={{
                 320: {
@@ -95,7 +102,7 @@ const SectionProps: FC<Props> = ({ children, Elements }) => {
                 el: '.swiper-pagination',
                 clickable: true,
               }}
-              navigation
+              className="mySwiper"
             >
               {children}
             </Swiper>

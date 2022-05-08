@@ -95,7 +95,7 @@ const OrganismBanner: FC<Props> = (props) => {
           css={css`
             /* width: 900px; */
             @media (max-width: 980px) {
-              width: 100%;
+              width: auto;
               margin: 0 10px;
             }
           `}
