@@ -1,9 +1,9 @@
 import Card from '@Components/Cards/Card'
 import { css } from '@emotion/react'
 import { SelectFor } from '@Types/redux/reducers/user/types'
-import Button from '@Whil/components/Button'
 import Div from '@Whil/components/Div'
 import P from '@Whil/components/P'
+import Atombutton from 'lib/Atombutton'
 import AtomText from 'lib/AtomText'
 import AtomWrapper from 'lib/Atomwrapper'
 import { useRouter } from 'next/router'
@@ -21,23 +21,29 @@ const Step1: FC = () => {
             display: flex;
             flex-wrap: wrap;
             /* align-items: center; */
+
             aign-items: flex-start;
             @media (max-width: 712px) {
               justify-content: center;8
             }
           `}
       >
-        <Button
-          click={() => router.push('/swap/likedsongs')}
-          props={{
-            type: 'submit',
-            style: {
-              justifycontent: 'flex-start',
-              alignitems: 'flex-end',
-              width: '420px',
-              height: '284px',
-            },
-          }}
+        <Atombutton
+          css={css`
+            width: 420px;
+            height: 264px;
+            background: url('https://firebasestorage.googleapis.com/v0/b/swap-4f04f.appspot.com/o/images%2Faaaaaaaaaaaasdfdsf.png?alt=media&token=f9280477-cdcc-461b-b963-1a787e127fd8');
+            background-size: cover;
+            background-position: center;
+            border-radius: 10px;
+            margin: 10px;
+            padding: 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            justify-content: end;
+          `}
+          onClick={() => router.push('/swap/likedsongs')}
         >
           <Div
             styles={{
@@ -67,7 +73,7 @@ const Step1: FC = () => {
               {user.SavedTracks.total} Liked Songs
             </P>
           </Div>
-        </Button>
+        </Atombutton>
         {user.Playlists.items.map((item) => (
           <Card
             key={item.id}
