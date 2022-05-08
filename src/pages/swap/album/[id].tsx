@@ -82,7 +82,7 @@ const Album: NextPageFC<Props> = ({
           flex-direction: column;
           gap: 25px;
           @media (max-width: 980px) {
-            padding: 0 30px;
+            padding: 0 20px;
           }
         `}
       >
