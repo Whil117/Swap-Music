@@ -45,6 +45,7 @@ const Progressbar: FC<Props> = ({
         width: 100%;
         grid-row: 2;
         display: grid;
+        gap: 10px;
         grid-template-columns: auto 1fr auto;
         align-items: center;
         @media (max-width: 980px) {

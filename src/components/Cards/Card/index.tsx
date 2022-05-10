@@ -42,12 +42,12 @@ const Card: FC<Card> = (props) => {
         color: ${colors.white};
         padding: 10px;
         background-color: ${colors.black_quinary};
-        margin: 10px;
+        /* margin: 10px; */
         border-radius: 5px;
         width: 200px;
         height: 264px;
         &:hover {
-          transform: scale(1.05);
+          /* transform: scale(1.05); */
           box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
           background: ${colors.black_quaternary};
         }
@@ -83,7 +83,7 @@ const Card: FC<Card> = (props) => {
           'https://firebasestorage.googleapis.com/v0/b/swap-4f04f.appspot.com/o/images%2FFrame%2094.svg?alt=media&token=e9c9283e-808b-40ac-ba7b-3ce37452a9a2'
         }
         alt={props.name}
-        width="180px"
+        width="100%"
         height="180px"
         borderRadius={ImageTypes.includes(props.type) ? '5px' : '50%'}
         css={css`

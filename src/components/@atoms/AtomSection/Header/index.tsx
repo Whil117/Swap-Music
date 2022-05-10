@@ -24,7 +24,7 @@ const AtomSectionHeader: FC<Props> = ({ setShow, title }) => {
     >
       <AtomText as="h2">{title}</AtomText>
       <Atombutton
-        backgroundColor={colors.blue}
+        backgroundColor={colors.black_quaternary}
         css={css`
           padding: 5px;
           border-radius: 5px;

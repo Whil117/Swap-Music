@@ -32,10 +32,10 @@ const SectionProps: FC<Props> = ({ children, Elements }) => {
                 height: auto;
               }
               .swiper-wrapper {
-                gap: 20px;
+                gap: 10px;
               }
               .swiper-slide {
-                gap: 20px;
+                gap: 10px;
                 width: auto !important;
                 text-align: center;
                 font-size: 18px;
@@ -117,7 +117,7 @@ const SectionProps: FC<Props> = ({ children, Elements }) => {
               display: flex;
               flex-direction: row;
               flex-wrap: wrap;
-              gap: 20px;
+              gap: 10px;
               justify-content: flex-start;
               @media (max-width: 520px) {
                 /* flex-direction: column; */

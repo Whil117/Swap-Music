@@ -1,12 +1,12 @@
 import { colorBanner, titleBanner } from '@Components/@organisms/OrganismBanner'
 import { css } from '@emotion/react'
+import useScreen from '@Hooks/useScreen'
 import { SelectFor } from '@Types/redux/reducers/user/types'
 import { atom, useAtom } from 'jotai'
 import Atombutton from 'lib/Atombutton'
 import AtomImage from 'lib/AtomImage'
 import AtomText from 'lib/AtomText'
 import AtomWrapper from 'lib/Atomwrapper'
-import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { FC, useEffect } from 'react'
 import { useSelector } from 'react-redux'
@@ -17,13 +17,17 @@ export const stepsId = atom('Playlists')
 
 const validPathsSongs = ['album', 'artist', 'playlist', 'likedsongs', 'profile']
 
+export const NavBarAtom = atom(false)
+
 const AtomBarScroll: FC = () => {
   const user = useSelector((state: SelectFor) => state.user)
   const [colors] = useAtom(colorBanner)
   const [scrollPosition, setScrollPosition] = useAtom(scrollAtom)
   const [steps, setSteps] = useAtom(stepsId)
   const [title] = useAtom(titleBanner)
+  const [navbar, setNavbar] = useAtom(NavBarAtom)
   const router = useRouter()
+  const screen = useScreen()
 
   useEffect(() => {
     if (validPathsSongs.includes(router.pathname.split('/')[2])) {
@@ -57,7 +61,7 @@ const AtomBarScroll: FC = () => {
         css`
           background: ${colors[0]};
         `}
-        padding: 5px 20px;
+        padding: 10px;
         display: flex;
         justify-content: ${router.asPath.includes('swap/library')
           ? 'space-between'
@@ -102,7 +106,7 @@ const AtomBarScroll: FC = () => {
         scrollPosition >= 280 && (
           <AtomText
             as="p"
-            fontSize="24px"
+            fontSize="18px"
             css={css`
               @media (max-width: 768px) {
                 font-size: 18px;
@@ -115,7 +119,29 @@ const AtomBarScroll: FC = () => {
             {title}
           </AtomText>
         )}
-      <Link
+      <Atombutton
+        onClick={() => {
+          screen >= 980
+            ? router.push('/swap/profile').then(() => {
+                document?.getElementById('view')?.scroll({
+                  top: 0,
+                })
+              })
+            : setNavbar(!navbar)
+        }}
+      >
+        <AtomImage
+          src={
+            (user?.me?.images[0]?.url as string) ||
+            'https://via.placeholder.com/150/92c952'
+          }
+          alt={user?.me?.display_name as string}
+          width={50}
+          height={50}
+          borderRadius="50%"
+        />
+      </Atombutton>
+      {/* <Link
         href={{
           pathname: '/swap/profile',
         }}
@@ -133,7 +159,7 @@ const AtomBarScroll: FC = () => {
             borderRadius="50%"
           />
         </AtomWrapper>
-      </Link>
+      </Link> */}
     </AtomWrapper>
   )
 }
