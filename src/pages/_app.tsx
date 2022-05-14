@@ -3,6 +3,7 @@ import Layout from '@Components/layout'
 import { persistor, store } from '@Redux/store'
 import { getSession, SessionProvider } from 'next-auth/react'
 import type { AppContext, AppPropsWithLayout } from 'next/app'
+import App from 'next/app'
 import { Provider } from 'react-redux'
 import 'react-toastify/dist/ReactToastify.css'
 import { PersistGate } from 'redux-persist/integration/react'
@@ -36,8 +37,9 @@ const MyApp = ({
 
 MyApp.getInitialProps = async (appContext: AppContext) => {
   const Session = await getSession(appContext.ctx)
-
+  const appProps = await App.getInitialProps(appContext)
   return {
+    ...appProps,
     pageProps: {
       accessToken: Session?.accessToken,
       hidratation: appContext.router.pathname.includes('/swap') ? true : false,

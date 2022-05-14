@@ -25,6 +25,7 @@ const SectionProps: FC<Props> = ({ children, Elements }) => {
         !show ? (
           <AtomWrapper
             css={css`
+              margin-top: 20px;
               .swiper {
                 /* gap: 20px; */
                 /* margin: 20px 0; */
@@ -113,6 +114,7 @@ const SectionProps: FC<Props> = ({ children, Elements }) => {
         ) : (
           <AtomWrapper
             css={css`
+              margin-top: 20px;
               width: 100%;
               display: flex;
               flex-direction: row;

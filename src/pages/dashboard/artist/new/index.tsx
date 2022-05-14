@@ -36,7 +36,7 @@ const NewArtist: NextPageFCProps = () => {
       <AtomWrapper
         width="1440px"
         css={css`
-          padding: 0px 30px;
+          padding: 0px 90px;
         `}
       >
         <AtomText as="h1">New Artist</AtomText>

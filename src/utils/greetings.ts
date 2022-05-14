@@ -1,11 +1,11 @@
 const Greetings = () => {
   const hour = new Date().getHours()
   const greeting =
-    hour < 12
+    hour >= 0 && hour <= 12
       ? 'Good Morning'
-      : hour >= 12 || hour < 18
+      : hour >= 13 && hour <= 17
       ? 'Good Afternoon'
-      : 'Good Evening'
+      : hour >= 18 && hour <= 23 && 'Good Evening'
   return greeting
 }
 
