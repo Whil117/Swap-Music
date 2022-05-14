@@ -2,7 +2,7 @@
 import { css } from '@emotion/react'
 import AtomWrapper from 'lib/Atomwrapper'
 import { Dispatch, FC, ReactNode, SetStateAction, useState } from 'react'
-import { A11y, Navigation, Pagination, Scrollbar } from 'swiper'
+import { Pagination } from 'swiper'
 import { Swiper } from 'swiper/react'
 type Props = {
   Elements: ({
@@ -25,17 +25,30 @@ const SectionProps: FC<Props> = ({ children, Elements }) => {
         !show ? (
           <AtomWrapper
             css={css`
+              margin-top: 20px;
               .swiper {
-                margin: 20px 0;
+                /* gap: 20px; */
+                /* margin: 20px 0; */
                 width: 100%;
                 height: auto;
               }
+              .swiper-wrapper {
+                gap: 10px;
+              }
               .swiper-slide {
+                gap: 10px;
+                width: auto !important;
                 text-align: center;
                 font-size: 18px;
                 display: flex;
                 align-items: center;
                 justify-content: center;
+              }
+              .swiper-slide-active {
+                width: auto !important;
+              }
+              .swiper-slide-next {
+                width: auto !important;
               }
 
               .swiper-pagination-bullet-active {
@@ -61,7 +74,7 @@ const SectionProps: FC<Props> = ({ children, Elements }) => {
             `}
           >
             <Swiper
-              modules={[Navigation, Pagination, Scrollbar, A11y]}
+              modules={[Pagination]}
               slidesPerView={6}
               breakpoints={{
                 320: {
@@ -93,7 +106,7 @@ const SectionProps: FC<Props> = ({ children, Elements }) => {
                 el: '.swiper-pagination',
                 clickable: true,
               }}
-              navigation
+              className="mySwiper"
             >
               {children}
             </Swiper>
@@ -101,11 +114,18 @@ const SectionProps: FC<Props> = ({ children, Elements }) => {
         ) : (
           <AtomWrapper
             css={css`
+              margin-top: 20px;
               width: 100%;
               display: flex;
               flex-direction: row;
               flex-wrap: wrap;
+              gap: 10px;
               justify-content: flex-start;
+              @media (max-width: 520px) {
+                /* flex-direction: column; */
+                align-items: center;
+                justify-content: center;
+              }
             `}
           >
             {children}

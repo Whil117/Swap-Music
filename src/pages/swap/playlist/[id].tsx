@@ -47,7 +47,11 @@ const Playlist: NextPageFC<Props> = ({ Playlist }) => {
         release_date=""
         total_tracks={Playlist.tracks.total}
         useTime={{
-          tracks: [...Playlist.tracks.items.map((item) => item.track)],
+          tracks: [
+            ...Playlist.tracks.items.map(
+              (item) => item.track as SpotifyApi.TrackObjectSimplified
+            ),
+          ],
         }}
       />
       <AtomWrapper
@@ -64,20 +68,13 @@ const Playlist: NextPageFC<Props> = ({ Playlist }) => {
       >
         {Playlist.tracks.items.map((track, idx) => (
           <Track
-            key={track.track.id}
-            {...{
-              id: track.track.id,
-              count: idx,
-              name: track.track.name,
-              artists: track.track.artists,
-              duration: track.track.duration_ms,
-              album: {},
-              duration_ms: track.track.duration_ms,
-              saved: false,
-            }}
+            {...{ ...(track?.track as any) }}
+            position={idx}
+            key={track?.track?.id}
+            withImage
             onPlayer={() => {
               convertPlayerTracks(dispatch, {
-                id: track?.track.id,
+                id: track?.track?.id as string,
                 data: Playlist.tracks.items,
               })
             }}

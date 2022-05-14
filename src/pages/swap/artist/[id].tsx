@@ -98,25 +98,7 @@ const Artist: NextPageFC<Artist> = ({
           {Popular.tracks
             .filter((_, index) => (display ? index < 5 : index < 10))
             .map((track, index) => (
-              <Track
-                key={track.id}
-                {...{
-                  id: track.id,
-                  name: track.name,
-                  artists: [],
-                  image: track.album.images[0].url,
-                  count: index,
-                  album: track.album,
-                  duration: track.duration_ms,
-                  saved: false,
-                  styles: {
-                    width: {
-                      song: '50%',
-                      album: '36%',
-                    },
-                  },
-                }}
-              />
+              <Track {...track} key={track.id} position={index} />
             ))}
           <Button props={{ type: 'none' }} click={() => setDisplay(!display)}>
             {display ? 'Show More' : 'Show Less'}

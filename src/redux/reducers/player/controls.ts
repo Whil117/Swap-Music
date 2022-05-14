@@ -25,7 +25,7 @@ export const initialState = {
   repeat: false,
   aleatory: false,
   loop: false,
-  volumen: 25,
+  volumen: 5,
   color: colors.green_light,
   currentTime: 0,
 }

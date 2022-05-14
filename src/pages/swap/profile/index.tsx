@@ -40,6 +40,9 @@ const Profile: FC & NextPageFC<Props> = () => {
           margin-top: 50px;
           margin: 100px 40px 40px 40px;
           max-width: 1440px;
+          @media (max-width: 980px) {
+            margin: 0px 20px;
+          }
         `}
       >
         {data.map((item) => (

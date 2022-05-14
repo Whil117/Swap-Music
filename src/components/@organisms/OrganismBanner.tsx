@@ -1,11 +1,13 @@
+/* eslint-disable no-unused-vars */
 import AtomTracksDuration from '@Components/@atoms/AtomTracksDuration'
 import { css } from '@emotion/react'
 import { UseTimeProps } from '@Hooks/useTime'
+import { atom, useAtom } from 'jotai'
 import AtomImage from 'lib/AtomImage'
 import AtomLink from 'lib/AtomLink'
 import AtomText from 'lib/AtomText'
 import AtomWrapper from 'lib/Atomwrapper'
-import { FC, useState } from 'react'
+import { FC, useEffect } from 'react'
 import { ColorExtractor } from 'react-color-extractor'
 
 type Props = {
@@ -28,11 +30,20 @@ const stringToHTML = (str?: string) => {
   return doc.body
 }
 
+export const titleBanner = atom('')
+
+export const colorBanner = atom<string[]>([])
+
 const OrganismBanner: FC<Props> = (props) => {
-  const [color, setColor] = useState<string[]>([])
+  const [color, setColor] = useAtom(colorBanner)
+  const [_, setTitle] = useAtom(titleBanner)
+  useEffect(() => {
+    setTitle(props.title)
+  }, [props])
 
   return (
     <AtomWrapper
+      id="background-dynamic-color"
       css={css`
         height: 400px;
         display: flex;
@@ -45,7 +56,7 @@ const OrganismBanner: FC<Props> = (props) => {
             rgba(100, 100, 100, 0) 0%,
             #121216 100%
           ),
-          ${color};
+          ${color[0]};
         @media (max-width: 768px) {
           justify-content: center;
           height: 600px;
@@ -84,7 +95,7 @@ const OrganismBanner: FC<Props> = (props) => {
           css={css`
             /* width: 900px; */
             @media (max-width: 980px) {
-              width: 100%;
+              width: auto;
               margin: 0 10px;
             }
           `}
