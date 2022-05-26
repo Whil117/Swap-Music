@@ -38,8 +38,6 @@ const AtomBarScroll: FC = () => {
 
   useEffect(() => {
     if (validPathsSongs.includes(router.pathname.split('/')[2])) {
-      console.log('RENDERING')
-
       document?.getElementById('view')?.addEventListener(
         'scroll',
         () => {
