@@ -30,7 +30,7 @@ type Props = {
   ref?: Ref<any>
 }
 
-const AtomInputStyled = styled(motion.input)<Props>`
+const StyledInput = styled(motion.input)<Props>`
   font-size: 12px;
   font-weight: 600;
   margin: 0px 0px 0px 0px;
@@ -181,7 +181,7 @@ const AtomInput = (props: Props) => {
               {props.label}
             </AtomText>
           )}
-          <AtomInputStyled
+          <StyledInput
             {...props}
             value={lodash.get(props.formik?.values, props.id) ?? props.value}
             onChange={props.onChange ?? props.formik?.handleChange}

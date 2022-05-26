@@ -22,12 +22,12 @@ type Props = {
   ArtistAlbums: SpotifyApi.ArtistsAlbumsResponse
   id: string
 }
-const convertPlayerTracks = (
+export const convertPlayerTracks = (
   dispatch: Dispatch<ActionPlayerTracks>,
   player: {
     id: string
     position: number
-    data: SpotifyApi.TrackObjectSimplified[]
+    data: SpotifyApi.TrackObjectSimplified[] | SpotifyApi.SavedTrackObject[]
   }
 ) => {
   dispatch({

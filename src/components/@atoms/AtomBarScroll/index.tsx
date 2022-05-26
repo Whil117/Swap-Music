@@ -15,7 +15,14 @@ const scrollAtom = atom<number>(0)
 
 export const stepsId = atom('Playlists')
 
-const validPathsSongs = ['album', 'artist', 'playlist', 'likedsongs', 'profile']
+const validPathsSongs = [
+  'album',
+  'artist',
+  'playlist',
+  'likedsongs',
+  'profile',
+  'queue',
+]
 
 export const NavBarAtom = atom(false)
 
@@ -31,6 +38,8 @@ const AtomBarScroll: FC = () => {
 
   useEffect(() => {
     if (validPathsSongs.includes(router.pathname.split('/')[2])) {
+      console.log('RENDERING')
+
       document?.getElementById('view')?.addEventListener(
         'scroll',
         () => {

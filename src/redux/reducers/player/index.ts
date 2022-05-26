@@ -11,7 +11,10 @@ export type Track = {
 }
 export type PropsPlayerTracks = {
   currentTrackId?: string
-  tracks?: SpotifyApi.TrackObjectSimplified[] | SpotifyApi.PlaylistTrackObject[]
+  tracks?:
+    | SpotifyApi.TrackObjectSimplified[]
+    | SpotifyApi.PlaylistTrackObject[]
+    | SpotifyApi.SavedTrackObject[]
   play?: boolean
   position?: number
 }
