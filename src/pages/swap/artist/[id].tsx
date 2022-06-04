@@ -146,7 +146,6 @@ export async function getServerSideProps(context: NextPageContext) {
   const { id } = context.query
   const Session = await getSession(context)
   spotifyAPI.setAccessToken(Session?.accessToken as string)
-
   const Artist = await spotifyAPI
     .getArtist(id as string)
     .then((artist) => artist.body)
