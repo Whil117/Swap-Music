@@ -6,6 +6,7 @@ import Track from '@Components/Track/Track'
 import { css } from '@emotion/react'
 import { ActionPlayerTracks } from '@Redux/reducers/player'
 import { ArtistWrapper } from '@Styles/pages/swap/artist'
+import AtomSeoLayout from 'lib/AtomSeo'
 import AtomWrapper from 'lib/Atomwrapper'
 import spotifyAPI from 'lib/spotify/spotify'
 import { NextPageContext, NextPageFC } from 'next'
@@ -57,76 +58,82 @@ const Album: NextPageFC<Props> = ({
   ]
 
   return (
-    <ArtistWrapper>
-      <OrganismBanner
-        title={Album.name}
-        id={Album.artists[0].id}
-        name={Album.artists[0].name}
-        image_url={
-          Album.images[0].url ??
-          'https://firebasestorage.googleapis.com/v0/b/swap-4f04f.appspot.com/o/images%2FFrame%2094.svg?alt=media&token=e9c9283e-808b-40ac-ba7b-3ce37452a9a2'
-        }
-        type={Album.album_type}
-        release_date={Album.release_date}
-        total_tracks={Album.total_tracks}
-        useTime={{
-          ms,
-        }}
-      />
-
-      <AtomWrapper
-        css={css`
-          display: flex;
-          alig-items: flex-start;
-          padding: 0 90px;
-          flex-direction: column;
-          gap: 25px;
-          @media (max-width: 980px) {
-            padding: 0 20px;
+    <AtomSeoLayout
+      title={Album.name}
+      image={Album.images[0].url}
+      keywords={[Album.album_type]}
+    >
+      <ArtistWrapper>
+        <OrganismBanner
+          title={Album.name}
+          id={Album.artists[0].id}
+          name={Album.artists[0].name}
+          image_url={
+            Album.images[0].url ??
+            'https://firebasestorage.googleapis.com/v0/b/swap-4f04f.appspot.com/o/images%2FFrame%2094.svg?alt=media&token=e9c9283e-808b-40ac-ba7b-3ce37452a9a2'
           }
-        `}
-      >
-        {TracksAlbum.items.map((track, idx) => (
-          <Track
-            {...track}
-            key={track.id}
-            position={idx}
-            onPlayer={() => {
-              convertPlayerTracks(dispatch, {
-                id: track?.id,
-                position: idx,
-                data: TracksAlbum?.items,
-              })
-            }}
-          />
-        ))}
+          type={Album.album_type}
+          release_date={Album.release_date}
+          total_tracks={Album.total_tracks}
+          useTime={{
+            ms,
+          }}
+        />
 
-        {data.map((item) => (
-          <AtomWrapper key={item.id}>
-            <SectionProps
-              Elements={({ setShow }) => (
-                <AtomSectionHeader setShow={setShow} title={item.title} />
-              )}
-            >
-              {item.assets
-                ?.filter((asset) => asset.id !== id)
-                ?.map((artist) => (
-                  <SwiperSlide key={artist.id} style={{ width: 'auto' }}>
-                    <Card
-                      {...{
-                        id: artist.id,
-                        type: artist.type,
-                        image: artist.images[0].url,
-                        name: artist.name,
-                      }}
-                    />
-                  </SwiperSlide>
-                ))}
-            </SectionProps>
-          </AtomWrapper>
-        ))}
-      </AtomWrapper>
-    </ArtistWrapper>
+        <AtomWrapper
+          css={css`
+            display: flex;
+            alig-items: flex-start;
+            padding: 0 90px;
+            flex-direction: column;
+            gap: 25px;
+            @media (max-width: 980px) {
+              padding: 0 20px;
+            }
+          `}
+        >
+          {TracksAlbum.items.map((track, idx) => (
+            <Track
+              {...track}
+              key={track.id}
+              position={idx}
+              onPlayer={() => {
+                convertPlayerTracks(dispatch, {
+                  id: track?.id,
+                  position: idx,
+                  data: TracksAlbum?.items,
+                })
+              }}
+            />
+          ))}
+
+          {data.map((item) => (
+            <AtomWrapper key={item.id}>
+              <SectionProps
+                Elements={({ setShow }) => (
+                  <AtomSectionHeader setShow={setShow} title={item.title} />
+                )}
+              >
+                {item.assets
+                  ?.filter((asset) => asset.id !== id)
+                  ?.map((artist) => (
+                    <SwiperSlide key={artist.id} style={{ width: 'auto' }}>
+                      <Card
+                        {...{
+                          id: artist.id,
+                          type: artist.type,
+                          image: artist.images[0].url,
+                          name: artist.name,
+                        }}
+                      />
+                    </SwiperSlide>
+                  ))}
+              </SectionProps>
+            </AtomWrapper>
+          ))}
+        </AtomWrapper>
+      </ArtistWrapper>
+    </AtomSeoLayout>
   )
 }
 export async function getServerSideProps(context: NextPageContext) {
