@@ -1,6 +1,7 @@
 import HeadApp from '@Components/HeadApp'
 import Layout from '@Components/layout'
 import { persistor, store } from '@Redux/store'
+import AtomSeoLayout from 'lib/AtomSeo'
 import { getSession, SessionProvider } from 'next-auth/react'
 import type { AppContext, AppPropsWithLayout } from 'next/app'
 import App from 'next/app'
@@ -17,21 +18,24 @@ const MyApp = ({
   Component,
   pageProps: { hidratation, accessToken, session, ...pageProps },
 }: AppPropsWithLayout) => {
+  const SEO = Component.SEO || {}
   return (
-    <SessionProvider session={session}>
-      <Provider store={store}>
-        <PersistGate loading={null} persistor={persistor}>
-          <Layout
-            Layout={Component.Layout}
-            {...{ router, hidratation, accessToken }}
-          >
-            <HeadApp>
-              <Component {...pageProps} />
-            </HeadApp>
-          </Layout>
-        </PersistGate>
-      </Provider>
-    </SessionProvider>
+    <AtomSeoLayout title={SEO?.title} image={SEO.image} keywords={SEO.keywords}>
+      <SessionProvider session={session}>
+        <Provider store={store}>
+          <PersistGate loading={null} persistor={persistor}>
+            <Layout
+              Layout={Component.Layout}
+              {...{ router, hidratation, accessToken }}
+            >
+              <HeadApp>
+                <Component {...pageProps} />
+              </HeadApp>
+            </Layout>
+          </PersistGate>
+        </Provider>
+      </SessionProvider>
+    </AtomSeoLayout>
   )
 }
 

@@ -14,6 +14,11 @@ export type PropsLayout = {
   hidratation?: boolean
   accessToken?: string
   Layout: keyof typeof Layouts
+  SEO?: {
+    title?: string
+    image?: string
+    keywords?: string[]
+  }
 }
 
 type ContextScroll = {

@@ -41,7 +41,7 @@ export const convertPlayerTracks = (
     },
   })
 }
-const Album: NextPageFC<Props> = ({
+const AlbumPage: NextPageFC<Props> = ({
   Album,
   TracksAlbum,
   ArtistAlbums,
@@ -159,6 +159,11 @@ export async function getServerSideProps(context: NextPageContext) {
   const TracksAlbum = await spotifyAPI
     .getAlbumTracks(id as string)
     .then((res) => res.body)
+  AlbumPage.SEO = {
+    title: Album.name,
+    image: Album.images[0].url,
+    keywords: [Album.album_type],
+  }
 
   return {
     props: {
@@ -171,5 +176,5 @@ export async function getServerSideProps(context: NextPageContext) {
     },
   }
 }
-Album.Layout = 'swap'
-export default Album
+AlbumPage.Layout = 'swap'
+export default AlbumPage
