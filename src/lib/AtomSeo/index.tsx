@@ -29,7 +29,7 @@ const AtomSeoLayout: FC<SeoProps> = ({
   return (
     <>
       <Head>
-        <title>Swap - {title}</title>
+        <title>Swap | {title}</title>
         <link rel="icon" type="image/png" href={icon || `/favicon.png`} />
         <link
           rel="apple-touch-icon"
@@ -72,8 +72,6 @@ const AtomSeoLayout: FC<SeoProps> = ({
         <meta property="og:title" content={title} />
         <meta property="og:description" content={description} />
         <meta property="og:image" content={image} />
-        <meta name="twitter:site" content="@StacklyCode" />
-        <meta name="twitter:creator" content="@StacklyCode" />
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:url" content={website} />
         <meta name="twitter:title" content={title} />

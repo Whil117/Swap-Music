@@ -1,18 +1,15 @@
-import { NextRouter } from 'next/router'
-import { createContext, FC, ReactNode, RefObject } from 'react'
+import { FC, ReactNode } from 'react'
 import LayoutDashboard from './admin'
 import SwapPublic from './public'
 
 const Layouts = {
   swap: SwapPublic,
   dashboard: LayoutDashboard,
+  public: ({ children }: { children: ReactNode }) => <>{children}</>,
 }
 
 export type PropsLayout = {
-  router?: NextRouter
   children?: ReactNode
-  hidratation?: boolean
-  accessToken?: string
   Layout: keyof typeof Layouts
   SEO?: {
     title?: string
@@ -20,12 +17,6 @@ export type PropsLayout = {
     keywords?: string[]
   }
 }
-
-type ContextScroll = {
-  view: RefObject<HTMLDivElement>
-}
-
-export const ContextScroll = createContext<ContextScroll>({} as ContextScroll)
 
 const Layout: FC<PropsLayout> = (props) => {
   const { Layout, children } = props

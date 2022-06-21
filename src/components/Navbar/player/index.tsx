@@ -17,10 +17,14 @@ import { ColorExtractor } from 'react-color-extractor'
 import { useSelector } from 'react-redux'
 import Progressbar from './progressbar'
 import BarVolumen from './volumen.bar'
+
 export const controlsAtom = atom(initialState)
 
-const NavbarPlayer: FC<{ accessToken?: string }> = ({ accessToken }) => {
+const NavbarPlayer: FC = () => {
   const player = useSelector((state: SelectFor) => state.playerTracks)
+  const accessToken = useSelector(
+    (state: SelectFor) => state?.user?.me?.accessToken
+  )
   const [track, setTrack] = useState<SpotifyApi.SingleTrackResponse>()
   const audio = useRef<HTMLAudioElement>(null)
   const img = useRef<HTMLImageElement>(null)

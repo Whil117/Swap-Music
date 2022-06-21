@@ -137,7 +137,7 @@ const LikedSongs: NextPageFCProps = () => {
       >
         <AtomTable
           tableWidth="1440px"
-          data={user?.SavedTracks.items}
+          data={user?.SavedTracks?.items}
           columns={
             screen >= 768
               ? [

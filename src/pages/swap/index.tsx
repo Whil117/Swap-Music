@@ -90,7 +90,7 @@ const SwapPage: NextPageFCProps = () => {
   const [data] = useAtom(dataFamily(user))
 
   return (
-    <AtomSeoLayout title="Swap - Menú">
+    <AtomSeoLayout title="Feed">
       <AtomWrapper
         css={css`
           margin-top: 50px;

@@ -199,6 +199,6 @@ export async function getServerSideProps(context: NextPageContext) {
         },
       }
 }
-LandingPage.Layout = 'swap'
+LandingPage.Layout = 'public'
 
 export default LandingPage

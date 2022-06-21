@@ -13,6 +13,7 @@ export type State = {
     birthdate: string
     uri: string
     href: string
+    accessToken: string
   }
   Playlists: SpotifyApi.CursorBasedPagingObject<SpotifyApi.PlaylistObjectSimplified>
   TopArtists: SpotifyApi.CursorBasedPagingObject<SpotifyApi.ArtistObjectFull>

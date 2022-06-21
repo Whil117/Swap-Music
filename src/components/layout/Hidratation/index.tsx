@@ -1,25 +1,21 @@
 /* eslint-disable no-console */
 import spotifyAPI from 'lib/spotify/spotify'
+import { getSession } from 'next-auth/react'
 import { useRouter } from 'next/router'
 import { Dispatch, FC, SetStateAction, useEffect } from 'react'
 import { useDispatch } from 'react-redux'
 
 type Props = {
-  hidratation: boolean
-  accessToken: string
   setShow: Dispatch<SetStateAction<boolean>>
-  children: any
+  children: JSX.Element
 }
 
-const Hidratation: FC<Props> = ({
-  children,
-  accessToken,
-  hidratation,
-  setShow,
-}) => {
+const Hidratation: FC<Props> = ({ children, setShow }) => {
   const dispatch = useDispatch()
   const router = useRouter()
-  const DataUserFetching = async () => {
+  const Session = getSession()
+
+  const DataUserFetching = async (accessToken: string) => {
     spotifyAPI.setAccessToken(accessToken as string)
     const me = await spotifyAPI
       .getMe()
@@ -131,26 +127,29 @@ const Hidratation: FC<Props> = ({
   }
 
   useEffect(() => {
-    if (hidratation) {
-      Promise.all([DataUserFetching()])
-        .then((res) => {
-          setShow(false)
-          dispatch({
-            type: 'SETPLAY',
-            payload: {
-              play: false,
-            },
+    Session.then((res) => {
+      if (res?.accessToken) {
+        Promise.resolve(DataUserFetching(res?.accessToken as string))
+          .then((hidratation) => {
+            setShow(false)
+
+            dispatch({
+              type: 'HIDRATATION',
+              payload: {
+                ...hidratation,
+                me: {
+                  ...hidratation.me,
+                  accessToken: res.accessToken,
+                },
+              },
+            })
           })
-          dispatch({
-            type: 'HIDRATATION',
-            payload: { ...res[0] },
+          .catch(() => {
+            router.push('/')
           })
-        })
-        .catch(() => {
-          router.push('/')
-        })
-    }
-  }, [hidratation])
+      }
+    })
+  }, [])
   return children
 }
 
