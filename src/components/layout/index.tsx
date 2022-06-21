@@ -15,6 +15,7 @@ export type PropsLayout = {
     title?: string
     image?: string
     keywords?: string[]
+    description?: string
   }
 }
 

@@ -25,6 +25,7 @@ const MyApp = ({
       page={SEO?.title}
       image={SEO?.image}
       keywords={SEO?.keywords}
+      description={SEO?.description}
     >
       <SessionProvider session={session}>
         <Provider store={store}>

@@ -28,7 +28,11 @@ type SpotifyAuthProps = {
 const LandingPage: NextPageFC<SpotifyAuthProps> = ({ providers }) => {
   const [loading, setloading] = useState(false)
   return (
-    <AtomSeoLayout title="Music Plataform">
+    <AtomSeoLayout
+      title="Swap"
+      page="Music Plataform"
+      image="https://firebasestorage.googleapis.com/v0/b/swap-4f04f.appspot.com/o/images%2Fedsheeran2.png?alt=media&token=6fc753ab-7d01-42b0-8a5a-3e6ebee623ca"
+    >
       <AtomWrapper
         css={css`
           display: grid;
@@ -187,6 +191,22 @@ export async function getServerSideProps(context: NextPageContext) {
     data: { access_token },
   } = res
   //get token from project spotify
+  LandingPage.SEO = {
+    title: 'Music Plataform',
+    image:
+      'https://firebasestorage.googleapis.com/v0/b/swap-4f04f.appspot.com/o/images%2Fedsheeran2.png?alt=media&token=6fc753ab-7d01-42b0-8a5a-3e6ebee623ca',
+    keywords: [
+      'Music',
+      'Swap',
+      'Plataform',
+      'Spotify',
+      'Playlist',
+      'Music',
+      'Swap',
+    ],
+    description:
+      'Music Plataform is a platform that allows you to create and share playlists with your friends. You can also search for music and create your own playlists.',
+  }
   return redirect?.accessToken
     ? {
         redirect: {
