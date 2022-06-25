@@ -58,12 +58,13 @@ const AlbumPage: NextPageFC<Props> = ({
   ]
 
   return (
-    <AtomSeoLayout
-      title="Swap"
-      page={Album.name}
-      image={Album.images[0].url}
-      keywords={[Album.album_type]}
-    >
+    <>
+      <AtomSeoLayout
+        title="Swap"
+        page={Album.name}
+        image={Album.images[0].url}
+        keywords={[Album.album_type]}
+      />
       <ArtistWrapper>
         <OrganismBanner
           title={Album.name}
@@ -134,7 +135,7 @@ const AlbumPage: NextPageFC<Props> = ({
           ))}
         </AtomWrapper>
       </ArtistWrapper>
-    </AtomSeoLayout>
+    </>
   )
 }
 export async function getServerSideProps(context: NextPageContext) {
@@ -143,6 +144,7 @@ export async function getServerSideProps(context: NextPageContext) {
   spotifyAPI.setAccessToken(Session?.accessToken as string)
 
   const Album = await spotifyAPI.getAlbum(id as string).then((res) => res.body)
+
   const ArtistId = Album?.artists?.find((artist) => artist?.id)?.id
   const DurationTracks = Album.tracks.items.reduce(
     (acc, curr) => acc + curr.duration_ms,
@@ -166,16 +168,24 @@ export async function getServerSideProps(context: NextPageContext) {
     keywords: [Album.album_type],
   }
 
-  return {
-    props: {
-      id,
-      Album,
-      ArtistAlbums,
-      DurationTracks,
-      TracksAlbum,
-      Artist,
-    },
-  }
+  return !Session?.accessToken
+    ? {
+        redirect: {
+          permanent: false,
+          destination: '/',
+        },
+        props: {},
+      }
+    : {
+        props: {
+          id,
+          Album,
+          ArtistAlbums,
+          DurationTracks,
+          TracksAlbum,
+          Artist,
+        },
+      }
 }
 AlbumPage.Layout = 'swap'
 export default AlbumPage

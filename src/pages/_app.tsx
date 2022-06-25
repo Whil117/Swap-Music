@@ -18,19 +18,23 @@ const MyApp = ({
   pageProps: { session, ...pageProps },
 }: AppPropsWithLayout) => {
   const SEO = Component.SEO
+  // console.log(SEO)
 
   return (
-    <AtomSeoLayout
-      title="Swap"
-      page={SEO?.title}
-      image={SEO?.image}
-      keywords={SEO?.keywords}
-      description={SEO?.description}
-    >
+    <>
+      {SEO?.title && (
+        <AtomSeoLayout
+          title="Swap"
+          page={SEO?.title}
+          image={SEO?.image}
+          keywords={SEO?.keywords}
+          description={SEO?.description}
+        />
+      )}
       <SessionProvider session={session}>
         <Provider store={store}>
-          <PersistGate loading={true} persistor={persistor}>
-            <Layout Layout={Component.Layout}>
+          <PersistGate loading={false} persistor={persistor}>
+            <Layout Layout={Component.Layout} SEO={SEO}>
               <HeadApp>
                 <Component {...pageProps} />
               </HeadApp>
@@ -38,7 +42,7 @@ const MyApp = ({
           </PersistGate>
         </Provider>
       </SessionProvider>
-    </AtomSeoLayout>
+    </>
   )
 }
 

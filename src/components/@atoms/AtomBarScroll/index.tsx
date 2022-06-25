@@ -15,14 +15,7 @@ const scrollAtom = atom<number>(0)
 
 export const stepsId = atom('Playlists')
 
-const validPathsSongs = [
-  'album',
-  'artist',
-  'playlist',
-  'likedsongs',
-  'profile',
-  'queue',
-]
+const validPathsSongs = ['album', 'playlist', 'artist']
 
 export const NavBarAtom = atom(false)
 
@@ -47,18 +40,24 @@ const AtomBarScroll: FC = () => {
         },
         { passive: true }
       )
+    } else {
+      document?.getElementById('view')?.removeEventListener('scroll', () => {
+        setScrollPosition(0)
+      })
     }
 
     return () => {
       if (validPathsSongs.includes(router.pathname.split('/')[2])) {
         document?.getElementById('view')?.removeEventListener('scroll', () => {
-          setScrollPosition(
-            document?.getElementById('view')?.scrollTop as number
-          )
+          setScrollPosition(0)
+        })
+      } else {
+        document?.getElementById('view')?.removeEventListener('scroll', () => {
+          setScrollPosition(0)
         })
       }
     }
-  }, [router.pathname])
+  }, [router])
 
   return (
     <AtomWrapper

@@ -1,4 +1,6 @@
+/* eslint-disable no-unused-vars */
 import AtomSectionHeader from '@Components/@atoms/AtomSection/Header'
+import { colorBanner, titleBanner } from '@Components/@organisms/OrganismBanner'
 import Card from '@Components/Cards/Card'
 import SectionProps from '@Components/List'
 import Track from '@Components/Track/Track'
@@ -17,11 +19,12 @@ import Button from '@Whil/components/Button'
 import Div from '@Whil/components/Div'
 import Image from '@Whil/components/Image'
 import P from '@Whil/components/P'
+import { useAtom } from 'jotai'
 import AtomWrapper from 'lib/Atomwrapper'
 import spotifyAPI from 'lib/spotify/spotify'
 import { NextPageContext, NextPageFC } from 'next'
 import { getSession } from 'next-auth/react'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { ColorExtractor } from 'react-color-extractor'
 import { SwiperSlide } from 'swiper/react'
 
@@ -39,7 +42,12 @@ const Artist: NextPageFC<Artist> = ({
   ArtistRelated,
 }) => {
   const [display, setDisplay] = useState(true)
-  const [color, setColor] = useState<string[]>([])
+  const [color, setColor] = useAtom(colorBanner)
+  const [_, setTitle] = useAtom(titleBanner)
+  useEffect(() => {
+    setTitle(Artist.name)
+  }, [Artist.name])
+
   const data = [
     {
       id: '1',
@@ -52,6 +60,7 @@ const Artist: NextPageFC<Artist> = ({
       assets: ArtistRelated.artists,
     },
   ]
+
   return (
     <ArtistWrapper>
       <LikedSongsWrapper color={color[0]}>

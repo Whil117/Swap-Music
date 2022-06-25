@@ -1,19 +1,25 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable no-console */
+import Loading from '@Components/Loading'
+import { SelectFor } from '@Types/redux/reducers/user/types'
+import { atom, useAtom } from 'jotai'
 import spotifyAPI from 'lib/spotify/spotify'
 import { getSession } from 'next-auth/react'
 import { useRouter } from 'next/router'
-import { Dispatch, FC, SetStateAction, useEffect } from 'react'
-import { useDispatch } from 'react-redux'
+import { FC, useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 
 type Props = {
-  setShow: Dispatch<SetStateAction<boolean>>
   children: JSX.Element
 }
+export const showAtom = atom(true)
 
-const Hidratation: FC<Props> = ({ children, setShow }) => {
+const Hidratation: FC<Props> = ({ children }) => {
+  const user = useSelector((state: SelectFor) => state.user)
   const dispatch = useDispatch()
   const router = useRouter()
   const Session = getSession()
+  const [show, setShow] = useAtom(showAtom)
 
   const DataUserFetching = async (accessToken: string) => {
     spotifyAPI.setAccessToken(accessToken as string)
@@ -126,13 +132,16 @@ const Hidratation: FC<Props> = ({ children, setShow }) => {
     }
   }
 
-  useEffect(() => {
-    Session.then((res) => {
-      if (res?.accessToken) {
-        Promise.resolve(DataUserFetching(res?.accessToken as string))
-          .then((hidratation) => {
-            setShow(false)
+  const getUser = async () => {
+    const user = await Session.then((res) => res?.accessToken)
+    return user
+  }
 
+  useEffect(() => {
+    Session.then(async (res) => {
+      if (res?.accessToken) {
+        await Promise.resolve(DataUserFetching(res?.accessToken as string))
+          .then((hidratation) => {
             dispatch({
               type: 'HIDRATATION',
               payload: {
@@ -144,13 +153,21 @@ const Hidratation: FC<Props> = ({ children, setShow }) => {
               },
             })
           })
+          .then(() => {
+            setShow(false)
+          })
           .catch(() => {
             router.push('/')
           })
+      } else {
+        router.push('/')
       }
+    }).catch(() => {
+      router.push('/')
     })
   }, [])
-  return children
+
+  return show ? <Loading /> : children
 }
 
 export default Hidratation

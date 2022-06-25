@@ -22,7 +22,7 @@ const AtomSeoLayout: FC<SeoPageProps> = (props) => {
         <title>
           {props.title} | {props.page}
         </title>
-        <link rel="icon" type="image/png" href={props.icon ?? `/favicon.png`} />
+        <link rel="icon" type="image/png" href={props.icon ?? `/favicon.ico`} />
         <meta httpEquiv="Content-Type" content="text/html;charset=UTF-8" />
         <meta httpEquiv="X-UA-Compatible" content="IE=7" />
         <meta httpEquiv="X-UA-Compatible" content="ie=edge" />
@@ -36,8 +36,6 @@ const AtomSeoLayout: FC<SeoPageProps> = (props) => {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="manifest" href="/manifest.json" />
         <meta name="description" content={props.description} />
-        <meta name="author" content="Ixulabs" />
-        <meta name="copyright" content="Ixulabs" />
         <meta name="title" content={props.title} />
         <meta name="description" content={props.description} />
         <meta name="googlebot" content="index,follow" />
@@ -85,7 +83,6 @@ const AtomSeoLayout: FC<SeoPageProps> = (props) => {
           }}
         />
       </Head>
-      {props?.children}
     </>
   )
 }
