@@ -375,9 +375,11 @@ export async function getServerSideProps(context: NextPageContext) {
     },
     data: 'grant_type=client_credentials',
   })
+
   const {
     data: { access_token },
   } = res
+
   //get token from project spotify
   return redirect?.accessToken
     ? {
