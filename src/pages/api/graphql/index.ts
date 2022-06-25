@@ -1,7 +1,7 @@
 import { ApolloServer, makeExecutableSchema } from 'apollo-server-micro'
 import connectMongoDB from '../../../db/index'
 import resolvers from '../../../db/resolvers'
-import typeDefs from '../../../db/schemas'
+import typeDefs from '../../../db/types'
 
 connectMongoDB()
 const apolloServer = new ApolloServer({

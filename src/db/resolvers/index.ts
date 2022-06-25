@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 const Product = require('../models/product')
 const resolvers = {
   Query: {
@@ -11,7 +12,7 @@ const resolvers = {
         console.log(err)
       }
     },
-    getProduct: async (_, { id }) => {
+    getProduct: async (_: any, { id }: { id: string }) => {
       const product = await Product.findById(id)
 
       if (!product) {
@@ -24,7 +25,7 @@ const resolvers = {
 
   Mutation: {
     // products
-    newProduct: async (_, { input }) => {
+    newProduct: async (_: any, { input }: any) => {
       try {
         const product = new Product(input)
 
@@ -35,7 +36,7 @@ const resolvers = {
         console.log(err)
       }
     },
-    updateProduct: async (_, { id, input }) => {
+    updateProduct: async (_: any, { id, input }: any) => {
       let product = await Product.findById(id)
 
       if (!product) {
@@ -48,7 +49,7 @@ const resolvers = {
 
       return product
     },
-    deleteProduct: async (_, { id }) => {
+    deleteProduct: async (_: any, { id }: any) => {
       const product = await Product.findById(id)
 
       if (!product) {
