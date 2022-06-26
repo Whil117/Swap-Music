@@ -114,7 +114,7 @@ const Artist: NextPageFC<Artist> = ({
           <AtomWrapper
             css={css`
               display: grid;
-              gap: 5px;
+              gap: 10px;
               @media (max-width: 980px) {
                 display: flex;
                 flex-direction: column;
