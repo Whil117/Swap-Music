@@ -1,5 +1,7 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 /* eslint-disable no-unused-vars */
+import { useMutation } from '@apollo/client'
+import { CREATEARTIST } from '@Apollo/client/mutations/Artist'
 import AtomSectionHeader from '@Components/@atoms/AtomSection/Header'
 import AtomTable from '@Components/@atoms/AtomTable'
 import { colorBanner, titleBanner } from '@Components/@organisms/OrganismBanner'
@@ -23,7 +25,6 @@ import { useEffect, useState } from 'react'
 import { ColorExtractor } from 'react-color-extractor'
 import { useSelector } from 'react-redux'
 import { SwiperSlide } from 'swiper/react'
-
 type Artist = {
   Artist: SpotifyApi.SingleArtistResponse
   ArtistAlbums: SpotifyApi.ArtistsAlbumsResponse
@@ -60,7 +61,7 @@ const Artist: NextPageFC<Artist> = ({
 
   const verifyAdmin = process.env.NEXT_PUBLIC_ADMIN === user
   const router = useRouter()
-
+  const [EXECUTECREATEARTIST] = useMutation(CREATEARTIST)
   return (
     <AtomWrapper
       flexDirection="column"
@@ -154,6 +155,23 @@ const Artist: NextPageFC<Artist> = ({
                 color="white"
                 fontWeight="bolder"
                 backgroundColor={color[0]}
+                onClick={() => {
+                  EXECUTECREATEARTIST({
+                    variables: {
+                      input: {
+                        id: Artist.id,
+                        name: Artist.name,
+                        images: Artist.images,
+                        href: Artist.external_urls.spotify,
+                        type: Artist.type,
+                        uri: Artist.uri,
+                        followers: Artist.followers.total,
+                        popularity: Artist.popularity,
+                        genres: Artist.genres,
+                      },
+                    },
+                  })
+                }}
               >
                 Add Artist
               </AtomButton>

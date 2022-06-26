@@ -1,3 +1,4 @@
+import cookie from 'js-cookie'
 export type State = {
   followedArtists: {
     artists: SpotifyApi.CursorBasedPagingObject<SpotifyApi.ArtistObjectFull>
@@ -23,9 +24,12 @@ export type State = {
 }
 
 const TypesReducers = {
-  HIDRATATION: (state: State, payload: State) => ({
-    ...payload,
-  }),
+  HIDRATATION: (state: State, payload: State) => {
+    cookie.set(`validateToken`, payload.me.uri)
+    return {
+      ...payload,
+    }
+  },
 }
 
 type Action = {
