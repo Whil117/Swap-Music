@@ -12,12 +12,14 @@ export type AtomWrapperProps = {
   disabled?: boolean
   padding?: string
   gap?: string
+  flexDirection?: 'row' | 'column'
 }
 
 export const AtomWrapper = styled.div<AtomWrapperProps>`
   /* display: grid; */
   width: ${(props) => props.width};
   gap: ${(props) => props.gap || '0px'};
+  flex-direction: ${(props) => props.flexDirection || 'row'};
   padding: ${(props) => props.padding ?? '0px'};
   ${(props) => props?.css};
 `

@@ -7,7 +7,6 @@ import Card from '@Components/Cards/Card'
 import SectionProps from '@Components/List'
 import { css } from '@emotion/react'
 import useTime from '@Hooks/useTime'
-import { ArtistWrapper } from '@Styles/pages/swap/artist'
 import { SelectFor } from '@Types/redux/reducers/user/types'
 import FollowNumbers from '@Utils/Followers'
 import Button from '@Whil/components/Button'
@@ -63,7 +62,17 @@ const Artist: NextPageFC<Artist> = ({
   const router = useRouter()
 
   return (
-    <ArtistWrapper>
+    <AtomWrapper
+      flexDirection="column"
+      css={css`
+        display: flex;
+        width: 100%;
+        justify-content: space-between;
+        @media (max-width: 768px) {
+          width: auto;
+        }
+      `}
+    >
       <AtomWrapper
         css={css`
           height: 320px;
@@ -288,7 +297,7 @@ const Artist: NextPageFC<Artist> = ({
           </AtomWrapper>
         ))}
       </AtomWrapper>
-    </ArtistWrapper>
+    </AtomWrapper>
   )
 }
 export async function getServerSideProps(context: NextPageContext) {

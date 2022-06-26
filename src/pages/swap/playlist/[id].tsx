@@ -34,6 +34,7 @@ const convertPlayerTracks = (
 
 const Playlist: NextPageFC<Props> = ({ Playlist }) => {
   const dispatch = useDispatch<Dispatch<ActionPlayerTracks>>()
+
   return (
     <>
       <AtomSeoLayout
@@ -44,7 +45,12 @@ const Playlist: NextPageFC<Props> = ({ Playlist }) => {
       />
       <ArtistWrapper>
         <OrganismBanner
-          id={Playlist.id}
+          id={
+            Playlist?.tracks?.items?.find(
+              (item) =>
+                item?.track?.artists[0]?.name === Playlist?.owner?.display_name
+            )?.track?.artists[0]?.id as string
+          }
           title={Playlist.name}
           name={Playlist.owner.display_name as string}
           image_url={

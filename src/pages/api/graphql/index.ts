@@ -1,4 +1,8 @@
-import { ApolloServer, makeExecutableSchema } from 'apollo-server-micro'
+import {
+  ApolloServer,
+  AuthenticationError,
+  makeExecutableSchema,
+} from 'apollo-server-micro'
 import { NextApiRequest, NextApiResponse } from 'next'
 import connectMongoDB from '../../../db/index'
 import resolvers from '../../../db/resolvers'
@@ -11,6 +15,17 @@ const apolloServer = new ApolloServer({
     typeDefs,
     resolvers,
   }),
+  context: ({ req }) => {
+    const token = req.headers.authorization || ''
+
+    if (!token) {
+      throw new AuthenticationError('you must be logged in')
+    }
+    if (token !== process.env.GRAPHQL_TOKEN) {
+      throw new AuthenticationError('invalid token')
+    }
+    return { token }
+  },
   playground: true,
   introspection: true,
 })

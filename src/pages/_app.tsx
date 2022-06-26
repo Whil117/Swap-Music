@@ -1,3 +1,5 @@
+import { ApolloProvider } from '@apollo/client'
+import client from '@Apollo/client/index'
 import HeadApp from '@Components/HeadApp'
 import Layout from '@Components/layout'
 import { persistor, store } from '@Redux/store'
@@ -30,17 +32,19 @@ const MyApp = ({
           description={SEO?.description}
         />
       )}
-      <SessionProvider session={session}>
-        <Provider store={store}>
-          <PersistGate loading={false} persistor={persistor}>
-            <Layout Layout={Component.Layout} SEO={SEO}>
-              <HeadApp>
-                <Component {...pageProps} />
-              </HeadApp>
-            </Layout>
-          </PersistGate>
-        </Provider>
-      </SessionProvider>
+      <ApolloProvider client={client}>
+        <SessionProvider session={session}>
+          <Provider store={store}>
+            <PersistGate loading={false} persistor={persistor}>
+              <Layout Layout={Component.Layout} SEO={SEO}>
+                <HeadApp>
+                  <Component {...pageProps} />
+                </HeadApp>
+              </Layout>
+            </PersistGate>
+          </Provider>
+        </SessionProvider>
+      </ApolloProvider>
     </>
   )
 }
