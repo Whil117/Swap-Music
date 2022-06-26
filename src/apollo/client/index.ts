@@ -1,7 +1,14 @@
 /* eslint-disable no-console */
-import { ApolloClient, createHttpLink, InMemoryCache } from '@apollo/client'
+import {
+  ApolloClient,
+  createHttpLink,
+  // split
+  InMemoryCache,
+} from '@apollo/client'
 // import { persistCache, LocalStorageWrapper } from 'apollo3-cache-persist';
+import { setContext } from '@apollo/client/link/context'
 import { onError } from '@apollo/client/link/error'
+import cookie from 'js-cookie'
 // import { WebSocketLink } from '@apollo/client/link/ws';
 // import { getMainDefinition } from '@apollo/client/utilities';
 const cache = new InMemoryCache()
@@ -18,13 +25,17 @@ const cache = new InMemoryCache()
 const httpLink = createHttpLink({
   uri: `/api/graphql`,
 })
+0
+const authLink = setContext((_, { headers }) => {
+  console.log(cookie.get(`validateToken`))
 
-// const authLink = setContext((_, { headers }) => ({
-//   headers: {
-//     ...headers,
-//     authorization: `Bearer ${cookie.get(`bearer`)}`,
-//   },
-// }))
+  return {
+    headers: {
+      ...headers,
+      authorization: `${cookie.get(`validateToken`)}`,
+    },
+  }
+})
 
 // const isBrowser = typeof window !== 'undefined';
 
@@ -61,7 +72,7 @@ const errorLink = onError(({ graphQLErrors, networkError }) => {
   if (networkError) console.warn(`[Network error]: ${networkError}`)
 })
 
-const link = errorLink.concat(httpLink)
+const link = errorLink.concat(authLink.concat(httpLink))
 
 const client = new ApolloClient({
   link,
