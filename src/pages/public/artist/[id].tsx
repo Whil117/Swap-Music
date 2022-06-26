@@ -16,7 +16,7 @@ const ArtistById: NextPageFC<Props> = ({
   ArtistAlbums,
 }) => {
   return (
-    <>
+    <AtomWrapper>
       <AtomSeoLayout
         title="Swap"
         page={Artist.name}
@@ -35,7 +35,7 @@ const ArtistById: NextPageFC<Props> = ({
           <AtomWrapper key={item.id}>{item.name}</AtomWrapper>
         ))}
       </AtomWrapper>
-    </>
+    </AtomWrapper>
   )
 }
 export async function getServerSideProps(context: NextPageContext) {
