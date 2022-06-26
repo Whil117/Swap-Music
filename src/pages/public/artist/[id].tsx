@@ -50,7 +50,12 @@ export async function getServerSideProps(context: NextPageContext) {
   const ArtistAlbums = await spotifyAPI
     .getArtistAlbums(id as string)
     .then((releases) => releases.body)
-
+  ArtistById.SEO = {
+    title: Artist.name as string,
+    image: Artist?.images[0]?.url,
+    description:
+      'Swap is a music platform that allows you to discover new music and connect with people who share the same taste.',
+  }
   return {
     props: {
       reserve_token,
