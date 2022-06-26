@@ -4,7 +4,7 @@ import colors from '@Styles/global/colors'
 import { SelectFor } from '@Types/redux/reducers/user/types'
 import Svg from '@Whil/components/Svg'
 import { useAtom } from 'jotai'
-import Atombutton from 'lib/Atombutton'
+import AtomButton from 'lib/Atombutton'
 import AtomImage from 'lib/AtomImage'
 import AtomLink from 'lib/AtomLink'
 import AtomText from 'lib/AtomText'
@@ -84,7 +84,7 @@ const Navbar: FC<Props> = () => {
           }
         `}
       >
-        <Atombutton
+        <AtomButton
           onClick={() =>
             router.push('/').then(() =>
               document?.getElementById('view')?.scroll({
@@ -110,7 +110,7 @@ const Navbar: FC<Props> = () => {
               src="https://firebasestorage.googleapis.com/v0/b/swap-4f04f.appspot.com/o/icons%2Fswapicon.svg?alt=media&token=95c124e6-ebd4-4f72-8258-f1c4fad57f07"
             />
           </AtomText>
-        </Atombutton>
+        </AtomButton>
         <AtomWrapper
           css={css`
             grid-row: 2;

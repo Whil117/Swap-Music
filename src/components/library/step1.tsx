@@ -3,7 +3,7 @@ import { css } from '@emotion/react'
 import { SelectFor } from '@Types/redux/reducers/user/types'
 import Div from '@Whil/components/Div'
 import P from '@Whil/components/P'
-import Atombutton from 'lib/Atombutton'
+import AtomButton from 'lib/Atombutton'
 import AtomText from 'lib/AtomText'
 import AtomWrapper from 'lib/Atomwrapper'
 import { useRouter } from 'next/router'
@@ -28,7 +28,7 @@ const Step1: FC = () => {
             }
           `}
       >
-        <Atombutton
+        <AtomButton
           css={css`
             width: 420px;
             height: 264px;
@@ -73,7 +73,7 @@ const Step1: FC = () => {
               {user.SavedTracks.total} Liked Songs
             </P>
           </Div>
-        </Atombutton>
+        </AtomButton>
         {user.Playlists.items.map((item) => (
           <Card
             key={item.id}

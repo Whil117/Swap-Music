@@ -7,18 +7,42 @@ export type AtombuttonProps = {
   css?: SerializedStyles
   href?: string
   backgroundColor?: string
+  padding?: string
+  color?: string
+  borderRadius?: string
+  fontSize?: string
+  fontWeight?:
+    | 'bold'
+    | 'normal'
+    | 'lighter'
+    | 'bolder'
+    | 'initial'
+    | 'inherit'
+    | 'unset'
+  width?: string
+  alignItems?: 'center' | 'flex-start' | 'flex-end' | 'stretch' | 'baseline'
+  justifyContent?:
+    | 'center'
+    | 'flex-start'
+    | 'flex-end'
+    | 'space-between'
+    | 'space-around'
 }
 
-const Atombutton = styled.button<AtombuttonProps>`
+const AtomButton = styled.button<AtombuttonProps>`
   border: none;
   outline: none;
   display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  padding: 0px;
+  align-items: ${(props) => props.alignItems || 'center'};
+  justify-content: ${(props) => props.justifyContent || 'center'};
+  padding: ${(props) => props.padding || '0.5rem 1rem'};
+  color: ${(props) => props.color || '#fff'};
+  border-radius: ${(props) => props.borderRadius || '5px'};
+  font-size: ${(props) => props.fontSize || '1rem'};
+  font-weight: ${(props) => props.fontWeight || 'normal'};
   cursor: pointer;
   background-color: ${(props) => props?.backgroundColor || 'transparent'};
-
+  width: ${(props) => props.width || 'auto'};
   ${(props) => props?.css};
 `
-export default Atombutton
+export default AtomButton

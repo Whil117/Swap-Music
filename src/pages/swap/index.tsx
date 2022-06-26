@@ -7,7 +7,7 @@ import { SelectFor } from '@Types/redux/reducers/user/types'
 import Greetings from '@Utils/greetings'
 import { atom, PrimitiveAtom, useAtom } from 'jotai'
 import { atomFamily, atomWithStorage, useReducerAtom } from 'jotai/utils'
-import Atombutton from 'lib/Atombutton'
+import AtomButton from 'lib/Atombutton'
 import AtomImage from 'lib/AtomImage'
 import AtomSeoLayout from 'lib/AtomSeo'
 import AtomText from 'lib/AtomText'
@@ -120,7 +120,7 @@ const SwapPage: NextPageFCProps = () => {
               }
             `}
           >
-            <Atombutton
+            <AtomButton
               css={css`
                 display: flex;
                 align-items: center;
@@ -132,9 +132,9 @@ const SwapPage: NextPageFCProps = () => {
               `}
             >
               Liked Songs
-            </Atombutton>
+            </AtomButton>
             {recent?.map((item) => (
-              <Atombutton
+              <AtomButton
                 onClick={() => {
                   router.push(item?.url)
                 }}
@@ -178,7 +178,7 @@ const SwapPage: NextPageFCProps = () => {
                     {item.name}
                   </AtomText>
                 )}
-              </Atombutton>
+              </AtomButton>
             ))}
           </AtomWrapper>
         </AtomWrapper>

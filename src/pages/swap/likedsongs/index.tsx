@@ -5,7 +5,7 @@ import useScreen from '@Hooks/useScreen'
 import useTime from '@Hooks/useTime'
 import { SelectFor } from '@Types/redux/reducers/user/types'
 import Svg from '@Whil/components/Svg'
-import Atombutton from 'lib/Atombutton'
+import AtomButton from 'lib/Atombutton'
 import AtomImage from 'lib/AtomImage'
 import AtomLink from 'lib/AtomLink'
 import AtomSeoLayout from 'lib/AtomSeo'
@@ -191,7 +191,7 @@ const LikedSongs: NextPageFCProps = () => {
                                 `}
                               >
                                 {item?.track?.artists?.map((artist, index) => (
-                                  <Atombutton
+                                  <AtomButton
                                     key={artist.id && artist?.id + index}
                                     css={css`
                                       color: #888888;
@@ -216,7 +216,7 @@ const LikedSongs: NextPageFCProps = () => {
                                     {index === 0
                                       ? artist.name
                                       : `, ${artist.name}`}
-                                  </Atombutton>
+                                  </AtomButton>
                                 ))}
                               </AtomWrapper>
                             )}
@@ -228,7 +228,7 @@ const LikedSongs: NextPageFCProps = () => {
                       id: 'album',
                       title: '',
                       view: (item) => (
-                        <Atombutton
+                        <AtomButton
                           onClick={() => {
                             router
                               .push({
@@ -245,7 +245,7 @@ const LikedSongs: NextPageFCProps = () => {
                           }}
                         >
                           <AtomText as="span">{item?.track?.name}</AtomText>
-                        </Atombutton>
+                        </AtomButton>
                       ),
                     },
                     {
@@ -304,7 +304,7 @@ const LikedSongs: NextPageFCProps = () => {
                                 `}
                               >
                                 {item?.track?.artists?.map((artist, index) => (
-                                  <Atombutton
+                                  <AtomButton
                                     key={artist.id && artist?.id + index}
                                     css={css`
                                       color: #888888;
@@ -329,7 +329,7 @@ const LikedSongs: NextPageFCProps = () => {
                                     {index === 0
                                       ? artist.name
                                       : `, ${artist.name}`}
-                                  </Atombutton>
+                                  </AtomButton>
                                 ))}
                               </AtomWrapper>
                             )}

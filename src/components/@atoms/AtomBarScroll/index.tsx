@@ -3,7 +3,7 @@ import { css } from '@emotion/react'
 import useScreen from '@Hooks/useScreen'
 import { SelectFor } from '@Types/redux/reducers/user/types'
 import { atom, useAtom } from 'jotai'
-import Atombutton from 'lib/Atombutton'
+import AtomButton from 'lib/Atombutton'
 import AtomImage from 'lib/AtomImage'
 import AtomText from 'lib/AtomText'
 import AtomWrapper from 'lib/Atomwrapper'
@@ -88,7 +88,7 @@ const AtomBarScroll: FC = () => {
           `}
         >
           {['Playlists', 'Podcasts', 'Artists', 'Albums'].map((step, index) => (
-            <Atombutton
+            <AtomButton
               key={step + index}
               onClick={() => {
                 setSteps(step)
@@ -104,7 +104,7 @@ const AtomBarScroll: FC = () => {
               `}
             >
               {step}
-            </Atombutton>
+            </AtomButton>
           ))}
         </AtomWrapper>
       )}
@@ -125,7 +125,7 @@ const AtomBarScroll: FC = () => {
             {title}
           </AtomText>
         )}
-      <Atombutton
+      <AtomButton
         onClick={() => {
           screen >= 980
             ? router.push('/swap/profile').then(() => {
@@ -146,7 +146,7 @@ const AtomBarScroll: FC = () => {
           height={50}
           borderRadius="50%"
         />
-      </Atombutton>
+      </AtomButton>
       {/* <Link
         href={{
           pathname: '/swap/profile',

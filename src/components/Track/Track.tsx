@@ -2,7 +2,7 @@ import { css } from '@emotion/react'
 import useScreen from '@Hooks/useScreen'
 import useTime from '@Hooks/useTime'
 import P from '@Whil/components/P'
-import Atombutton from 'lib/Atombutton'
+import AtomButton from 'lib/Atombutton'
 import AtomImage from 'lib/AtomImage'
 import AtomText from 'lib/AtomText'
 import AtomWrapper from 'lib/Atomwrapper'
@@ -73,7 +73,7 @@ const Track: FC<Props> = (props) => {
           : () => {}
       }
     >
-      <Atombutton
+      <AtomButton
         onClick={
           props.preview_url
             ? props.onPlayer
@@ -111,7 +111,7 @@ const Track: FC<Props> = (props) => {
         >
           {(props.position as number) + 1}
         </AtomText>
-      </Atombutton>
+      </AtomButton>
       {props.withImage && props?.album?.images && (
         <AtomImage
           src={(props?.album?.images[0]?.url as string) ?? ''}
@@ -144,7 +144,7 @@ const Track: FC<Props> = (props) => {
             `}
           >
             {props?.artists?.map((artist, index) => (
-              <Atombutton
+              <AtomButton
                 key={artist.id && artist?.id + index}
                 onClick={() => {
                   router
@@ -171,7 +171,7 @@ const Track: FC<Props> = (props) => {
                 >
                   {index === 0 ? artist.name : `, ${artist.name}`}
                 </P>
-              </Atombutton>
+              </AtomButton>
             ))}
           </AtomWrapper>
         )}
@@ -185,7 +185,7 @@ const Track: FC<Props> = (props) => {
             }
           `}
         >
-          <Atombutton
+          <AtomButton
             onClick={() => {
               router
                 .push({
@@ -209,19 +209,10 @@ const Track: FC<Props> = (props) => {
             >
               {props?.album?.name}
             </AtomText>
-          </Atombutton>
+          </AtomButton>
         </AtomWrapper>
       )}
 
-      {/* <Atombutton
-        css={css`
-          @media (max-width: 768px) {
-            display: none;
-          }
-        `}
-      >
-        <Svg src={props.saved ? '/icons/fullheart' : '/icons/heart'} />
-      </Atombutton> */}
       <AtomWrapper
         css={css`
           grid-column: ${props.withImage ? '5 / 6' : '3 /4'};

@@ -3,7 +3,7 @@ import { css } from '@emotion/react'
 import colors from '@Styles/global/colors'
 import { PrimitiveAtom } from 'jotai'
 import { useReducerAtom } from 'jotai/utils'
-import Atombutton from 'lib/Atombutton'
+import AtomButton from 'lib/Atombutton'
 import AtomImage from 'lib/AtomImage'
 import AtomText from 'lib/AtomText'
 import { useRouter } from 'next/router'
@@ -25,7 +25,7 @@ const Card: FC<Card> = (props) => {
     reducerRecent
   )
   return (
-    <Atombutton
+    <AtomButton
       onClick={() => {
         setRecent({
           type: 'set',
@@ -147,7 +147,7 @@ const Card: FC<Card> = (props) => {
           {props.name}
         </AtomText>
       )}
-    </Atombutton>
+    </AtomButton>
   )
 }
 

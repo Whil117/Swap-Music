@@ -5,7 +5,7 @@ import { SelectFor } from '@Types/redux/reducers/user/types'
 import Svg from '@Whil/components/Svg'
 import { atom } from 'jotai'
 import { useReducerAtom } from 'jotai/utils'
-import Atombutton from 'lib/Atombutton'
+import AtomButton from 'lib/Atombutton'
 import AtomImage from 'lib/AtomImage'
 import AtomSeoLayout from 'lib/AtomSeo'
 import AtomText from 'lib/AtomText'
@@ -203,7 +203,7 @@ const NavbarPlayer: FC = () => {
                   `}
                 >
                   {track?.artists?.map((item, index) => (
-                    <Atombutton
+                    <AtomButton
                       key={item.id && item?.id}
                       onClick={() => {
                         router
@@ -232,12 +232,12 @@ const NavbarPlayer: FC = () => {
                       >
                         {index === 0 ? item.name : `, ${item.name}`}
                       </AtomText>
-                    </Atombutton>
+                    </AtomButton>
                   ))}
                 </AtomWrapper>
               </AtomWrapper>
             </AtomWrapper>
-            <Atombutton
+            <AtomButton
               css={css`
                 display: none;
                 @media (max-width: 980px) {
@@ -265,7 +265,7 @@ const NavbarPlayer: FC = () => {
                   }
                 `}
               />
-            </Atombutton>
+            </AtomButton>
             <AtomWrapper
               css={css`
                 grid-column: 2/3;
@@ -288,7 +288,7 @@ const NavbarPlayer: FC = () => {
                 {playerButtons.map((button) => (
                   <>
                     {typeof button.icon === 'object' ? (
-                      <Atombutton
+                      <AtomButton
                         css={css`
                           border: none;
                           background-color: transparent;
@@ -314,9 +314,9 @@ const NavbarPlayer: FC = () => {
                         <Svg
                           src={`/icons/${controls.play ? 'pause' : 'play'}`}
                         />
-                      </Atombutton>
+                      </AtomButton>
                     ) : (
-                      <Atombutton
+                      <AtomButton
                         css={css`
                           @media (max-width: 980px) {
                             display: none;
@@ -324,7 +324,7 @@ const NavbarPlayer: FC = () => {
                         `}
                       >
                         <Svg src={`/icons/${button.icon}`} />
-                      </Atombutton>
+                      </AtomButton>
                     )}
                   </>
                 ))}
@@ -351,9 +351,9 @@ const NavbarPlayer: FC = () => {
               `}
             >
               {buttonsActions.map((item) => (
-                <Atombutton key={item.key}>
+                <AtomButton key={item.key}>
                   <Svg src={`/icons/${item.icon}`} />
-                </Atombutton>
+                </AtomButton>
               ))}
               <BarVolumen
                 audio={audio}

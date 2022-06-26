@@ -1,7 +1,7 @@
 import { css } from '@emotion/react'
 import colors from '@Styles/global/colors'
 import Svg from '@Whil/components/Svg'
-import Atombutton from 'lib/Atombutton'
+import AtomButton from 'lib/Atombutton'
 import AtomText from 'lib/AtomText'
 import AtomWrapper from 'lib/Atomwrapper'
 import { Dispatch, FC, SetStateAction } from 'react'
@@ -23,7 +23,7 @@ const AtomSectionHeader: FC<Props> = ({ setShow, title }) => {
       `}
     >
       <AtomText as="h2">{title}</AtomText>
-      <Atombutton
+      <AtomButton
         backgroundColor={colors.black_quaternary}
         css={css`
           padding: 5px;
@@ -32,7 +32,7 @@ const AtomSectionHeader: FC<Props> = ({ setShow, title }) => {
         onClick={() => setShow((show) => !show)}
       >
         <Svg src="/icons/list" />
-      </Atombutton>
+      </AtomButton>
     </AtomWrapper>
   )
 }

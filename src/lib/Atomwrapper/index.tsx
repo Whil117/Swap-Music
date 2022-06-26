@@ -10,10 +10,15 @@ export type AtomWrapperProps = {
   htmlFor?: string
   value?: string
   disabled?: boolean
+  padding?: string
+  gap?: string
 }
 
 export const AtomWrapper = styled.div<AtomWrapperProps>`
+  /* display: grid; */
   width: ${(props) => props.width};
+  gap: ${(props) => props.gap || '0px'};
+  padding: ${(props) => props.padding ?? '0px'};
   ${(props) => props?.css};
 `
 

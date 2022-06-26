@@ -2,31 +2,49 @@ import { gql } from 'apollo-server-micro'
 
 const typeDefs = gql`
   # Products
-  type Product {
-    id: ID
-    name: String
-    productionCapacity: Int
-    price: Float
-    description: String
+
+  type Image {
+    url: String
+    height: Int
+    width: Int
+  }
+  input ImageInput {
+    url: String
+    height: Int
+    width: Int
   }
 
-  input ProductInput {
-    name: String!
-    productionCapacity: Int!
-    price: Float!
+  type Artist {
+    id: String
+    name: String
     description: String
+    image: [Image]
+    uri: String
+    popularity: Int
+    type: String
+    followers: Int
+    genres: [String]
+    href: String
+  }
+  input ArtistInput {
+    id: String!
+    name: String!
+    description: String
+    image: [ImageInput]
+    uri: String!
+    popularity: Int
+    type: String!
+    followers: Int
+    genres: [String]
+    href: String
   }
 
   type Query {
-    getProducts: [Product]
-    getProduct(id: ID!): Product
+    listArtist: [Artist]
   }
 
   type Mutation {
-    #Products
-    newProduct(input: ProductInput): Product
-    updateProduct(id: ID!, input: ProductInput): Product
-    deleteProduct(id: ID!): String
+    createArtist(input: ArtistInput): Artist
   }
 `
 
