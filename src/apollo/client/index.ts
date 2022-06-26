@@ -5,59 +5,27 @@ import {
   // split
   InMemoryCache,
 } from '@apollo/client'
-// import { persistCache, LocalStorageWrapper } from 'apollo3-cache-persist';
 import { setContext } from '@apollo/client/link/context'
 import { onError } from '@apollo/client/link/error'
 import cookie from 'js-cookie'
-// import { WebSocketLink } from '@apollo/client/link/ws';
-// import { getMainDefinition } from '@apollo/client/utilities';
 const cache = new InMemoryCache()
-
-// const isWindows = typeof window === 'undefined';
-
-// if (!isWindows) {
-//   persistCache({
-//     cache,
-//     storage: new LocalStorageWrapper(window.localStorage)
-//   });
-// }
 
 const httpLink = createHttpLink({
   uri: `/api/graphql`,
 })
 0
 const authLink = setContext((_, { headers }) => {
-  console.log(cookie.get(`validateToken`))
-
   return {
     headers: {
       ...headers,
-      authorization: `${cookie.get(`validateToken`)}`,
+      authorization: `${
+        window.location.pathname.includes('swap')
+          ? cookie.get(`validateToken`)
+          : cookie.get(`reserve_public`)
+      }`,
     },
   }
 })
-
-// const isBrowser = typeof window !== 'undefined';
-
-// const wsLink = new WebSocketLink({
-//   uri: `${CONFIG.GRAPHQL_URL_WS}`,
-//   options: {
-//     reconnect: true
-//   }
-// });
-
-// const splitLink = split(
-//   ({ query }) => {
-//     const definition = getMainDefinition(query);
-//     return (
-//       definition.kind === 'OperationDefinition' &&
-//       definition.operation === 'subscription' &&
-//       isBrowser
-//     );
-//   },
-//   httpLink,
-//   wsLink
-// );
 
 const errorLink = onError(({ graphQLErrors, networkError }) => {
   if (

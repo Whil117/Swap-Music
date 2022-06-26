@@ -60,6 +60,7 @@ const typeDefs = gql`
 
   type Query {
     listArtist: [Artist]
+    artistById(id: String!): Artist
   }
 
   type Mutation {

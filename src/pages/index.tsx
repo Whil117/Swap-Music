@@ -4,12 +4,15 @@ import colors from '@Styles/global/colors'
 import * as S from '@Styles/pages'
 import Svg from '@Whil/components/Svg'
 import axios from 'axios'
+import Cookies from 'js-cookie'
+import AtomButton from 'lib/Atombutton'
 import AtomImage from 'lib/AtomImage'
 import AtomSeoLayout from 'lib/AtomSeo'
 import AtomText from 'lib/AtomText'
 import AtomWrapper from 'lib/Atomwrapper'
 import { NextPageContext, NextPageFC } from 'next'
 import { getProviders, getSession, signIn } from 'next-auth/react'
+import { useRouter } from 'next/router'
 import { useState } from 'react'
 
 type SpotifyAuthProps = {
@@ -25,8 +28,12 @@ type SpotifyAuthProps = {
   access_token: string
 }
 
-const LandingPage: NextPageFC<SpotifyAuthProps> = ({ providers }) => {
+const LandingPage: NextPageFC<SpotifyAuthProps> = ({
+  providers,
+  access_token,
+}) => {
   const [loading, setloading] = useState(false)
+  const router = useRouter()
   return (
     <>
       <AtomSeoLayout
@@ -57,6 +64,8 @@ const LandingPage: NextPageFC<SpotifyAuthProps> = ({ providers }) => {
               justify-self: center;
               text-align: center;
               z-index: 1;
+              gap: 1rem;
+              display: grid;
               @media (max-width: 980px) {
                 grid-column: 1;
                 position: absolute;
@@ -118,6 +127,32 @@ const LandingPage: NextPageFC<SpotifyAuthProps> = ({ providers }) => {
             <S.LandingPageButton onClick={() => signIn(providers.spotify.id)}>
               Sign In
             </S.LandingPageButton>
+            <AtomText>Do you not have an account?</AtomText>
+            <AtomButton
+              backgroundColor="#3f1ed7"
+              onClick={() => {
+                Cookies.set('reserve_token', access_token)
+                Cookies.set(
+                  'reserve_public',
+                  process.env.NEXT_PUBLIC_GRAPHQL_TOKEN as string
+                )
+                router.push('/public')
+              }}
+              css={css`
+                border: none;
+                border-radius: 50px;
+                padding: 10px 20px;
+                font-size: 16px;
+                font-weight: bold;
+                cursor: pointer;
+                transition: all 0.3s ease-in-out;
+                &:hover {
+                  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+                }
+              `}
+            >
+              Sing In without Spotify
+            </AtomButton>
           </AtomWrapper>
         )}
         <AtomWrapper

@@ -15,6 +15,12 @@ type Card = {
   type: string
   image: string
   name: string
+  customUrl?: {
+    pathname: string
+    query?: {
+      [key: string]: string
+    }
+  }
 }
 
 const Card: FC<Card> = (props) => {
@@ -38,12 +44,14 @@ const Card: FC<Card> = (props) => {
           },
         })
         router
-          .push({
-            pathname: `/swap/${props.type}/[id]`,
-            query: {
-              id: props.id,
-            },
-          })
+          .push(
+            props?.customUrl ?? {
+              pathname: `/swap/${props.type}/[id]`,
+              query: {
+                id: props.id,
+              },
+            }
+          )
           .then(() => {
             document?.getElementById('view')?.scroll({
               top: 0,

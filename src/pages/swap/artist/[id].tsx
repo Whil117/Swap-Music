@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 /* eslint-disable no-unused-vars */
-import { useMutation } from '@apollo/client'
+import { useMutation, useQuery } from '@apollo/client'
 import { CREATEARTIST } from '@Apollo/client/mutations/Artist'
 import AtomSectionHeader from '@Components/@atoms/AtomSection/Header'
 import AtomTable from '@Components/@atoms/AtomTable'
@@ -25,11 +25,17 @@ import { useEffect, useState } from 'react'
 import { ColorExtractor } from 'react-color-extractor'
 import { useSelector } from 'react-redux'
 import { SwiperSlide } from 'swiper/react'
+
+import { ARTISTBYID } from '@Apollo/client/querys/artist'
+import AtomLoader from '@Components/Loading'
+import colors from '@Styles/global/colors'
+import { toast } from 'react-toastify'
 type Artist = {
   Artist: SpotifyApi.SingleArtistResponse
   ArtistAlbums: SpotifyApi.ArtistsAlbumsResponse
   Popular: SpotifyApi.ArtistsTopTracksResponse
   ArtistRelated: SpotifyApi.ArtistsRelatedArtistsResponse
+  id: string
 }
 
 const Artist: NextPageFC<Artist> = ({
@@ -37,11 +43,21 @@ const Artist: NextPageFC<Artist> = ({
   Popular,
   ArtistAlbums,
   ArtistRelated,
+  id,
 }) => {
   const user = useSelector((state: SelectFor) => state.user.me.id)
   const [display, setDisplay] = useState(true)
   const [color, setColor] = useAtom(colorBanner)
   const [_, setTitle] = useAtom(titleBanner)
+
+  const {
+    data: dataArtist,
+    refetch,
+    loading: LoadingArtist,
+  } = useQuery(ARTISTBYID, {
+    variables: { id: id },
+  })
+
   useEffect(() => {
     setTitle(Artist.name)
   }, [Artist.name])
@@ -61,7 +77,16 @@ const Artist: NextPageFC<Artist> = ({
 
   const verifyAdmin = process.env.NEXT_PUBLIC_ADMIN === user
   const router = useRouter()
-  const [EXECUTECREATEARTIST] = useMutation(CREATEARTIST)
+  const [EXECUTECREATEARTIST, { loading }] = useMutation(CREATEARTIST, {
+    onCompleted: () => {
+      toast.success('Artist created successfully', {
+        style: {
+          border: `1px solid ${color[0]}`,
+        },
+      })
+      refetch()
+    },
+  })
   return (
     <AtomWrapper
       flexDirection="column"
@@ -149,32 +174,49 @@ const Artist: NextPageFC<Artist> = ({
             </AtomText>
             <AtomText>{FollowNumbers(Artist.followers.total)}</AtomText>
             {verifyAdmin && (
-              <AtomButton
-                width="120px"
-                padding="5px"
-                color="white"
-                fontWeight="bolder"
-                backgroundColor={color[0]}
-                onClick={() => {
-                  EXECUTECREATEARTIST({
-                    variables: {
-                      input: {
-                        id: Artist.id,
-                        name: Artist.name,
-                        images: Artist.images,
-                        href: Artist.external_urls.spotify,
-                        type: Artist.type,
-                        uri: Artist.uri,
-                        followers: Artist.followers.total,
-                        popularity: Artist.popularity,
-                        genres: Artist.genres,
-                      },
-                    },
-                  })
-                }}
-              >
-                Add Artist
-              </AtomButton>
+              <>
+                {LoadingArtist || loading ? (
+                  <AtomLoader
+                    type="small"
+                    colorPrimary={color[0]}
+                    colorSecondary="white"
+                    css={css`
+                      width: 120px;
+                    `}
+                  />
+                ) : (
+                  <AtomButton
+                    width="120px"
+                    padding="5px"
+                    color="white"
+                    fontWeight="bolder"
+                    backgroundColor={
+                      dataArtist?.artistById?.id ? colors.green_light : color[0]
+                    }
+                    onClick={() => {
+                      if (!dataArtist?.artistById?.id) {
+                        EXECUTECREATEARTIST({
+                          variables: {
+                            input: {
+                              id: Artist.id,
+                              name: Artist.name,
+                              images: Artist.images,
+                              href: Artist.external_urls.spotify,
+                              type: Artist.type,
+                              uri: Artist.uri,
+                              followers: Artist.followers.total,
+                              popularity: Artist.popularity,
+                              genres: Artist.genres,
+                            },
+                          },
+                        })
+                      }
+                    }}
+                  >
+                    {dataArtist?.artistById?.id ? 'Update' : 'Add'}
+                  </AtomButton>
+                )}
+              </>
             )}
           </AtomWrapper>
         </AtomWrapper>
@@ -318,9 +360,11 @@ const Artist: NextPageFC<Artist> = ({
     </AtomWrapper>
   )
 }
+
 export async function getServerSideProps(context: NextPageContext) {
   const { id } = context.query
   const Session = await getSession(context)
+
   spotifyAPI.setAccessToken(Session?.accessToken as string)
   const Artist = await spotifyAPI
     .getArtist(id as string)
@@ -339,6 +383,7 @@ export async function getServerSideProps(context: NextPageContext) {
 
   return {
     props: {
+      id,
       Artist,
       ArtistAlbums,
       ArtistRelated,

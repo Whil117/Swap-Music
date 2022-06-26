@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable no-console */
-import Loading from '@Components/Loading'
+import AtomLoader from '@Components/Loading'
 import { SelectFor } from '@Types/redux/reducers/user/types'
 import { atom, useAtom } from 'jotai'
 import spotifyAPI from 'lib/spotify/spotify'
@@ -167,7 +167,7 @@ const Hidratation: FC<Props> = ({ children }) => {
     })
   }, [])
 
-  return show ? <Loading /> : children
+  return show ? <AtomLoader /> : children
 }
 
 export default Hidratation

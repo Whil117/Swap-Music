@@ -7,6 +7,7 @@ import AtomSeoLayout from 'lib/AtomSeo'
 import { SessionProvider } from 'next-auth/react'
 import type { AppPropsWithLayout } from 'next/app'
 import { Provider } from 'react-redux'
+import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import { PersistGate } from 'redux-persist/integration/react'
 import 'swiper/css'
@@ -23,6 +24,7 @@ const MyApp = ({
 
   return (
     <>
+      <ToastContainer />
       {SEO?.title && (
         <AtomSeoLayout
           title="Swap"
