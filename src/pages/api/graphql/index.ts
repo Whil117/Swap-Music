@@ -17,11 +17,11 @@ const apolloServer = new ApolloServer({
   }),
   context: ({ req }) => {
     const token = req.headers.authorization || ''
-
     if (!token) {
       throw new AuthenticationError('you must be logged in')
     }
-    if (token !== process.env.GRAPHQL_TOKEN) {
+
+    if (token !== process.env.NEXT_PUBLIC_GRAPHQL_TOKEN) {
       throw new AuthenticationError('invalid token')
     }
     return { token }

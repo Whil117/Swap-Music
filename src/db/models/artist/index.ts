@@ -29,13 +29,13 @@ const Artist: Schema = new Schema({
   description: {
     type: String,
   },
-  image: {
-    type: {
+  images: [
+    {
       url: String,
       height: Number,
       width: Number,
     },
-  },
+  ],
   uri: {
     type: String,
     required: true,
@@ -55,6 +55,22 @@ const Artist: Schema = new Schema({
   },
 
   href: {
+    type: String,
+  },
+  backgroundCover: {
+    type: String,
+  },
+  customize: {
+    colors: {
+      font: {
+        type: String,
+      },
+      background: {
+        type: String,
+      },
+    },
+  },
+  biography: {
     type: String,
   },
 })
