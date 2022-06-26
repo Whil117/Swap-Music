@@ -125,7 +125,12 @@ const Artist: NextPageFC<Artist> = ({
             <AtomText as="h4" fontWeight="600">
               {Artist.type.toUpperCase()}
             </AtomText>
-            <AtomText as="h1" fontWeight="bold" fontSize="42px">
+            <AtomText
+              as="h1"
+              fontWeight="bold"
+              fontSize="42px"
+              textAlign="center"
+            >
               {Artist.name}
             </AtomText>
             <AtomText>{FollowNumbers(Artist.followers.total)}</AtomText>
