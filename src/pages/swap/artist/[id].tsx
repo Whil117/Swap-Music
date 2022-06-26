@@ -129,7 +129,11 @@ const Artist: NextPageFC<Artist> = ({
               as="h1"
               fontWeight="bold"
               fontSize="42px"
-              textAlign="center"
+              css={css`
+                @media (max-width: 980px) {
+                  text-align: center;
+                }
+              `}
             >
               {Artist.name}
             </AtomText>

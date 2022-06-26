@@ -152,6 +152,7 @@ type Props = {
     | '900'
   fontSize?: string
   textAlign?: 'left' | 'center' | 'right' | 'justify'
+  width?: string
 }
 export const AtomText = styled.span<Props>`
   font-size: ${(props) => props.fontSize};
@@ -161,6 +162,7 @@ export const AtomText = styled.span<Props>`
   padding: ${(props) => (props.padding ? `${props.padding}` : '0 0 0 0')};
   text-decoration: ${(props) => props.textDecoration ?? 'none'};
   color: ${(props) => props.color || '#fff'};
+  width: ${(props) => props.width || 'auto'};
   ${(props) => props?.css};
 `
 
