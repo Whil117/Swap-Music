@@ -6,7 +6,7 @@ import AtomImage from 'lib/AtomImage'
 import AtomSeoLayout from 'lib/AtomSeo'
 import AtomWrapper from 'lib/Atomwrapper'
 import { NextPageContext, NextPageFC } from 'next'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 
 type Props = {
   id: string
@@ -25,6 +25,7 @@ const rgbToHex = (r: number, g: number, b: number) =>
 
 rgbToHex(102, 51, 153)
 const ArtistById: NextPageFC<Props> = ({ id }) => {
+  const [first, setfirst] = useState([] as string[])
   const { data } = useQuery(ARTISTBYID, {
     variables: {
       id: id,
@@ -36,27 +37,12 @@ const ArtistById: NextPageFC<Props> = ({ id }) => {
       const img = new Image()
       img.addEventListener('load', function () {
         const data = colorThief.getPalette(img, 5)
-        const hex = data.map((item: any) => rgbToHex(item[0], item[1], item[2]))
-        console.log(hex)
+        const hex = data.map((item) => rgbToHex(item[0], item[1], item[2]))
+        setfirst(hex)
       })
 
       img.crossOrigin = 'Anonymous'
       img.src = data?.artistById?.images[0]?.url
-      // var url = data?.artistById?.images[0]?.url
-      // var imgObj = new Image()
-      // imgObj.src = googleProxyURL + encodeURIComponent(url)
-      // imgObj.setAttribute('crossOrigin', '')
-      // imgObj.crossOrigin = 'Anonymous'
-      // imgObj.width = 100
-      // imgObj.height = 100
-      // if (imgObj) {
-      //   const colorPallete = await getColor(imgObj)
-      //   if (!imgObj.src.includes('undefined')) {
-      //     const colors2 = getPaletteFromURL(imgObj.src)
-      //     console.log(colors2)
-      //   }
-      //   // colors2.then((colors) => console.log(colors))
-      // }
     })()
   }, [data?.artistById?.images[0]?.url])
 
@@ -73,11 +59,13 @@ const ArtistById: NextPageFC<Props> = ({ id }) => {
           crossOrigin="anonymous"
           id="imgfile"
           src={data?.artistById?.images[0]?.url}
-          width="100px"
-          height="100px"
+          width="280px"
+          height="280px"
           alt={data?.artistById?.name}
         />
-
+        {first.map((item) => (
+          <input type="color" value={item} key={item} />
+        ))}
         {/* {ArtistAlbums?.items?.map((item) => (
           <AtomWrapper key={item.id}>
             <AtomLink

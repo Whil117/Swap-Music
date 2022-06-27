@@ -13,8 +13,6 @@ type Props = {
 }
 
 const AlbumId: NextPageFC<Props> = ({ Album, TracksAlbum }) => {
-  console.log(TracksAlbum)
-
   return (
     <AtomWrapper>
       <h1>AlbumId</h1>
