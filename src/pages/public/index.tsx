@@ -34,6 +34,17 @@ const Public: NextPageFCProps = () => {
     </>
   )
 }
+export async function getServerSideProps() {
+  // const data = await client?.query({
+  //   query: LISTARTISTS,
+  //   variables: {},
+  // })
+  // console.log(data)
+
+  return {
+    props: {},
+  }
+}
 Public.Layout = 'public'
 
 export default Public

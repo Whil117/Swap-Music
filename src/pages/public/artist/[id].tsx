@@ -1,6 +1,8 @@
 import * as cookie from 'cookie'
 import AtomImage from 'lib/AtomImage'
+import AtomLink from 'lib/AtomLink'
 import AtomSeoLayout from 'lib/AtomSeo'
+import AtomText from 'lib/AtomText'
 import AtomWrapper from 'lib/Atomwrapper'
 import spotifyAPI from 'lib/spotify/spotify'
 import { NextPageContext, NextPageFC } from 'next'
@@ -32,7 +34,20 @@ const ArtistById: NextPageFC<Props> = ({
           alt={Artist?.name}
         />
         {ArtistAlbums?.items?.map((item) => (
-          <AtomWrapper key={item.id}>{item.name}</AtomWrapper>
+          <AtomWrapper key={item.id}>
+            <AtomLink
+              color="white"
+              href={{
+                pathname: `/public/album/${item.id}`,
+              }}
+            >
+              <a>
+                <AtomText as="a" color="white">
+                  {item.name}
+                </AtomText>
+              </a>
+            </AtomLink>
+          </AtomWrapper>
         ))}
       </AtomWrapper>
     </AtomWrapper>
