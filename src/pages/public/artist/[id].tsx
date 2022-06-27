@@ -1,39 +1,84 @@
-import * as cookie from 'cookie'
+/* eslint-disable no-console */
+import { useQuery } from '@apollo/client'
+import { ARTISTBYID } from '@Apollo/client/querys/artist'
+import ColorThief from 'colorthief'
 import AtomImage from 'lib/AtomImage'
-import AtomLink from 'lib/AtomLink'
 import AtomSeoLayout from 'lib/AtomSeo'
-import AtomText from 'lib/AtomText'
 import AtomWrapper from 'lib/Atomwrapper'
-import spotifyAPI from 'lib/spotify/spotify'
 import { NextPageContext, NextPageFC } from 'next'
+import { useEffect } from 'react'
 
 type Props = {
+  id: string
   reserve_token: string
   Artist: SpotifyApi.SingleArtistResponse
   ArtistAlbums: SpotifyApi.ArtistsAlbumsResponse
 }
-const ArtistById: NextPageFC<Props> = ({
-  reserve_token,
-  Artist,
-  ArtistAlbums,
-}) => {
+const rgbToHex = (r: number, g: number, b: number) =>
+  '#' +
+  [r, g, b]
+    .map((x) => {
+      const hex = x.toString(16)
+      return hex.length === 1 ? '0' + hex : hex
+    })
+    .join('')
+
+rgbToHex(102, 51, 153)
+const ArtistById: NextPageFC<Props> = ({ id }) => {
+  const { data } = useQuery(ARTISTBYID, {
+    variables: {
+      id: id,
+    },
+  })
+  useEffect(() => {
+    ;(async () => {
+      const colorThief = new ColorThief()
+      const img = new Image()
+      img.addEventListener('load', function () {
+        const data = colorThief.getPalette(img, 5)
+        const hex = data.map((item: any) => rgbToHex(item[0], item[1], item[2]))
+        console.log(hex)
+      })
+
+      img.crossOrigin = 'Anonymous'
+      img.src = data?.artistById?.images[0]?.url
+      // var url = data?.artistById?.images[0]?.url
+      // var imgObj = new Image()
+      // imgObj.src = googleProxyURL + encodeURIComponent(url)
+      // imgObj.setAttribute('crossOrigin', '')
+      // imgObj.crossOrigin = 'Anonymous'
+      // imgObj.width = 100
+      // imgObj.height = 100
+      // if (imgObj) {
+      //   const colorPallete = await getColor(imgObj)
+      //   if (!imgObj.src.includes('undefined')) {
+      //     const colors2 = getPaletteFromURL(imgObj.src)
+      //     console.log(colors2)
+      //   }
+      //   // colors2.then((colors) => console.log(colors))
+      // }
+    })()
+  }, [data?.artistById?.images[0]?.url])
+
   return (
     <AtomWrapper>
       <AtomSeoLayout
         title="Swap"
-        page={Artist.name}
-        image={Artist?.images[0]?.url}
+        page={data?.artistById?.name}
+        image={data?.artistById?.images[0]?.url}
         description="Swap is a music platform that allows you to discover new music and connect with people who share the same taste."
       />
       <AtomWrapper>
-        <h1>ArtistById {reserve_token}</h1>
         <AtomImage
-          src={Artist?.images[0]?.url}
+          crossOrigin="anonymous"
+          id="imgfile"
+          src={data?.artistById?.images[0]?.url}
           width="100px"
           height="100px"
-          alt={Artist?.name}
+          alt={data?.artistById?.name}
         />
-        {ArtistAlbums?.items?.map((item) => (
+
+        {/* {ArtistAlbums?.items?.map((item) => (
           <AtomWrapper key={item.id}>
             <AtomLink
               color="white"
@@ -48,34 +93,18 @@ const ArtistById: NextPageFC<Props> = ({
               </a>
             </AtomLink>
           </AtomWrapper>
-        ))}
+        ))} */}
       </AtomWrapper>
+      {data?.artistById?.images[0]?.url}
     </AtomWrapper>
   )
 }
 export async function getServerSideProps(context: NextPageContext) {
   const { id } = context.query
-  const { reserve_token } = cookie.parse(context.req?.headers.cookie as string)
-  spotifyAPI.setAccessToken(reserve_token as string)
 
-  const Artist = await spotifyAPI
-    .getArtist(id as string)
-    .then((artist) => artist.body)
-
-  const ArtistAlbums = await spotifyAPI
-    .getArtistAlbums(id as string)
-    .then((releases) => releases.body)
-  ArtistById.SEO = {
-    title: Artist.name as string,
-    image: Artist?.images[0]?.url,
-    description:
-      'Swap is a music platform that allows you to discover new music and connect with people who share the same taste.',
-  }
   return {
     props: {
-      reserve_token,
-      Artist,
-      ArtistAlbums,
+      id,
     },
   }
 }

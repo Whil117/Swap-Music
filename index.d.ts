@@ -1,5 +1,4 @@
 import { PropsLayout } from '@Components/layout'
-
 /* eslint-disable no-unused-vars */
 declare module 'redux-persist/es/persistStore' {
   import { Action, AnyAction, Store } from 'redux'
@@ -45,4 +44,17 @@ declare module 'next/app' {
     __N_SSG?: boolean | undefined
     __N_SSP?: boolean | undefined
   }
+}
+declare module 'color-thief-node' {
+  import 'color-thief-node'
+  export const getColorFromURL = (url: string) => {}
+  export default getColorFromURL
+}
+declare module 'colorthief' {
+  import 'colorthief'
+  class ColorThief {
+    getColor(url: string): Promise<number[]>
+    getPalette(url: HTMLImageElement, colorCount: number): number[][]
+  }
+  export default ColorThief
 }

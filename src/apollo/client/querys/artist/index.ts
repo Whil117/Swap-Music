@@ -5,10 +5,19 @@ export const ARTISTBYID = gql`
     artistById(id: $id) {
       id
       name
+      description
       images {
         url
+        height
+        width
       }
+      uri
       followers
+      type
+      genres
+      biography
+      backgroundCover
+      href
     }
   }
 `

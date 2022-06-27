@@ -7,3 +7,9 @@ declare module 'react-color-extractor' {
   }>
   export default ColorExtractor
 }
+declare module 'colorthief' {
+  import 'colorthief'
+  export class ColorThief {
+    static getColor(url: string): Promise<number[]>
+  }
+}

@@ -62,6 +62,9 @@ const Artist: Schema = new Schema({
   },
   customize: {
     colors: {
+      primary: {
+        type: String,
+      },
       font: {
         type: String,
       },

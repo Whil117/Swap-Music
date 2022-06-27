@@ -1,11 +1,13 @@
 import { FC, ReactNode } from 'react'
 import LayoutDashboard from './admin'
-import SwapPublic from './public'
+import Public from './public'
+import SwapUser from './swap'
 
 const Layouts = {
-  swap: SwapPublic,
+  swap: SwapUser,
   dashboard: LayoutDashboard,
-  public: ({ children }: { children: ReactNode }) => <>{children}</>,
+  public: Public,
+  default: ({ children }: { children: ReactNode }) => <>{children}</>,
 }
 
 export type PropsLayout = {

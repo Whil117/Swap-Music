@@ -259,6 +259,6 @@ export async function getServerSideProps(context: NextPageContext) {
       }
 }
 
-LandingPage.Layout = 'public'
+LandingPage.Layout = 'default'
 
 export default LandingPage

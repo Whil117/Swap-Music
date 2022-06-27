@@ -23,6 +23,7 @@ const authLink = setContext((_, { headers }) => {
           ? cookie.get(`validateToken`)
           : cookie.get(`reserve_public`)
       }`,
+      mode: 'no-cors',
     },
   }
 })
@@ -46,6 +47,9 @@ const client = new ApolloClient({
   link,
   ssrMode: true,
   cache,
+  headers: {
+    mode: 'no-cors',
+  },
   connectToDevTools: true,
   queryDeduplication: true,
 })

@@ -10,6 +10,7 @@ const typeDefs = gql`
   }
   type Colors {
     font: String
+    primary: String
     background: String
   }
   input ImageInput {
@@ -22,6 +23,7 @@ const typeDefs = gql`
   }
   input ColorsInput {
     font: String
+    primary: String
     background: String
   }
   input CustomizeInput {

@@ -18,7 +18,10 @@
     "@svgr/webpack": "^6.2.0",
     "@types/react-color": "^3.0.6",
     "apollo-server-micro": "2.25.1",
+    "aws4": "^1.11.0",
     "axios": "^0.26.1",
+    "color-thief-node": "^1.0.4",
+    "colorthief": "^2.3.2",
     "dotenv": "^16.0.0",
     "formik": "^2.2.9",
     "framer-motion": "^5.0.0",
@@ -44,6 +47,7 @@
   },
   "devDependencies": {
     "@babel/core": "^7.17.9",
+    "@types/color-thief-node": "^1.0.1",
     "@types/cookie": "^0.5.1",
     "@types/js-cookie": "^3.0.1",
     "@types/lodash": "^4.14.178",
