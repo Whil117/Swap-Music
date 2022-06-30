@@ -3,6 +3,7 @@ import AtomTracksDuration from '@Components/@atoms/AtomTracksDuration'
 import { css } from '@emotion/react'
 import UseColor from '@Hooks/UseColor'
 import { UseTimeProps } from '@Hooks/useTime'
+import FollowNumbers from '@Utils/Followers'
 import { atom, useAtom } from 'jotai'
 import AtomImage from 'lib/AtomImage'
 import AtomLink from 'lib/AtomLink'
@@ -22,6 +23,7 @@ type Props = {
   total_tracks?: number
   useTime?: UseTimeProps
   borderRadiusImage?: string
+  followers?: number
 }
 
 const stringToHTML = (str?: string) => {
@@ -106,7 +108,7 @@ const OrganismBanner: FC<Props> = (props) => {
               }
             `}
           >
-            {props.type.toUpperCase()}
+            {props?.type?.toUpperCase()}
           </AtomText>
           <AtomText
             as="h1"
@@ -134,6 +136,16 @@ const OrganismBanner: FC<Props> = (props) => {
               `}
             >
               {stringToHTML(props.desc).innerText}
+            </AtomText>
+          )}
+          {props.followers && (
+            <AtomText
+              as="p"
+              css={css`
+                opacity: 0.5;
+              `}
+            >
+              {FollowNumbers(props.followers as number)}
             </AtomText>
           )}
           <AtomWrapper

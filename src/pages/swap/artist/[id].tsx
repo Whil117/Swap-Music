@@ -104,6 +104,7 @@ const Artist: NextPageFC<Artist> = ({
         name={Artist.name}
         title={Artist.name}
         borderRadiusImage={'50%'}
+        followers={Artist?.followers?.total as unknown as number}
         type={Artist.type}
       />
 
