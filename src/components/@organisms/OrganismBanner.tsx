@@ -21,6 +21,7 @@ type Props = {
   release_date?: string
   total_tracks?: number
   useTime?: UseTimeProps
+  borderRadiusImage?: string
 }
 
 const stringToHTML = (str?: string) => {
@@ -85,7 +86,7 @@ const OrganismBanner: FC<Props> = (props) => {
           width={260}
           height={260}
           alt={props.name}
-          borderRadius="10px"
+          borderRadius={props.borderRadiusImage || '10px'}
         />
         <AtomWrapper
           css={css`
@@ -147,36 +148,38 @@ const OrganismBanner: FC<Props> = (props) => {
               }
             `}
           >
-            <AtomLink
-              href={{
-                pathname: '/swap/artist/[id]',
-                query: { id: props.id },
-              }}
-              passHref
-            >
-              <a>
-                <AtomText
-                  as="p"
-                  css={css`
-                    display: flex;
-                    align-items: center;
-                    font-weight: 600;
-                    margin: 20px 1px;
-                  `}
-                >
-                  {props.image_url_avatar && (
-                    <AtomImage
-                      src={props.image_url_avatar}
-                      width={100}
-                      height={100}
-                      alt={props.name}
-                      borderRadius="50%"
-                    />
-                  )}
-                  {props.name}
-                </AtomText>
-              </a>
-            </AtomLink>
+            {props.id && (
+              <AtomLink
+                href={{
+                  pathname: '/swap/artist/[id]',
+                  query: { id: props.id },
+                }}
+                passHref
+              >
+                <a>
+                  <AtomText
+                    as="p"
+                    css={css`
+                      display: flex;
+                      align-items: center;
+                      font-weight: 600;
+                      margin: 20px 1px;
+                    `}
+                  >
+                    {props.image_url_avatar && (
+                      <AtomImage
+                        src={props.image_url_avatar}
+                        width={100}
+                        height={100}
+                        alt={props.name}
+                        borderRadius="50%"
+                      />
+                    )}
+                    {props.name}
+                  </AtomText>
+                </a>
+              </AtomLink>
+            )}
             {props.total_tracks && (
               <AtomTracksDuration
                 release={props.release_date as string}

@@ -103,6 +103,7 @@ const Artist: NextPageFC<Artist> = ({
         image_url={Artist.images[0].url}
         name={Artist.name}
         title={Artist.name}
+        borderRadiusImage={'50%'}
         type={Artist.type}
       />
 
