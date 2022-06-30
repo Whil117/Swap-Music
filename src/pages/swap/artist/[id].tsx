@@ -115,14 +115,10 @@ const Artist: NextPageFC<Artist> = ({
               ),
               ${color[0]};
           `}
-          @media (max-width: 642px) {
-            height: auto;
-            flex-direction: column;
-          }
         `}
       >
         <AtomWrapper
-          width="1440px"
+          width="auto"
           css={css`
             display: grid;
             grid-template-columns: auto 1fr;
