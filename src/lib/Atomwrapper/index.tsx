@@ -13,13 +13,15 @@ export type AtomWrapperProps = {
   padding?: string
   gap?: string
   flexDirection?: 'row' | 'column'
+  backgroundColor?: string
   flexWrap?: 'wrap' | 'nowrap'
 }
 
 export const AtomWrapper = styled.div<AtomWrapperProps>`
-  /* display: grid; */
-  width: ${(props) => props.width};
+  display: flex;
+  width: ${(props) => props.width ?? '100%'};
   gap: ${(props) => props.gap || '0px'};
+  background-color: ${(props) => props.backgroundColor || 'transparent'};
   flex-wrap: ${(props) => props.flexWrap || 'wrap'};
   flex-direction: ${(props) => props.flexDirection || 'row'};
   padding: ${(props) => props.padding ?? '0px'};
