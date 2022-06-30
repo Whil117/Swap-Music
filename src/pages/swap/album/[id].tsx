@@ -83,6 +83,7 @@ const AlbumPage: NextPageFC<Props> = ({
         />
 
         <AtomWrapper
+          width="1440px"
           css={css`
             display: flex;
             alig-items: flex-start;
@@ -110,7 +111,7 @@ const AlbumPage: NextPageFC<Props> = ({
           ))}
 
           {data.map((item) => (
-            <AtomWrapper key={item.id}>
+            <AtomWrapper key={item.id} width="100%  ">
               <SectionProps
                 Elements={({ setShow }) => (
                   <AtomSectionHeader setShow={setShow} title={item.title} />

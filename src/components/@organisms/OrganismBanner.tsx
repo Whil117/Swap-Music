@@ -101,7 +101,8 @@ const OrganismBanner: FC<Props> = (props) => {
           `}
         >
           <AtomText
-            as="h4"
+            as="p"
+            fontWeight="bold"
             css={css`
               @media (max-width: 778px) {
                 text-align: center;
@@ -112,6 +113,7 @@ const OrganismBanner: FC<Props> = (props) => {
           </AtomText>
           <AtomText
             as="h1"
+            fontWeight="bold"
             css={css`
               margin: 0;
               font-size: 48px;
