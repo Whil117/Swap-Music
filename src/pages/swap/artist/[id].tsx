@@ -4,17 +4,18 @@ import { useMutation, useQuery } from '@apollo/client'
 import { CREATEARTIST } from '@Apollo/client/mutations/Artist'
 import AtomSectionHeader from '@Components/@atoms/AtomSection/Header'
 import AtomTable from '@Components/@atoms/AtomTable'
-import { colorBanner, titleBanner } from '@Components/@organisms/OrganismBanner'
+import OrganismBanner, {
+  colorBanner,
+  titleBanner,
+} from '@Components/@organisms/OrganismBanner'
 import Card from '@Components/Cards/Card'
 import SectionProps from '@Components/List'
 import { css } from '@emotion/react'
 import useTime from '@Hooks/useTime'
 import { SelectFor } from '@Types/redux/reducers/user/types'
-import FollowNumbers from '@Utils/Followers'
 import Button from '@Whil/components/Button'
 import { useAtom } from 'jotai'
 import AtomButton from 'lib/Atombutton'
-import AtomImage from 'lib/AtomImage'
 import AtomText from 'lib/AtomText'
 import AtomWrapper from 'lib/Atomwrapper'
 import spotifyAPI from 'lib/spotify/spotify'
@@ -22,7 +23,6 @@ import { NextPageContext, NextPageFC } from 'next'
 import { getSession } from 'next-auth/react'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
-import { ColorExtractor } from 'react-color-extractor'
 import { useSelector } from 'react-redux'
 import { SwiperSlide } from 'swiper/react'
 
@@ -99,124 +99,58 @@ const Artist: NextPageFC<Artist> = ({
         }
       `}
     >
-      <AtomWrapper
-        css={css`
-          height: 320px;
-          display: flex;
-          align-items: center;
-          padding: 40px 90px;
-          transition: all 0.3s ease;
-          ${color[0] &&
-          css`
-            background: linear-gradient(
-                180deg,
-                rgba(90, 28, 28, 0) 0%,
-                #121216 100%
-              ),
-              ${color[0]};
-          `}
-        `}
-      >
-        <AtomWrapper
-          width="auto"
-          css={css`
-            display: grid;
-            grid-template-columns: auto 1fr;
-            gap: 20px;
-            @media (max-width: 980px) {
-              display: flex;
-              width: auto;
-              flex-direction: column;
-            }
-          `}
-        >
-          <ColorExtractor
-            src={Artist.images[0]?.url}
-            getColors={(colors: string[]) => setColor(colors)}
-          />
+      <OrganismBanner
+        image_url={Artist.images[0].url}
+        name={Artist.name}
+        title={Artist.name}
+        type={Artist.type}
+      />
 
-          <AtomImage
-            src={Artist.images[0].url}
-            width={240}
-            height={240}
-            alt={Artist.name}
-            borderRadius="50%"
-          />
-          <AtomWrapper
-            css={css`
-              display: grid;
-              gap: 10px;
-              @media (max-width: 980px) {
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-              }
-            `}
-          >
-            <AtomText as="h4" fontWeight="600">
-              {Artist.type.toUpperCase()}
-            </AtomText>
-            <AtomText
-              as="h1"
-              fontWeight="bold"
-              fontSize="42px"
+      {verifyAdmin && (
+        <>
+          {LoadingArtist || loading ? (
+            <AtomLoader
+              type="small"
+              colorPrimary={color[0]}
+              colorSecondary="white"
               css={css`
-                @media (max-width: 980px) {
-                  text-align: center;
-                }
+                width: 120px;
               `}
+            />
+          ) : (
+            <AtomButton
+              width="120px"
+              padding="5px"
+              color="white"
+              fontWeight="bolder"
+              backgroundColor={
+                dataArtist?.artistById?.id ? colors.green_light : color[0]
+              }
+              onClick={() => {
+                if (!dataArtist?.artistById?.id) {
+                  EXECUTECREATEARTIST({
+                    variables: {
+                      input: {
+                        id: Artist.id,
+                        name: Artist.name,
+                        images: Artist.images,
+                        href: Artist.external_urls.spotify,
+                        type: Artist.type,
+                        uri: Artist.uri,
+                        followers: Artist.followers.total,
+                        popularity: Artist.popularity,
+                        genres: Artist.genres,
+                      },
+                    },
+                  })
+                }
+              }}
             >
-              {Artist.name}
-            </AtomText>
-            <AtomText>{FollowNumbers(Artist.followers.total)}</AtomText>
-            {verifyAdmin && (
-              <>
-                {LoadingArtist || loading ? (
-                  <AtomLoader
-                    type="small"
-                    colorPrimary={color[0]}
-                    colorSecondary="white"
-                    css={css`
-                      width: 120px;
-                    `}
-                  />
-                ) : (
-                  <AtomButton
-                    width="120px"
-                    padding="5px"
-                    color="white"
-                    fontWeight="bolder"
-                    backgroundColor={
-                      dataArtist?.artistById?.id ? colors.green_light : color[0]
-                    }
-                    onClick={() => {
-                      if (!dataArtist?.artistById?.id) {
-                        EXECUTECREATEARTIST({
-                          variables: {
-                            input: {
-                              id: Artist.id,
-                              name: Artist.name,
-                              images: Artist.images,
-                              href: Artist.external_urls.spotify,
-                              type: Artist.type,
-                              uri: Artist.uri,
-                              followers: Artist.followers.total,
-                              popularity: Artist.popularity,
-                              genres: Artist.genres,
-                            },
-                          },
-                        })
-                      }
-                    }}
-                  >
-                    {dataArtist?.artistById?.id ? 'Update' : 'Add'}
-                  </AtomButton>
-                )}
-              </>
-            )}
-          </AtomWrapper>
-        </AtomWrapper>
-      </AtomWrapper>
+              {dataArtist?.artistById?.id ? 'Update' : 'Add'}
+            </AtomButton>
+          )}
+        </>
+      )}
       <AtomWrapper
         padding="0 90px"
         css={css`

@@ -1,6 +1,7 @@
 /* eslint-disable no-unused-vars */
 import AtomTracksDuration from '@Components/@atoms/AtomTracksDuration'
 import { css } from '@emotion/react'
+import UseColor from '@Hooks/UseColor'
 import { UseTimeProps } from '@Hooks/useTime'
 import { atom, useAtom } from 'jotai'
 import AtomImage from 'lib/AtomImage'
@@ -8,10 +9,9 @@ import AtomLink from 'lib/AtomLink'
 import AtomText from 'lib/AtomText'
 import AtomWrapper from 'lib/Atomwrapper'
 import { FC, useEffect } from 'react'
-import { ColorExtractor } from 'react-color-extractor'
 
 type Props = {
-  id: string
+  id?: string
   title: string
   name: string
   desc?: string
@@ -35,11 +35,11 @@ export const titleBanner = atom('')
 export const colorBanner = atom<string[]>([])
 
 const OrganismBanner: FC<Props> = (props) => {
-  const [color, setColor] = useAtom(colorBanner)
   const [_, setTitle] = useAtom(titleBanner)
   useEffect(() => {
     setTitle(props.title)
   }, [props])
+  const colors = UseColor({ url: props.image_url })
 
   return (
     <AtomWrapper
@@ -56,9 +56,10 @@ const OrganismBanner: FC<Props> = (props) => {
             rgba(100, 100, 100, 0) 0%,
             #121216 100%
           ),
-          ${color[0]};
-        @media (max-width: 768px) {
+          ${colors[0]};
+        @media (max-width: 980px) {
           justify-content: center;
+          width: 100%;
           height: 600px;
           padding: 0;
         }
@@ -79,11 +80,6 @@ const OrganismBanner: FC<Props> = (props) => {
           }
         `}
       >
-        <ColorExtractor
-          src={props.image_url}
-          getColors={(colors: string[]) => setColor(colors)}
-        />
-
         <AtomImage
           src={props.image_url || 'https://via.placeholder.com/150/92c952'}
           width={260}
