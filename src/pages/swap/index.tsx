@@ -5,6 +5,7 @@ import SectionProps from '@Components/List'
 import { css } from '@emotion/react'
 import { SelectFor } from '@Types/redux/reducers/user/types'
 import Greetings from '@Utils/greetings'
+import Svg from '@Whil/components/Svg'
 import { atom, PrimitiveAtom, useAtom } from 'jotai'
 import { atomFamily, atomWithStorage, useReducerAtom } from 'jotai/utils'
 import AtomButton from 'lib/Atombutton'
@@ -113,7 +114,7 @@ const SwapPage: NextPageFCProps = () => {
               flex-wrap: wrap;
               gap: 10px;
               justify-content: flex-start;
-              @media (max-width: 520px) {
+              @media (max-width: 980px) {
                 /* flex-direction: column; */
                 align-items: center;
                 justify-content: center;
@@ -122,15 +123,33 @@ const SwapPage: NextPageFCProps = () => {
           >
             <AtomButton
               css={css`
+                padding: 0px;
+                text-align: left;
+                cursor: pointer;
                 display: flex;
-                align-items: center;
-                width: max-content;
+                flex-direction: row;
+                justify-content: flex-start;
                 width: 300px;
-                height: 80px;
                 background: #191922;
                 border-radius: 10px;
+                @media (max-width: 980px) {
+                  width: 100%;
+                  height: auto;
+                }
               `}
             >
+              <Svg
+                src="/icons/heart"
+                width="30px"
+                height="30px"
+                css={css`
+                  display: flex;
+                  justify-content: center;
+                  align-items: center;
+                  width: 80px;
+                  height: 80px;
+                `}
+              />
               Liked Songs
             </AtomButton>
             {recent?.map((item) => (
@@ -140,14 +159,19 @@ const SwapPage: NextPageFCProps = () => {
                 }}
                 key={item.id}
                 css={css`
+                  padding: 0px;
                   text-align: left;
                   cursor: pointer;
                   display: flex;
-                  align-items: center;
+                  flex-direction: row;
+                  justify-content: flex-start;
                   width: 300px;
-                  height: 80px;
                   background: #191922;
                   border-radius: 10px;
+                  @media (max-width: 980px) {
+                    width: 100%;
+                    height: auto;
+                  }
                 `}
               >
                 <AtomImage
@@ -157,7 +181,7 @@ const SwapPage: NextPageFCProps = () => {
                   src={item.image ?? ''}
                   alt={item.name}
                 />
-                {item.name.length > 15 ? (
+                {item.name.length > 12 ? (
                   <AtomText
                     as="p"
                     css={css`

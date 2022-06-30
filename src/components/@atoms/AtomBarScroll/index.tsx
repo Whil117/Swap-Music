@@ -112,6 +112,7 @@ const AtomBarScroll: FC = () => {
         scrollPosition >= 280 && (
           <AtomText
             as="p"
+            fontWeight="bold"
             fontSize="18px"
             css={css`
               @media (max-width: 768px) {
@@ -142,30 +143,11 @@ const AtomBarScroll: FC = () => {
             'https://via.placeholder.com/150/92c952'
           }
           alt={user?.me?.display_name as string}
-          width={50}
-          height={50}
+          width={40}
+          height={40}
           borderRadius="50%"
         />
       </AtomButton>
-      {/* <Link
-        href={{
-          pathname: '/swap/profile',
-        }}
-        passHref
-      >
-        <AtomWrapper as="a">
-          <AtomImage
-            src={
-              (user?.me?.images[0]?.url as string) ||
-              'https://via.placeholder.com/150/92c952'
-            }
-            alt={user?.me?.display_name as string}
-            width={50}
-            height={50}
-            borderRadius="50%"
-          />
-        </AtomWrapper>
-      </Link> */}
     </AtomWrapper>
   )
 }
