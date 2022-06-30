@@ -335,7 +335,7 @@ const Artist: NextPageFC<Artist> = ({
         `}
       >
         {data.map((item) => (
-          <AtomWrapper key={item.id}>
+          <AtomWrapper key={item.id} width="100%  ">
             <SectionProps
               Elements={({ setShow }) => (
                 <AtomSectionHeader setShow={setShow} title={item.title} />

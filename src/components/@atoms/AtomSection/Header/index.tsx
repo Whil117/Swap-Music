@@ -14,6 +14,7 @@ type Props = {
 const AtomSectionHeader: FC<Props> = ({ setShow, title }) => {
   return (
     <AtomWrapper
+      width="100%"
       as="div"
       css={css`
         display: flex;

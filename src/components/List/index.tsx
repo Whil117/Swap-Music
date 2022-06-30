@@ -24,6 +24,7 @@ const SectionProps: FC<Props> = ({ children, Elements }) => {
       {children ? (
         !show ? (
           <AtomWrapper
+            width="100%"
             css={css`
               margin-top: 20px;
               .swiper {

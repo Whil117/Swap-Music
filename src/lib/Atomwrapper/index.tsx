@@ -18,8 +18,7 @@ export type AtomWrapperProps = {
 }
 
 export const AtomWrapper = styled.div<AtomWrapperProps>`
-  display: flex;
-  width: ${(props) => props.width ?? '100%'};
+  width: ${(props) => props.width};
   gap: ${(props) => props.gap || '0px'};
   background-color: ${(props) => props.backgroundColor || 'transparent'};
   flex-wrap: ${(props) => props.flexWrap || 'wrap'};
