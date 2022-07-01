@@ -92,7 +92,12 @@ const SwapPage: NextPageFCProps = () => {
 
   return (
     <>
-      <AtomSeoLayout title="Feed" description="Welcome" />
+      <AtomSeoLayout
+        title="Swap"
+        page="Feed"
+        description="Welcome"
+        image={user?.SavedAlbums?.items[0]?.album?.images[0].url}
+      />
       <AtomWrapper
         css={css`
           margin-top: 50px;
