@@ -12,6 +12,7 @@ import useTime from '@Hooks/useTime'
 import Button from '@Whil/components/Button'
 import { useAtom } from 'jotai'
 import AtomButton from 'lib/Atombutton'
+import AtomSeoLayout from 'lib/AtomSeo'
 import AtomText from 'lib/AtomText'
 import AtomWrapper from 'lib/Atomwrapper'
 import spotifyAPI from 'lib/spotify/spotify'
@@ -21,7 +22,7 @@ import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import { SwiperSlide } from 'swiper/react'
 
-type Artist = {
+type ArtistById = {
   Artist: SpotifyApi.SingleArtistResponse
   ArtistAlbums: SpotifyApi.ArtistsAlbumsResponse
   Popular: SpotifyApi.ArtistsTopTracksResponse
@@ -29,7 +30,7 @@ type Artist = {
   id: string
 }
 
-const Artist: NextPageFC<Artist> = ({
+const ArtistById: NextPageFC<ArtistById> = ({
   Artist,
   Popular,
   ArtistAlbums,
@@ -58,164 +59,175 @@ const Artist: NextPageFC<Artist> = ({
   const router = useRouter()
 
   return (
-    <AtomWrapper
-      flexDirection="column"
-      css={css`
-        display: flex;
-        width: 100%;
-        justify-content: space-between;
-        @media (max-width: 768px) {
-          width: auto;
+    <>
+      <AtomSeoLayout
+        title="Swap"
+        page={Artist.name}
+        image={Artist.images[0].url}
+        description={
+          'Discover new music from artists all over the world' + Artist.name
         }
-      `}
-    >
-      <OrganismBanner
-        image_url={Artist.images[0].url}
-        name={Artist.name}
-        title={Artist.name}
-        borderRadiusImage={'50%'}
-        followers={Artist?.followers?.total as unknown as number}
-        type={Artist.type}
-        fullData={Artist}
+        keywords={['Swap', `${Artist.name}`]}
       />
-
       <AtomWrapper
-        padding="0 90px"
-        css={css`
-          @media (max-width: 980px) {
-            padding: 0 30px;
-          }
-        `}
-      >
-        <AtomText as="h2">Popular</AtomText>
-        <AtomTable
-          tableWidth="1440px"
-          customCSS={css`
-            tbody {
-              tr {
-                height: 60px;
-              }
-            }
-          `}
-          columns={[
-            {
-              id: 'position&play',
-              title: '',
-              customCSS: css`
-                text-align: center;
-              `,
-              view: (item, index) => <AtomText as="p">{index}</AtomText>,
-            },
-
-            {
-              id: 'songname',
-              customCSS: css`
-                padding: 0px;
-              `,
-              title: '',
-              view: (item) => {
-                return (
-                  <>
-                    <AtomText as="p" fontSize="16px" fontWeight="normal">
-                      {item?.name}
-                    </AtomText>
-                  </>
-                )
-              },
-            },
-            {
-              id: 'album',
-              title: '',
-              view: (item) => (
-                <AtomButton
-                  onClick={() => {
-                    router
-                      .push({
-                        pathname: `/swap/album/[id]`,
-                        query: {
-                          id: item?.album.id,
-                        },
-                      })
-                      .then(() => {
-                        document?.getElementById('view')?.scroll({
-                          top: 0,
-                        })
-                      })
-                  }}
-                >
-                  <AtomText as="span" textDecoration="underline">
-                    {item?.album.name}
-                  </AtomText>
-                </AtomButton>
-              ),
-            },
-            {
-              id: 'duration',
-              title: '',
-              view: (item) => {
-                const [hours, minutes, seconds] = useTime({
-                  ms: item?.duration_ms,
-                })
-                return (
-                  <AtomText as="p">
-                    {' '}
-                    {hours ? `${hours} ${minutes}` : ''}
-                    {!hours
-                      ? `${minutes}:${
-                          seconds?.toFixed(0).length === 1
-                            ? `0${seconds.toFixed()}`
-                            : seconds?.toFixed()
-                        }`
-                      : ''}
-                  </AtomText>
-                )
-              },
-            },
-          ]}
-          data={Popular.tracks.filter((_, index) =>
-            display ? index < 5 : index < 10
-          )}
-        />
-        <Button props={{ type: 'none' }} click={() => setDisplay(!display)}>
-          {display ? 'Show More' : 'Show Less'}
-        </Button>
-      </AtomWrapper>
-      <AtomWrapper
-        width="1440px"
+        flexDirection="column"
         css={css`
           display: flex;
-          alig-items: flex-start;
-          padding: 0 90px;
-          flex-direction: column;
+          width: 100%;
+          justify-content: space-between;
           @media (max-width: 768px) {
-            padding: 0 30px;
+            width: auto;
           }
         `}
       >
-        {data.map((item) => (
-          <AtomWrapper key={item.id} width="100%  ">
-            <SectionProps
-              Elements={({ setShow }) => (
-                <AtomSectionHeader setShow={setShow} title={item.title} />
-              )}
-            >
-              {item.assets?.map((artist) => (
-                <SwiperSlide key={artist.id} style={{ width: 'auto' }}>
-                  <Card
-                    {...{
-                      id: artist.id,
-                      type: artist.type,
-                      image: artist.images[0]?.url,
-                      name: artist.name,
+        <OrganismBanner
+          image_url={Artist.images[0].url}
+          name={Artist.name}
+          title={Artist.name}
+          borderRadiusImage={'50%'}
+          followers={Artist?.followers?.total as unknown as number}
+          type={Artist.type}
+          fullData={Artist}
+        />
+
+        <AtomWrapper
+          padding="0 90px"
+          css={css`
+            @media (max-width: 980px) {
+              padding: 0 30px;
+            }
+          `}
+        >
+          <AtomText as="h2">Popular</AtomText>
+          <AtomTable
+            tableWidth="1440px"
+            customCSS={css`
+              tbody {
+                tr {
+                  height: 60px;
+                }
+              }
+            `}
+            columns={[
+              {
+                id: 'position&play',
+                title: '',
+                customCSS: css`
+                  text-align: center;
+                `,
+                view: (item, index) => <AtomText as="p">{index}</AtomText>,
+              },
+
+              {
+                id: 'songname',
+                customCSS: css`
+                  padding: 0px;
+                `,
+                title: '',
+                view: (item) => {
+                  return (
+                    <>
+                      <AtomText as="p" fontSize="16px" fontWeight="normal">
+                        {item?.name}
+                      </AtomText>
+                    </>
+                  )
+                },
+              },
+              {
+                id: 'album',
+                title: '',
+                view: (item) => (
+                  <AtomButton
+                    onClick={() => {
+                      router
+                        .push({
+                          pathname: `/swap/album/[id]`,
+                          query: {
+                            id: item?.album.id,
+                          },
+                        })
+                        .then(() => {
+                          document?.getElementById('view')?.scroll({
+                            top: 0,
+                          })
+                        })
                     }}
-                  />
-                </SwiperSlide>
-              ))}
-            </SectionProps>
-          </AtomWrapper>
-        ))}
+                  >
+                    <AtomText as="span" textDecoration="underline">
+                      {item?.album.name}
+                    </AtomText>
+                  </AtomButton>
+                ),
+              },
+              {
+                id: 'duration',
+                title: '',
+                view: (item) => {
+                  const [hours, minutes, seconds] = useTime({
+                    ms: item?.duration_ms,
+                  })
+                  return (
+                    <AtomText as="p">
+                      {' '}
+                      {hours ? `${hours} ${minutes}` : ''}
+                      {!hours
+                        ? `${minutes}:${
+                            seconds?.toFixed(0).length === 1
+                              ? `0${seconds.toFixed()}`
+                              : seconds?.toFixed()
+                          }`
+                        : ''}
+                    </AtomText>
+                  )
+                },
+              },
+            ]}
+            data={Popular.tracks.filter((_, index) =>
+              display ? index < 5 : index < 10
+            )}
+          />
+          <Button props={{ type: 'none' }} click={() => setDisplay(!display)}>
+            {display ? 'Show More' : 'Show Less'}
+          </Button>
+        </AtomWrapper>
+        <AtomWrapper
+          width="1440px"
+          css={css`
+            display: flex;
+            alig-items: flex-start;
+            padding: 0 90px;
+            flex-direction: column;
+            @media (max-width: 768px) {
+              padding: 0 30px;
+            }
+          `}
+        >
+          {data.map((item) => (
+            <AtomWrapper key={item.id} width="100%  ">
+              <SectionProps
+                Elements={({ setShow }) => (
+                  <AtomSectionHeader setShow={setShow} title={item.title} />
+                )}
+              >
+                {item.assets?.map((artist) => (
+                  <SwiperSlide key={artist.id} style={{ width: 'auto' }}>
+                    <Card
+                      {...{
+                        id: artist.id,
+                        type: artist.type,
+                        image: artist.images[0]?.url,
+                        name: artist.name,
+                      }}
+                    />
+                  </SwiperSlide>
+                ))}
+              </SectionProps>
+            </AtomWrapper>
+          ))}
+        </AtomWrapper>
       </AtomWrapper>
-    </AtomWrapper>
+    </>
   )
 }
 
@@ -238,7 +250,13 @@ export async function getServerSideProps(context: NextPageContext) {
   const ArtistRelated = await spotifyAPI
     .getArtistRelatedArtists(id as string)
     .then((releases) => releases.body)
-
+  ArtistById.SEO = {
+    title: Artist.name,
+    description:
+      'Discover new music from artists all over the world' + Artist.name,
+    image: Artist.images[0].url,
+    keywords: [`${Artist.name}`],
+  }
   return {
     props: {
       id,
@@ -249,5 +267,5 @@ export async function getServerSideProps(context: NextPageContext) {
     },
   }
 }
-Artist.Layout = 'swap'
-export default Artist
+ArtistById.Layout = 'swap'
+export default ArtistById
