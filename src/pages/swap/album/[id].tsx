@@ -62,6 +62,10 @@ const AlbumPage: NextPageFC<Props> = ({
       <AtomSeoLayout
         title="Swap"
         page={Album.name}
+        description={
+          "Swap is a music discovery platform that helps you find the music you're looking for." +
+          Album.name
+        }
         image={Album.images[0].url}
         keywords={[Album.album_type]}
       />
