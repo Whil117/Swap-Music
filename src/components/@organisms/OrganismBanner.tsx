@@ -1,5 +1,6 @@
 /* eslint-disable no-unused-vars */
 import AtomTracksDuration from '@Components/@atoms/AtomTracksDuration'
+import SwapArtist from '@Components/swap/artist'
 import { css } from '@emotion/react'
 import UseColor from '@Hooks/UseColor'
 import { UseTimeProps } from '@Hooks/useTime'
@@ -9,6 +10,7 @@ import AtomImage from 'lib/AtomImage'
 import AtomLink from 'lib/AtomLink'
 import AtomText from 'lib/AtomText'
 import AtomWrapper from 'lib/Atomwrapper'
+import { useRouter } from 'next/router'
 import { FC, useEffect } from 'react'
 
 type Props = {
@@ -24,7 +26,19 @@ type Props = {
   useTime?: UseTimeProps
   borderRadiusImage?: string
   followers?: number
+  fullData: SpotifyApi.SingleArtistResponse
 }
+
+type PropsCses = {
+  color: string
+  fullData: SpotifyApi.SingleArtistResponse
+}
+
+const typeCases = (data: PropsCses) => ({
+  artist: <SwapArtist color={data.color} Artist={data?.fullData} />,
+  album: 'Álbum',
+  playlist: 'Playlist',
+})
 
 const stringToHTML = (str?: string) => {
   const parser = new DOMParser()
@@ -39,6 +53,8 @@ export const colorBanner = atom<string[]>([])
 
 const OrganismBanner: FC<Props> = (props) => {
   const [_, setTitle] = useAtom(titleBanner)
+
+  const router = useRouter()
   useEffect(() => {
     setTitle(props.title)
   }, [props])
@@ -76,7 +92,7 @@ const OrganismBanner: FC<Props> = (props) => {
           width: 1440px;
           gap: 20px;
 
-          @media (max-width: 778px) {
+          @media (max-width: 980px) {
             flex-direction: column;
             width: auto;
             padding: 0;
@@ -92,6 +108,8 @@ const OrganismBanner: FC<Props> = (props) => {
         />
         <AtomWrapper
           css={css`
+            display: grid;
+            gap: 10px;
             /* width: 900px; */
             @media (max-width: 980px) {
               width: auto;
@@ -148,12 +166,18 @@ const OrganismBanner: FC<Props> = (props) => {
               {FollowNumbers(props.followers as number)}
             </AtomText>
           )}
+          {
+            typeCases({
+              color: colors[0],
+              fullData: props.fullData,
+            })[router.pathname.split('/')[2] as keyof typeof typeCases]
+          }
           <AtomWrapper
             css={css`
               width: 100%;
               display: flex;
               justify-content: flex-start;
-              @media (max-width: 778px) {
+              @media (max-width: 980px) {
                 flex-direction: column;
                 align-items: center;
                 justify-content: center;

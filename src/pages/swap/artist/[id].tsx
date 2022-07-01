@@ -1,18 +1,14 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 /* eslint-disable no-unused-vars */
-import { useMutation, useQuery } from '@apollo/client'
-import { CREATEARTIST } from '@Apollo/client/mutations/Artist'
 import AtomSectionHeader from '@Components/@atoms/AtomSection/Header'
 import AtomTable from '@Components/@atoms/AtomTable'
 import OrganismBanner, {
-  colorBanner,
   titleBanner,
 } from '@Components/@organisms/OrganismBanner'
 import Card from '@Components/Cards/Card'
 import SectionProps from '@Components/List'
 import { css } from '@emotion/react'
 import useTime from '@Hooks/useTime'
-import { SelectFor } from '@Types/redux/reducers/user/types'
 import Button from '@Whil/components/Button'
 import { useAtom } from 'jotai'
 import AtomButton from 'lib/Atombutton'
@@ -23,13 +19,8 @@ import { NextPageContext, NextPageFC } from 'next'
 import { getSession } from 'next-auth/react'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
-import { useSelector } from 'react-redux'
 import { SwiperSlide } from 'swiper/react'
 
-import { ARTISTBYID } from '@Apollo/client/querys/artist'
-import AtomLoader from '@Components/Loading'
-import colors from '@Styles/global/colors'
-import { toast } from 'react-toastify'
 type Artist = {
   Artist: SpotifyApi.SingleArtistResponse
   ArtistAlbums: SpotifyApi.ArtistsAlbumsResponse
@@ -43,20 +34,9 @@ const Artist: NextPageFC<Artist> = ({
   Popular,
   ArtistAlbums,
   ArtistRelated,
-  id,
 }) => {
-  const user = useSelector((state: SelectFor) => state.user.me.id)
   const [display, setDisplay] = useState(true)
-  const [color, setColor] = useAtom(colorBanner)
   const [_, setTitle] = useAtom(titleBanner)
-
-  const {
-    data: dataArtist,
-    refetch,
-    loading: LoadingArtist,
-  } = useQuery(ARTISTBYID, {
-    variables: { id: id },
-  })
 
   useEffect(() => {
     setTitle(Artist.name)
@@ -75,18 +55,8 @@ const Artist: NextPageFC<Artist> = ({
     },
   ]
 
-  const verifyAdmin = process.env.NEXT_PUBLIC_ADMIN === user
   const router = useRouter()
-  const [EXECUTECREATEARTIST, { loading }] = useMutation(CREATEARTIST, {
-    onCompleted: () => {
-      toast.success('Artist created successfully', {
-        style: {
-          border: `1px solid ${color[0]}`,
-        },
-      })
-      refetch()
-    },
-  })
+
   return (
     <AtomWrapper
       flexDirection="column"
@@ -106,53 +76,9 @@ const Artist: NextPageFC<Artist> = ({
         borderRadiusImage={'50%'}
         followers={Artist?.followers?.total as unknown as number}
         type={Artist.type}
+        fullData={Artist}
       />
 
-      {verifyAdmin && (
-        <>
-          {LoadingArtist || loading ? (
-            <AtomLoader
-              type="small"
-              colorPrimary={color[0]}
-              colorSecondary="white"
-              css={css`
-                width: 120px;
-              `}
-            />
-          ) : (
-            <AtomButton
-              width="120px"
-              padding="5px"
-              color="white"
-              fontWeight="bolder"
-              backgroundColor={
-                dataArtist?.artistById?.id ? colors.green_light : color[0]
-              }
-              onClick={() => {
-                if (!dataArtist?.artistById?.id) {
-                  EXECUTECREATEARTIST({
-                    variables: {
-                      input: {
-                        id: Artist.id,
-                        name: Artist.name,
-                        images: Artist.images,
-                        href: Artist.external_urls.spotify,
-                        type: Artist.type,
-                        uri: Artist.uri,
-                        followers: Artist.followers.total,
-                        popularity: Artist.popularity,
-                        genres: Artist.genres,
-                      },
-                    },
-                  })
-                }
-              }}
-            >
-              {dataArtist?.artistById?.id ? 'Update' : 'Add'}
-            </AtomButton>
-          )}
-        </>
-      )}
       <AtomWrapper
         padding="0 90px"
         css={css`
