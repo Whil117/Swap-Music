@@ -26,16 +26,21 @@ type Props = {
   useTime?: UseTimeProps
   borderRadiusImage?: string
   followers?: number
-  fullData: SpotifyApi.SingleArtistResponse
+  fullData: SpotifyApi.SingleArtistResponse | SpotifyApi.SingleAlbumResponse
 }
 
 type PropsCses = {
   color: string
-  fullData: SpotifyApi.SingleArtistResponse
+  fullData: SpotifyApi.SingleArtistResponse | SpotifyApi.SingleAlbumResponse
 }
 
 const typeCases = (data: PropsCses) => ({
-  artist: <SwapArtist color={data.color} Artist={data?.fullData} />,
+  artist: (
+    <SwapArtist
+      color={data.color}
+      Artist={data?.fullData as SpotifyApi.SingleArtistResponse}
+    />
+  ),
   album: 'Álbum',
   playlist: 'Playlist',
 })
@@ -108,9 +113,16 @@ const OrganismBanner: FC<Props> = (props) => {
         />
         <AtomWrapper
           css={css`
+            max-width: 1160px;
             display: grid;
             gap: 10px;
             /* width: 900px; */
+            @media (max-width: 1440px) {
+              width: 500px;
+            }
+            @media (max-width: 1240px) {
+              width: 350px;
+            }
             @media (max-width: 980px) {
               width: auto;
               margin: 0 10px;
@@ -134,11 +146,14 @@ const OrganismBanner: FC<Props> = (props) => {
             css={css`
               margin: 0;
               font-size: 48px;
-              @media (max-width: 890px) {
+              @media (max-width: 1440px) {
                 font-size: 36px;
               }
-              @media (max-width: 778px) {
+              @media (max-width: 890px) {
                 font-size: 28px;
+              }
+              @media (max-width: 778px) {
+                font-size: 22px;
                 text-align: center;
               }
             `}

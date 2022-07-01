@@ -1,5 +1,6 @@
-import { colorBanner, titleBanner } from '@Components/@organisms/OrganismBanner'
+import { titleBanner } from '@Components/@organisms/OrganismBanner'
 import { css } from '@emotion/react'
+import { colorsAtom } from '@Hooks/UseColor'
 import useScreen from '@Hooks/useScreen'
 import { SelectFor } from '@Types/redux/reducers/user/types'
 import { atom, useAtom } from 'jotai'
@@ -21,7 +22,7 @@ export const NavBarAtom = atom(false)
 
 const AtomBarScroll: FC = () => {
   const user = useSelector((state: SelectFor) => state.user)
-  const [colors] = useAtom(colorBanner)
+  const [colors] = useAtom(colorsAtom)
   const [scrollPosition, setScrollPosition] = useAtom(scrollAtom)
   const [steps, setSteps] = useAtom(stepsId)
   const [title] = useAtom(titleBanner)

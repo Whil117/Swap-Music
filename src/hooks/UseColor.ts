@@ -1,5 +1,6 @@
 import ColorThief from 'colorthief'
-import { useEffect, useState } from 'react'
+import { atom, useAtom } from 'jotai'
+import { useEffect } from 'react'
 
 type Props = {
   url: string
@@ -12,9 +13,9 @@ const rgbToHex = (r: number, g: number, b: number) =>
       return hex.length === 1 ? '0' + hex : hex
     })
     .join('')
-
+export const colorsAtom = atom([] as string[])
 const UseColor = ({ url }: Props) => {
-  const [first, setfirst] = useState([] as string[])
+  const [first, setfirst] = useAtom(colorsAtom)
   useEffect(() => {
     ;(async () => {
       const colorThief = new ColorThief()

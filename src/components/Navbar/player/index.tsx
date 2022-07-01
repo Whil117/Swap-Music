@@ -7,7 +7,6 @@ import { atom } from 'jotai'
 import { useReducerAtom } from 'jotai/utils'
 import AtomButton from 'lib/Atombutton'
 import AtomImage from 'lib/AtomImage'
-import AtomSeoLayout from 'lib/AtomSeo'
 import AtomText from 'lib/AtomText'
 import AtomWrapper from 'lib/Atomwrapper'
 import spotifyAPI from 'lib/spotify/spotify'
@@ -97,10 +96,6 @@ const NavbarPlayer: FC = () => {
     <>
       {track?.name && (
         <>
-          <AtomSeoLayout
-            title={track?.name}
-            image={track?.album?.images[0]?.url}
-          />
           <AtomWrapper
             css={css`
               padding: 10px;
