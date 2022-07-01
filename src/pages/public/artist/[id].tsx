@@ -29,6 +29,7 @@ const ArtistById: NextPageFC<Props> = ({ id }) => {
       />
       <AtomWrapper>
         <OrganismBanner
+          fullData={[] as any}
           name={data?.artistById?.name}
           title={data?.artistById?.name}
           image_url={data?.artistById?.images[0]?.url}

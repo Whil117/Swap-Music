@@ -71,7 +71,7 @@ const typesReducers: typesReducers = {
   }),
   VIEWIMAGESIDEBAR: (state, payload) => ({
     ...state,
-    view: payload.view as boolean,
+    ...payload,
     image: payload.image as string,
   }),
   HIDEIMAGESIDEBAR: (state, payload) => ({

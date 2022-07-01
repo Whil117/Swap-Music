@@ -29,6 +29,7 @@ const Profile: FC & NextPageFC<Props> = () => {
   return (
     <AtomWrapper>
       <OrganismBanner
+        fullData={[] as any}
         title={user.me.display_name}
         id={user.me.id}
         name={user.me.display_name}
