@@ -27,6 +27,7 @@ export type AtombuttonProps = {
     | 'flex-end'
     | 'space-between'
     | 'space-around'
+  height?: string
 }
 
 const AtomButton = styled.button<AtombuttonProps>`
@@ -43,6 +44,7 @@ const AtomButton = styled.button<AtombuttonProps>`
   cursor: pointer;
   background-color: ${(props) => props?.backgroundColor || 'transparent'};
   width: ${(props) => props.width || 'auto'};
+  height: ${(props) => props.height || 'auto'};
   ${(props) => props?.css};
 `
 export default AtomButton

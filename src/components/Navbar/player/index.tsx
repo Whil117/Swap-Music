@@ -1,5 +1,6 @@
 /* eslint-disable no-unused-vars */
 import { css } from '@emotion/react'
+import UseColor from '@Hooks/UseColor'
 import reducerplayer, { initialState } from '@Redux/reducers/player/controls'
 import { SelectFor } from '@Types/redux/reducers/user/types'
 import Svg from '@Whil/components/Svg'
@@ -10,9 +11,8 @@ import AtomImage from 'lib/AtomImage'
 import AtomText from 'lib/AtomText'
 import AtomWrapper from 'lib/Atomwrapper'
 import spotifyAPI from 'lib/spotify/spotify'
-import { useRouter } from 'next/router'
+import { NextRouter, useRouter } from 'next/router'
 import { FC, useEffect, useRef, useState } from 'react'
-import { ColorExtractor } from 'react-color-extractor'
 import { useSelector } from 'react-redux'
 import Progressbar from './progressbar'
 import BarVolumen from './volumen.bar'
@@ -29,7 +29,7 @@ const NavbarPlayer: FC = () => {
   const img = useRef<HTMLImageElement>(null)
   const [controls, dispatch] = useReducerAtom(controlsAtom, reducerplayer)
   const router = useRouter()
-
+  const colors = UseColor({ url: track?.album?.images?.[0]?.url as string })
   //crea un evento para guardar la imagen del album
   const handlePlay = () => {
     audio.current?.play()
@@ -113,18 +113,6 @@ const NavbarPlayer: FC = () => {
               }
             `}
           >
-            <ColorExtractor
-              src={
-                track?.album?.images?.[0]?.url ??
-                'https://firebasestorage.googleapis.com/v0/b/swap-4f04f.appspot.com/o/images%2FFrame%2094.svg?alt=media&token=e9c9283e-808b-40ac-ba7b-3ce37452a9a2'
-              }
-              getColors={(colors: string[]) => {
-                dispatch({
-                  type: 'COLOR',
-                  payload: { ...controls, color: colors[0] },
-                })
-              }}
-            />
             <AtomWrapper
               css={css`
                 grid-column: 1 / 2;
@@ -149,21 +137,36 @@ const NavbarPlayer: FC = () => {
                   }
                 `}
               >
-                <AtomImage
-                  ref={img}
-                  src={
-                    (track?.album?.images[0]?.url as string) ??
-                    'https://firebasestorage.googleapis.com/v0/b/swap-4f04f.appspot.com/o/images%2FFrame%2094.svg?alt=media&token=e9c9283e-808b-40ac-ba7b-3ce37452a9a2'
-                  }
-                  alt={track?.name as string}
-                  borderRadius="10px"
-                  id="IMAGE"
+                <AtomButton
+                  padding="0px"
                   width="100%"
                   height="100%"
-                  css={css`
-                    grid-row: 1 / -1;
-                  `}
-                />
+                  onClick={() => {
+                    dispatch({
+                      type: 'VIEWIMAGESIDEBAR',
+                      payload: {
+                        view: !controls.view,
+                        image: track?.album?.images?.[0]?.url,
+                      },
+                    })
+                  }}
+                >
+                  <AtomImage
+                    ref={img}
+                    src={
+                      (track?.album?.images[0]?.url as string) ??
+                      'https://firebasestorage.googleapis.com/v0/b/swap-4f04f.appspot.com/o/images%2FFrame%2094.svg?alt=media&token=e9c9283e-808b-40ac-ba7b-3ce37452a9a2'
+                    }
+                    alt={track?.name as string}
+                    borderRadius="10px"
+                    id="IMAGE"
+                    width="100%"
+                    height="100%"
+                    css={css`
+                      grid-row: 1 / -1;
+                    `}
+                  />
+                </AtomButton>
               </AtomWrapper>
               <AtomText
                 as="p"
@@ -225,7 +228,7 @@ const NavbarPlayer: FC = () => {
                         `}
                         key={item.id}
                       >
-                        {index === 0 ? item.name : `, ${item.name}`}
+                        {index === 0 ? item.name : `,${item.name}`}
                       </AtomText>
                     </AtomButton>
                   ))}
@@ -327,7 +330,7 @@ const NavbarPlayer: FC = () => {
               <Progressbar
                 audio={audio}
                 track={track?.preview_url as string}
-                colorbar={controls.color}
+                colorbar={colors[0]}
                 dispatch={dispatch}
                 autoplay={controls.play}
               />
@@ -345,14 +348,14 @@ const NavbarPlayer: FC = () => {
                 }
               `}
             >
-              {buttonsActions.map((item) => (
-                <AtomButton key={item.key}>
+              {buttonsActions(router).map((item) => (
+                <AtomButton key={item.key} onClick={item.onClick} padding="0px">
                   <Svg src={`/icons/${item.icon}`} />
                 </AtomButton>
               ))}
               <BarVolumen
                 audio={audio}
-                color={controls.color}
+                color={colors[0]}
                 volumen={controls.volumen}
               />
             </AtomWrapper>
@@ -363,7 +366,7 @@ const NavbarPlayer: FC = () => {
   )
 }
 
-const buttonsActions = [
+const buttonsActions = (router: NextRouter) => [
   {
     key: 1,
     id: 'repeat',
@@ -377,6 +380,7 @@ const buttonsActions = [
   {
     key: 3,
     id: 'queue',
+    onClick: () => router.push('/swap/queue'),
     icon: 'queue',
   },
   {

@@ -9,6 +9,8 @@ export type IPlayer = {
   volumen: number
   color: string
   currentTime: number
+  image: string
+  view: boolean
 }
 export type IPlayerPayload = {
   play?: boolean
@@ -18,6 +20,8 @@ export type IPlayerPayload = {
   volumen?: number
   color?: string
   currentTime?: number
+  image?: string
+  view?: boolean
 }
 
 export const initialState = {
@@ -28,6 +32,8 @@ export const initialState = {
   volumen: 5,
   color: colors.green_light,
   currentTime: 0,
+  image: '',
+  view: false,
 }
 
 type typesReducers = {
@@ -63,16 +69,25 @@ const typesReducers: typesReducers = {
     ...state,
     currentTime: Math.round(payload.currentTime as number),
   }),
+  VIEWIMAGESIDEBAR: (state, payload) => ({
+    ...state,
+    view: payload.view as boolean,
+    image: payload.image as string,
+  }),
+  HIDEIMAGESIDEBAR: (state, payload) => ({
+    ...state,
+    view: false,
+  }),
 }
 export type ActionPlayer = {
   type: keyof typeof typesReducers
-  payload: IPlayerPayload
+  payload?: IPlayerPayload
 }
 
 export const reducerplayer = (state = initialState, action: ActionPlayer) => {
   const { type, payload } = action
   const handler = typesReducers[type]
-  const newState = handler ? handler(state, payload) : state
+  const newState = handler ? handler(state, payload as IPlayerPayload) : state
   return newState
 }
 

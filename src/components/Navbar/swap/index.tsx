@@ -1,9 +1,11 @@
 import { NavBarAtom } from '@Components/@atoms/AtomBarScroll'
 import { css } from '@emotion/react'
+import reducerplayer from '@Redux/reducers/player/controls'
 import colors from '@Styles/global/colors'
 import { SelectFor } from '@Types/redux/reducers/user/types'
 import Svg from '@Whil/components/Svg'
 import { useAtom } from 'jotai'
+import { useReducerAtom } from 'jotai/utils'
 import AtomButton from 'lib/Atombutton'
 import AtomImage from 'lib/AtomImage'
 import AtomLink from 'lib/AtomLink'
@@ -13,6 +15,7 @@ import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { FC } from 'react'
 import { useSelector } from 'react-redux'
+import { controlsAtom } from '../player'
 type Props = {}
 const Sections = [
   {
@@ -40,7 +43,7 @@ const Sections = [
 const Navbar: FC<Props> = () => {
   const user = useSelector((state: SelectFor) => state.user)
   const router = useRouter()
-
+  const [controls, dispatch] = useReducerAtom(controlsAtom, reducerplayer)
   const [navbar, setNavbar] = useAtom(NavBarAtom)
 
   return (
@@ -85,6 +88,11 @@ const Navbar: FC<Props> = () => {
         `}
       >
         <AtomButton
+          css={css`
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+          `}
           onClick={() =>
             router.push('/').then(() =>
               document?.getElementById('view')?.scroll({
@@ -200,6 +208,26 @@ const Navbar: FC<Props> = () => {
               </Link>
             ))}
         </AtomWrapper>
+        {controls?.view && (
+          <AtomButton
+            padding="0px"
+            width="100%"
+            height="180px"
+            onClick={() => {
+              dispatch({
+                type: 'HIDEIMAGESIDEBAR',
+              })
+            }}
+          >
+            <AtomImage
+              width="100%"
+              height="180px"
+              alt="swap"
+              borderRadius="10px"
+              src={controls.image}
+            />
+          </AtomButton>
+        )}
       </AtomWrapper>
     </AtomWrapper>
   )
