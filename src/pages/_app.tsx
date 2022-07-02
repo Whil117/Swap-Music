@@ -2,6 +2,7 @@ import { ApolloClient, ApolloProvider, InMemoryCache } from '@apollo/client'
 import HeadApp from '@Components/HeadApp'
 import Layout from '@Components/layout'
 import { persistor, store } from '@Redux/store'
+import AtomSeoLayout from 'lib/AtomSeo'
 import { SessionProvider } from 'next-auth/react'
 import type { AppPropsWithLayout } from 'next/app'
 import { Provider } from 'react-redux'
@@ -27,6 +28,15 @@ const MyApp = ({
 
   return (
     <>
+      {SEO?.title && (
+        <AtomSeoLayout
+          title="Swap"
+          page={SEO?.title}
+          image={SEO?.image}
+          keywords={SEO?.keywords}
+          description={SEO?.description}
+        />
+      )}
       <ApolloProvider client={client}>
         <SessionProvider session={session}>
           <Provider store={store}>

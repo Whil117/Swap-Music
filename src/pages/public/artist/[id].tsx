@@ -27,15 +27,6 @@ const ArtistById: NextPageFC<Props> = ({ artistById }) => {
           src={artistById?.images && (artistById?.images[0]?.url as any)}
           alt={artistById?.name as string}
         />
-        {/* <OrganismBanner
-          fullData={[] as any}
-          name={artistById?.name as string}
-          title={artistById?.name as string}
-          image_url={artistById?.images && artistById?.images[0]?.url}
-          type={artistById?.type as string}
-          followers={artistById?.followers}
-          id={artistById?.id}
-        /> */}
       </AtomWrapper>
     </>
   )
@@ -57,6 +48,14 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
   console.log(id)
 
   ArtistById.Layout = 'public'
+  ArtistById.SEO = {
+    title: 'Swap',
+    image:
+      data?.data?.artistById?.images &&
+      (data?.data?.artistById?.images[0]?.url as string),
+    description:
+      'Swap is a music platform that allows you to discover new music and connect with people who share the same taste.',
+  }
 
   return {
     props: {
