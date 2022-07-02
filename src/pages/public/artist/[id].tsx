@@ -49,7 +49,7 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
 
   ArtistById.Layout = 'public'
   ArtistById.SEO = {
-    title: 'Swap',
+    title: data?.data?.artistById?.name,
     image:
       data?.data?.artistById?.images &&
       (data?.data?.artistById?.images[0]?.url as string),
