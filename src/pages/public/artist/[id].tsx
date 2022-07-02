@@ -1,5 +1,4 @@
 /* eslint-disable no-console */
-import { useQuery } from '@apollo/client'
 import { ARTISTBYID } from '@Apollo/client/querys/artist'
 import OrganismBanner from '@Components/@organisms/OrganismBanner'
 import { IArtist, IQueryFilter } from '@Types/index'
@@ -12,9 +11,6 @@ type Props = {
 }
 
 const ArtistById: NextPageFC<Props> = ({ artistById }) => {
-  const { data } = useQuery(ARTISTBYID)
-  console.log(data)
-
   return (
     <>
       <AtomSeoLayout
@@ -36,7 +32,7 @@ const ArtistById: NextPageFC<Props> = ({ artistById }) => {
     </>
   )
 }
-// ArtistById.Layout = 'public'
+ArtistById.Layout = 'public'
 export const getServerSideProps: GetServerSideProps = async ({ query }) => {
   const id = query.id as string
   const data = await client
@@ -51,6 +47,7 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
       console.log(err)
     })
   console.log(id)
+
   ArtistById.Layout = 'public'
 
   return {
