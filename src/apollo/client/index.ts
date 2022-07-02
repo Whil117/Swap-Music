@@ -1,29 +1,25 @@
 /* eslint-disable no-console */
 import {
   ApolloClient,
-  createHttpLink,
+  HttpLink,
   // split
   InMemoryCache,
 } from '@apollo/client'
 import { setContext } from '@apollo/client/link/context'
 import { onError } from '@apollo/client/link/error'
-import cookie from 'js-cookie'
 const cache = new InMemoryCache()
 
-const httpLink = createHttpLink({
-  uri: `/api/graphql`,
+// const httpLink = createHttpLink({
+//   uri: `https://swapbackend.vercel.app/api/graphql`,
+// })
+const httpLink = new HttpLink({
+  uri: `https://swapbackend.vercel.app/api/graphql`,
 })
-0
+
 const authLink = setContext((_, { headers }) => {
   return {
     headers: {
       ...headers,
-      authorization: `${
-        window.location.pathname.includes('swap')
-          ? cookie.get(`validateToken`)
-          : cookie.get(`reserve_public`)
-      }`,
-      mode: 'no-cors',
     },
   }
 })
@@ -43,15 +39,12 @@ const errorLink = onError(({ graphQLErrors, networkError }) => {
 
 const link = errorLink.concat(authLink.concat(httpLink))
 
-const client = new ApolloClient({
+const clierner = new ApolloClient({
   link,
   ssrMode: true,
   cache,
-  headers: {
-    mode: 'no-cors',
-  },
   connectToDevTools: true,
   queryDeduplication: true,
 })
 
-export default client
+export default clierner

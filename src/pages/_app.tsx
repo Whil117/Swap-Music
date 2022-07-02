@@ -1,5 +1,4 @@
-import { ApolloProvider } from '@apollo/client'
-import client from '@Apollo/client/index'
+import { ApolloClient, ApolloProvider, InMemoryCache } from '@apollo/client'
 import HeadApp from '@Components/HeadApp'
 import Layout from '@Components/layout'
 import { persistor, store } from '@Redux/store'
@@ -15,6 +14,11 @@ import 'swiper/css/navigation'
 import 'swiper/css/pagination'
 import 'swiper/css/scrollbar'
 import '../styles/global/style.css'
+
+export const client = new ApolloClient({
+  uri: `https://swapbackend.vercel.app/api/graphql`,
+  cache: new InMemoryCache(),
+})
 
 const MyApp = ({
   Component,

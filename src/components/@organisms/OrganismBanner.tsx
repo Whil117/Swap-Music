@@ -18,7 +18,7 @@ type Props = {
   title: string
   name: string
   desc?: string
-  image_url: string
+  image_url?: string | undefined
   image_url_avatar?: string
   type: string
   release_date?: string
@@ -63,7 +63,7 @@ const OrganismBanner: FC<Props> = (props) => {
   useEffect(() => {
     setTitle(props.title)
   }, [props])
-  const colors = UseColor({ url: props.image_url })
+  const colors = UseColor({ url: props.image_url as string })
 
   return (
     <AtomWrapper

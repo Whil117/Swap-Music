@@ -1,20 +1,27 @@
-import { useQuery } from '@apollo/client'
 import { LISTARTISTS } from '@Apollo/client/querys/artist'
 import Card from '@Components/Cards/Card'
 import { css } from '@emotion/react'
+import { IArtist, IQueryFilter } from '@Types/index'
 import AtomSeoLayout from 'lib/AtomSeo'
 import AtomText from 'lib/AtomText'
 import AtomWrapper from 'lib/Atomwrapper'
-import { NextPageFCProps } from 'next'
+import { NextPageFC } from 'next'
+import { client } from 'pages/_app'
 
-const Public: NextPageFCProps = () => {
-  const { data } = useQuery(LISTARTISTS)
+type PropsPage = {
+  listArtist: IArtist[]
+}
+
+const Public: NextPageFC<PropsPage> = ({ listArtist }) => {
   return (
     <>
       <AtomSeoLayout
         title="Swap"
         page="Public"
-        image={data?.listArtist[0]?.images[0]?.url}
+        image={
+          [...(listArtist as any)]?.find((item) => item?.type === 'artist')
+            ?.images[0]?.url
+        }
         description="Swap is a music platform that allows you to discover new music and connect with people who share the same taste."
       />
       <AtomWrapper
@@ -35,7 +42,7 @@ const Public: NextPageFCProps = () => {
             gap: 5px;
           `}
         >
-          {data?.listArtist?.map((artist: any) => (
+          {listArtist?.map((artist: any) => (
             <Card
               key={artist?.id}
               id={artist?.id}
@@ -53,8 +60,15 @@ const Public: NextPageFCProps = () => {
   )
 }
 export async function getServerSideProps() {
+  const data = await client.query<IQueryFilter<'listArtist'>>({
+    query: LISTARTISTS,
+    variables: {},
+  })
+
   return {
-    props: {},
+    props: {
+      listArtist: data.data.listArtist,
+    },
   }
 }
 Public.Layout = 'public'
