@@ -36,7 +36,7 @@ const ArtistById: NextPageFC<Props> = ({ artistById }) => {
     </>
   )
 }
-
+// ArtistById.Layout = 'public'
 export const getServerSideProps: GetServerSideProps = async ({ query }) => {
   const id = query.id as string
   const data = await client

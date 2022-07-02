@@ -12,7 +12,7 @@ const Layouts = {
 
 export type PropsLayout = {
   children?: ReactNode
-  Layout: keyof typeof Layouts
+  Layout?: keyof typeof Layouts
   SEO?: {
     title?: string
     image?: string
@@ -23,7 +23,7 @@ export type PropsLayout = {
 
 const Layout: FC<PropsLayout> = (props) => {
   const { Layout, children } = props
-  const GetLayout = Layouts[Layout || 'default']
+  const GetLayout = Layouts[Layout || 'public']
   return <GetLayout {...props}>{children}</GetLayout>
 }
 
