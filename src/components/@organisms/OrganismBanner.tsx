@@ -199,7 +199,7 @@ const OrganismBanner: FC<Props> = (props) => {
               }
             `}
           >
-            {props.id && (
+            {props?.id && (
               <AtomLink
                 href={{
                   pathname: '/swap/artist/[id]',

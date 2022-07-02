@@ -27,6 +27,7 @@ const ArtistById: NextPageFC<Props> = ({ artistById }) => {
           image_url={artistById?.images && artistById?.images[0]?.url}
           type={artistById?.type as string}
           followers={artistById?.followers}
+          id={artistById?.id}
         />
       </AtomWrapper>
     </>
