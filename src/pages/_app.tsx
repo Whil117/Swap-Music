@@ -24,16 +24,17 @@ const MyApp = ({
   pageProps: { session, ...pageProps },
 }: AppPropsWithLayout) => {
   const SEO = Component.SEO
+  console.log(session)
 
   return (
     <>
-      <ToastContainer />
       <ApolloProvider client={client}>
         <SessionProvider session={session}>
           <Provider store={store}>
-            <PersistGate loading={false} persistor={persistor}>
+            <PersistGate persistor={persistor}>
               <Layout Layout={Component.Layout} SEO={SEO}>
                 <HeadApp>
+                  <ToastContainer />
                   <Component {...pageProps} />
                 </HeadApp>
               </Layout>

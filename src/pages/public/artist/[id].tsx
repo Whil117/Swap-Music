@@ -1,17 +1,20 @@
 /* eslint-disable no-console */
+import { useQuery } from '@apollo/client'
 import { ARTISTBYID } from '@Apollo/client/querys/artist'
 import OrganismBanner from '@Components/@organisms/OrganismBanner'
 import { IArtist, IQueryFilter } from '@Types/index'
 import AtomSeoLayout from 'lib/AtomSeo'
 import AtomWrapper from 'lib/Atomwrapper'
-import { NextPageContext, NextPageFC } from 'next'
+import { GetServerSideProps, NextPageFC } from 'next'
 import { client } from 'pages/_app'
 type Props = {
-  id: string
   artistById: IArtist
 }
 
 const ArtistById: NextPageFC<Props> = ({ artistById }) => {
+  const { data } = useQuery(ARTISTBYID)
+  console.log(data)
+
   return (
     <>
       <AtomSeoLayout
@@ -34,23 +37,27 @@ const ArtistById: NextPageFC<Props> = ({ artistById }) => {
   )
 }
 
-export async function getServerSideProps(context: NextPageContext) {
-  const { id } = context.query
-  const { data } = await client.query<IQueryFilter<'artistById'>>({
-    query: ARTISTBYID,
-    variables: {
-      id,
-    },
-  })
-  console.log(data)
+export const getServerSideProps: GetServerSideProps = async ({ query }) => {
+  const id = query.id as string
+  const data = await client
+    .query<IQueryFilter<'artistById'>>({
+      query: ARTISTBYID,
+      fetchPolicy: 'network-only',
+      variables: {
+        id: id,
+      },
+    })
+    .catch((err) => {
+      console.log(err)
+    })
+  console.log(id)
+  ArtistById.Layout = 'public'
 
   return {
     props: {
-      id,
-      artistById: data?.artistById,
+      artistById: data?.data?.artistById || {},
     },
   }
 }
-ArtistById.Layout = 'public'
 
 export default ArtistById

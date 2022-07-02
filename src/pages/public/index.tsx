@@ -2,10 +2,12 @@ import { LISTARTISTS } from '@Apollo/client/querys/artist'
 import Card from '@Components/Cards/Card'
 import { css } from '@emotion/react'
 import { IArtist, IQueryFilter } from '@Types/index'
+import AtomButton from 'lib/Atombutton'
 import AtomSeoLayout from 'lib/AtomSeo'
 import AtomText from 'lib/AtomText'
 import AtomWrapper from 'lib/Atomwrapper'
 import { NextPageFC } from 'next'
+import { useRouter } from 'next/router'
 import { client } from 'pages/_app'
 
 type PropsPage = {
@@ -13,6 +15,7 @@ type PropsPage = {
 }
 
 const Public: NextPageFC<PropsPage> = ({ listArtist }) => {
+  const router = useRouter()
   return (
     <>
       <AtomSeoLayout
@@ -43,16 +46,33 @@ const Public: NextPageFC<PropsPage> = ({ listArtist }) => {
           `}
         >
           {listArtist?.map((artist: any) => (
-            <Card
-              key={artist?.id}
-              id={artist?.id}
-              name={artist?.name}
-              image={artist?.images[0]?.url}
-              type={artist?.type}
-              customUrl={{
-                pathname: `/public/artist/${artist?.id}`,
-              }}
-            />
+            <>
+              <Card
+                key={artist?.id}
+                id={artist?.id}
+                name={artist?.name}
+                image={artist?.images[0]?.url}
+                type={artist?.type}
+                customUrl={{
+                  pathname: `/public/artist/[id]`,
+                  query: {
+                    id: artist?.id,
+                  },
+                }}
+              />
+              <AtomButton
+                onClick={() => {
+                  router.push({
+                    pathname: `/public/artist/[id]`,
+                    query: {
+                      id: artist?.id,
+                    },
+                  })
+                }}
+              >
+                View
+              </AtomButton>
+            </>
           ))}
         </AtomWrapper>
       </AtomWrapper>
@@ -60,14 +80,14 @@ const Public: NextPageFC<PropsPage> = ({ listArtist }) => {
   )
 }
 export async function getServerSideProps() {
-  const data = await client.query<IQueryFilter<'listArtist'>>({
+  const data = await client?.query<IQueryFilter<'listArtist'>>({
     query: LISTARTISTS,
     variables: {},
   })
 
   return {
     props: {
-      listArtist: data.data.listArtist,
+      listArtist: data?.data?.listArtist || [],
     },
   }
 }

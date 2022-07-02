@@ -22,6 +22,7 @@ const SwapArtist: FC<Props> = (props) => {
     refetch,
     loading: LoadingArtist,
   } = useQuery(ARTISTBYID, {
+    skip: !props?.Artist?.id,
     variables: { id: props?.Artist?.id },
   })
   const [EXECUTECREATEARTIST, { loading }] = useMutation(CREATEARTIST, {

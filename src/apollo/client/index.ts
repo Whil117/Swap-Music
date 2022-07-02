@@ -1,27 +1,18 @@
 /* eslint-disable no-console */
 import {
   ApolloClient,
-  HttpLink,
+  createHttpLink,
   // split
   InMemoryCache,
 } from '@apollo/client'
-import { setContext } from '@apollo/client/link/context'
 import { onError } from '@apollo/client/link/error'
 const cache = new InMemoryCache()
 
 // const httpLink = createHttpLink({
 //   uri: `https://swapbackend.vercel.app/api/graphql`,
 // })
-const httpLink = new HttpLink({
+const httpLink = createHttpLink({
   uri: `https://swapbackend.vercel.app/api/graphql`,
-})
-
-const authLink = setContext((_, { headers }) => {
-  return {
-    headers: {
-      ...headers,
-    },
-  }
 })
 
 const errorLink = onError(({ graphQLErrors, networkError }) => {
@@ -37,7 +28,7 @@ const errorLink = onError(({ graphQLErrors, networkError }) => {
   if (networkError) console.warn(`[Network error]: ${networkError}`)
 })
 
-const link = errorLink.concat(authLink.concat(httpLink))
+const link = errorLink.concat(httpLink)
 
 const clierner = new ApolloClient({
   link,
