@@ -14,6 +14,7 @@ const rgbToHex = (r: number, g: number, b: number) =>
     })
     .join('')
 export const colorsAtom = atom([] as string[])
+
 const UseColor = ({ url }: Props) => {
   const [first, setfirst] = useAtom(colorsAtom)
   useEffect(() => {
