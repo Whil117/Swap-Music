@@ -1,7 +1,7 @@
 /* eslint-disable no-console */
 import { ARTISTBYID } from '@Apollo/client/querys/artist'
-import OrganismBanner from '@Components/@organisms/OrganismBanner'
 import { IArtist, IQueryFilter } from '@Types/index'
+import AtomImage from 'lib/AtomImage'
 import AtomSeoLayout from 'lib/AtomSeo'
 import AtomWrapper from 'lib/Atomwrapper'
 import { GetServerSideProps, NextPageFC } from 'next'
@@ -20,7 +20,14 @@ const ArtistById: NextPageFC<Props> = ({ artistById }) => {
         description="Swap is a music platform that allows you to discover new music and connect with people who share the same taste."
       />
       <AtomWrapper>
-        <OrganismBanner
+        <h1>{artistById?.name}</h1>
+        <AtomImage
+          width={300}
+          height={300}
+          src={artistById?.images && (artistById?.images[0]?.url as any)}
+          alt={artistById?.name as string}
+        />
+        {/* <OrganismBanner
           fullData={[] as any}
           name={artistById?.name as string}
           title={artistById?.name as string}
@@ -28,7 +35,7 @@ const ArtistById: NextPageFC<Props> = ({ artistById }) => {
           type={artistById?.type as string}
           followers={artistById?.followers}
           id={artistById?.id}
-        />
+        /> */}
       </AtomWrapper>
     </>
   )
