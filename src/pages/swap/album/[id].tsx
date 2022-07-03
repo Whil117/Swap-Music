@@ -106,8 +106,13 @@ const AlbumPage: NextPageFC<Props> = ({
         >
           {TracksAlbum.items.map((track, idx) => (
             <Track
+              image={Album.images[0].url}
+              context={TracksAlbum.items as []}
               {...track}
               key={track.id}
+              album={{
+                id: Album.id,
+              }}
               position={idx}
               onPlayer={() => {
                 convertPlayerTracks(dispatch, {

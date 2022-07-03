@@ -15,7 +15,7 @@ const BarVolumen: FC<Props> = ({ audio, color }) => {
   const [volumen, setvolumen] = useAtom(controlsAtom)
   useEffect(() => {
     if (audio.current) {
-      audio.current.volume = Number(volumen?.volumen as unknown as number) / 100
+      audio.current.volume = Number(volumen.volumen as unknown as number) / 100
     }
     return () => {}
   }, [volumen])

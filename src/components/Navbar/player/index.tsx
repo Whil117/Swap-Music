@@ -1,36 +1,37 @@
 /* eslint-disable no-unused-vars */
 import { css } from '@emotion/react'
-import UseColor from '@Hooks/UseColor'
-import reducerplayer, { initialState } from '@Redux/reducers/player/controls'
-import { SelectFor } from '@Types/redux/reducers/user/types'
+import { colorsAtom } from '@Hooks/UseColor'
+import reducerplayer, {
+  initialState,
+  Inti,
+} from '@Redux/reducers/player/controls'
 import Svg from '@Whil/components/Svg'
-import { atom } from 'jotai'
-import { useReducerAtom } from 'jotai/utils'
+import { useAtom } from 'jotai'
+import { atomWithStorage, useReducerAtom } from 'jotai/utils'
 import AtomButton from 'lib/Atombutton'
 import AtomImage from 'lib/AtomImage'
 import AtomText from 'lib/AtomText'
 import AtomWrapper from 'lib/Atomwrapper'
 import spotifyAPI from 'lib/spotify/spotify'
 import { NextRouter, useRouter } from 'next/router'
-import { FC, useEffect, useRef, useState } from 'react'
-import { useSelector } from 'react-redux'
+import { FC, useRef } from 'react'
 import Progressbar from './progressbar'
 import BarVolumen from './volumen.bar'
 
-export const controlsAtom = atom(initialState)
+export const controlsAtom = atomWithStorage('SWAPPLAYER', initialState as Inti)
+
+export const handleSong = async (trackId: string, accessToken: string) => {
+  spotifyAPI.setAccessToken(accessToken as string)
+  return await spotifyAPI.getTrack(trackId ?? '').then((res) => res)
+}
 
 const NavbarPlayer: FC = () => {
-  const player = useSelector((state: SelectFor) => state.playerTracks)
-  const accessToken = useSelector(
-    (state: SelectFor) => state?.user?.me?.accessToken
-  )
-  const [track, setTrack] = useState<SpotifyApi.SingleTrackResponse>()
   const audio = useRef<HTMLAudioElement>(null)
   const img = useRef<HTMLImageElement>(null)
   const [controls, dispatch] = useReducerAtom(controlsAtom, reducerplayer)
   const router = useRouter()
-  const colors = UseColor({ url: track?.album?.images?.[0]?.url as string })
-  //crea un evento para guardar la imagen del album
+  const [colors] = useAtom(colorsAtom)
+
   const handlePlay = () => {
     audio.current?.play()
     if (audio.current) {
@@ -39,14 +40,16 @@ const NavbarPlayer: FC = () => {
         payload: { ...controls, play: true },
       })
       navigator.mediaSession.metadata = new MediaMetadata({
-        title: track?.name,
-        artist: track?.artists[0].name,
-        album: track?.album.name,
-        artwork: track?.album.images.map((image) => ({
-          src: image.url,
-          sizes: `${image.width}x${image.height}`,
-          type: 'image/jpeg',
-        })),
+        title: controls?.player?.currentTrack?.name,
+        artist: controls?.player?.currentTrack?.artists[0].name,
+        album: controls?.player?.currentTrack?.album.name,
+        artwork: [
+          {
+            src: controls?.player?.currentTrack?.image as string,
+            sizes: '512x512',
+            type: 'image/png',
+          },
+        ],
       })
       audio.current.volume = controls.volumen / 100
     }
@@ -79,21 +82,11 @@ const NavbarPlayer: FC = () => {
     })
   }
 
-  useEffect(() => {
-    if (accessToken && player.currentTrackId) {
-      spotifyAPI.setAccessToken(accessToken as string)
-      spotifyAPI
-        .getTrack(player.currentTrackId ?? '')
-        .then((res) =>
-          res.body.preview_url
-            ? setTrack(res.body)
-            : setTrack({} as SpotifyApi.SingleTrackResponse)
-        )
-    }
-  }, [accessToken, player.currentTrackId])
+  console.log(controls)
+
   return (
     <>
-      {track?.name && (
+      {controls?.player?.currentTrack?.preview_url && (
         <>
           <AtomWrapper
             css={css`
@@ -145,18 +138,15 @@ const NavbarPlayer: FC = () => {
                       type: 'VIEWIMAGESIDEBAR',
                       payload: {
                         view: !controls.view,
-                        image: track?.album?.images?.[0]?.url,
+                        image: controls?.player?.currentTrack?.image,
                       },
                     })
                   }}
                 >
                   <AtomImage
                     ref={img}
-                    src={
-                      (track?.album?.images[0]?.url as string) ??
-                      'https://firebasestorage.googleapis.com/v0/b/swap-4f04f.appspot.com/o/images%2FFrame%2094.svg?alt=media&token=e9c9283e-808b-40ac-ba7b-3ce37452a9a2'
-                    }
-                    alt={track?.name as string}
+                    src={controls?.player?.currentTrack?.image}
+                    alt={controls?.player?.currentTrack?.name as string}
                     borderRadius="10px"
                     id="IMAGE"
                     width="100%"
@@ -174,7 +164,7 @@ const NavbarPlayer: FC = () => {
                     .push({
                       pathname: `/swap/album/[id]`,
                       query: {
-                        id: track?.album.id,
+                        id: controls?.player?.currentTrack?.album.id,
                       },
                     })
                     .then(() => {
@@ -198,7 +188,7 @@ const NavbarPlayer: FC = () => {
                     }
                   `}
                 >
-                  {track?.name}
+                  {controls?.player?.currentTrack?.name}
                 </AtomText>
               </AtomButton>
               <AtomWrapper
@@ -218,43 +208,45 @@ const NavbarPlayer: FC = () => {
                     justify-content: flex-start;
                   `}
                 >
-                  {track?.artists?.map((item, index) => (
-                    <AtomButton
-                      key={item.id && item?.id}
-                      css={css`
-                        &:hover {
-                          text-decoration: underline;
-                        }
-                      `}
-                      onClick={() => {
-                        router
-                          .push({
-                            pathname: `/swap/artist/[id]`,
-                            query: {
-                              id: item.id,
-                            },
-                          })
-                          .then(() => {
-                            document?.getElementById('view')?.scroll({
-                              top: 0,
-                            })
-                          })
-                      }}
-                    >
-                      <AtomText
-                        as="p"
+                  {controls?.player?.currentTrack?.artists?.map(
+                    (item, index) => (
+                      <AtomButton
+                        key={item.id && item?.id}
                         css={css`
-                          opacity: 0.5;
-                          @media (max-width: 980px) {
-                            font-size: 0.8rem;
+                          &:hover {
+                            text-decoration: underline;
                           }
                         `}
-                        key={item.id}
+                        onClick={() => {
+                          router
+                            .push({
+                              pathname: `/swap/artist/[id]`,
+                              query: {
+                                id: item.id,
+                              },
+                            })
+                            .then(() => {
+                              document?.getElementById('view')?.scroll({
+                                top: 0,
+                              })
+                            })
+                        }}
                       >
-                        {index === 0 ? item.name : `, ${item.name}`}
-                      </AtomText>
-                    </AtomButton>
-                  ))}
+                        <AtomText
+                          as="p"
+                          css={css`
+                            opacity: 0.5;
+                            @media (max-width: 980px) {
+                              font-size: 0.8rem;
+                            }
+                          `}
+                          key={item.id}
+                        >
+                          {index === 0 ? item.name : `, ${item.name}`}
+                        </AtomText>
+                      </AtomButton>
+                    )
+                  )}
                 </AtomWrapper>
               </AtomWrapper>
             </AtomWrapper>
@@ -352,10 +344,10 @@ const NavbarPlayer: FC = () => {
               </AtomWrapper>
               <Progressbar
                 audio={audio}
-                track={track?.preview_url as string}
+                track={controls?.player?.currentTrack?.preview_url as string}
                 colorbar={colors[0]}
                 dispatch={dispatch}
-                autoplay={controls.play}
+                autoplay={controls.play as boolean}
               />
             </AtomWrapper>
             <AtomWrapper
@@ -379,7 +371,7 @@ const NavbarPlayer: FC = () => {
               <BarVolumen
                 audio={audio}
                 color={colors[0]}
-                volumen={controls.volumen}
+                volumen={controls.volumen as number}
               />
             </AtomWrapper>
           </AtomWrapper>

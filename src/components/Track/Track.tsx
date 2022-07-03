@@ -1,7 +1,11 @@
+/* eslint-disable no-unused-vars */
+import { controlsAtom } from '@Components/Navbar/player'
 import { css } from '@emotion/react'
 import useScreen from '@Hooks/useScreen'
 import useTime from '@Hooks/useTime'
+import reducerplayer from '@Redux/reducers/player/controls'
 import P from '@Whil/components/P'
+import { useReducerAtom } from 'jotai/utils'
 import AtomButton from 'lib/Atombutton'
 import AtomImage from 'lib/AtomImage'
 import AtomText from 'lib/AtomText'
@@ -27,6 +31,7 @@ type Props = {
       url?: string
     }[]
   }
+  context: []
   preview_url?: string | null
   duration_ms?: number
   withImage?: boolean
@@ -34,8 +39,8 @@ type Props = {
 
 const Track: FC<Props> = (props) => {
   const [hours, minutes, seconds] = useTime({ ms: props.duration_ms })
+  const [controls, dispatch] = useReducerAtom(controlsAtom, reducerplayer)
   const router = useRouter()
-
   const screen = useScreen()
 
   return (
@@ -72,10 +77,42 @@ const Track: FC<Props> = (props) => {
           : () => {}
       }
     >
+      {/* {useseesion.data.accessToken} */}
       <AtomButton
         onClick={
           props.preview_url
-            ? props.onPlayer
+            ? () => {
+                dispatch({
+                  type: 'VIEWIMAGESIDEBAR',
+                  payload: {
+                    image: props.image,
+                  },
+                })
+
+                dispatch({
+                  type: 'SETTRACK',
+                  payload: {
+                    player: {
+                      currentTrack: {
+                        position: props?.position as number,
+                        id: props.id as string,
+                        name: props.name as string,
+                        image: props.image as string,
+                        artists: props.artists as Props['artists'],
+                        album: props.album as {
+                          id?: string
+                          name?: string
+                          images?: {
+                            url?: string
+                          }[]
+                        },
+                        preview_url: (props.preview_url as string) ?? '',
+                      },
+                      context: props.context,
+                    },
+                  },
+                })
+              }
             : () => {
                 toast.error('This song isn`t available', {
                   position: 'top-center',

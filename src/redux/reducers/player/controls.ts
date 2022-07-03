@@ -1,24 +1,35 @@
 import colors from '@Styles/global/colors'
 
 /* eslint-disable no-unused-vars */
-export type IPlayer = {
-  play: boolean
-  repeat: boolean
-  aleatory: boolean
-  loop: boolean
-  volumen: number
-  color: string
-  currentTime: number
-  image: string
-  view: boolean
-}
-export type IPlayerPayload = {
+
+export type Inti = {
   play?: boolean
   repeat?: boolean
   aleatory?: boolean
   loop?: boolean
   volumen?: number
   color?: string
+  player?: {
+    currentTrack: {
+      id: string
+      position: number
+      name: string
+      artists: {
+        name?: string | undefined
+        id?: string | undefined
+      }[]
+      preview_url: string
+      image: string
+      album: {
+        id?: string
+        name?: string
+        images?: {
+          url?: string
+        }[]
+      }
+    }
+    context: never[]
+  }
   currentTime?: number
   image?: string
   view?: boolean
@@ -31,13 +42,31 @@ export const initialState = {
   loop: false,
   volumen: 5,
   color: colors.green_light,
+  player: {
+    currentTrack: {
+      id: '',
+      position: 0,
+      name: '',
+      artists: [] as {
+        name?: string
+        id?: string
+      }[],
+      preview_url: '',
+      image: '',
+      album: {
+        id: '',
+        name: '',
+      },
+    },
+    context: [],
+  },
   currentTime: 0,
   image: '',
   view: false,
 }
 
 type typesReducers = {
-  [key: string]: (state: IPlayer, payload: IPlayerPayload) => IPlayer
+  [key: string]: (state: Inti, payload: Inti) => Inti
 }
 
 const typesReducers: typesReducers = {
@@ -78,16 +107,25 @@ const typesReducers: typesReducers = {
     ...state,
     view: false,
   }),
+  SETTRACK: (state, payload) => ({
+    ...state,
+    player: payload.player,
+  }),
 }
 export type ActionPlayer = {
   type: keyof typeof typesReducers
-  payload?: IPlayerPayload
+  payload?: Inti
 }
 
-export const reducerplayer = (state = initialState, action: ActionPlayer) => {
+export const reducerplayer = (
+  state = initialState as Inti,
+  action: ActionPlayer
+) => {
   const { type, payload } = action
   const handler = typesReducers[type]
-  const newState = handler ? handler(state, payload as IPlayerPayload) : state
+  const newState = handler
+    ? handler(state, payload as typeof initialState)
+    : state
   return newState
 }
 

@@ -1,13 +1,12 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable no-console */
 import AtomLoader from '@Components/Loading'
-import { SelectFor } from '@Types/redux/reducers/user/types'
 import { atom, useAtom } from 'jotai'
 import spotifyAPI from 'lib/spotify/spotify'
 import { getSession } from 'next-auth/react'
 import { useRouter } from 'next/router'
 import { FC, useEffect } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 
 type Props = {
   children: JSX.Element
@@ -15,7 +14,6 @@ type Props = {
 export const showAtom = atom(true)
 
 const Hidratation: FC<Props> = ({ children }) => {
-  const user = useSelector((state: SelectFor) => state.user)
   const dispatch = useDispatch()
   const router = useRouter()
   const Session = getSession()
