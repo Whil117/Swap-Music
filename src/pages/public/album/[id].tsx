@@ -28,7 +28,7 @@ export async function getServerSideProps(context: NextPageContext) {
 
   const Album = await spotifyAPI.getAlbum(id as string).then((res) => res.body)
 
-  const ArtistId = Album?.artists?.find((artist) => artist?.id)?.id
+  // const ArtistId = Album?.artists?.find((artist) => artist?.id)?.id
   // const DurationTracks = Album.tracks.items.reduce(
   //   (acc, curr) => acc + curr.duration_ms,
   //   0

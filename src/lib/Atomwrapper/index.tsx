@@ -15,6 +15,13 @@ export type AtomWrapperProps = {
   flexDirection?: 'row' | 'column'
   backgroundColor?: string
   flexWrap?: 'wrap' | 'nowrap'
+  alignItems?: 'flex-start' | 'flex-end' | 'center' | 'baseline' | 'stretch'
+  justifyContent?:
+    | 'flex-start'
+    | 'flex-end'
+    | 'center'
+    | 'space-between'
+    | 'space-around'
 }
 
 export const AtomWrapper = styled.div<AtomWrapperProps>`
@@ -23,6 +30,8 @@ export const AtomWrapper = styled.div<AtomWrapperProps>`
   background-color: ${(props) => props.backgroundColor || 'transparent'};
   flex-wrap: ${(props) => props.flexWrap || 'wrap'};
   flex-direction: ${(props) => props.flexDirection || 'row'};
+  align-items: ${(props) => props.alignItems || 'none'};
+  justify-content: ${(props) => props.justifyContent || 'none'};
   padding: ${(props) => props.padding ?? '0px'};
   ${(props) => props?.css};
 `

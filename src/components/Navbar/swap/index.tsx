@@ -7,6 +7,7 @@ import Svg from '@Whil/components/Svg'
 import { useAtom } from 'jotai'
 import { useReducerAtom } from 'jotai/utils'
 import AtomButton from 'lib/Atombutton'
+import AtomIcon from 'lib/AtomIcon'
 import AtomImage from 'lib/AtomImage'
 import AtomLink from 'lib/AtomLink'
 import AtomText from 'lib/AtomText'
@@ -65,9 +66,9 @@ const Navbar: FC<Props> = () => {
       <AtomWrapper
         as="nav"
         css={css`
-          padding: 1rem 1.5rem;
+          padding: 0rem 1rem;
           color: ${colors.white};
-          /* width: 225px; */
+          height: 100%;
           z-index: 2;
           background: #191922;
           display: grid;
@@ -86,6 +87,7 @@ const Navbar: FC<Props> = () => {
         `}
       >
         <AtomButton
+          padding="0px"
           css={css`
             display: flex;
             align-items: center;
@@ -99,23 +101,19 @@ const Navbar: FC<Props> = () => {
             )
           }
         >
-          <AtomText
-            as="h1"
-            css={css`
+          <AtomIcon
+            width="50px"
+            height="50px"
+            customCSS={css`
               grid-row: 1 / 2;
               gap: 2px;
               align-self: center;
               display: flex;
               align-items: center;
             `}
-          >
-            <AtomImage
-              width={48}
-              height={48}
-              alt="swap"
-              src="https://firebasestorage.googleapis.com/v0/b/swap-4f04f.appspot.com/o/icons%2Fswapicon.svg?alt=media&token=95c124e6-ebd4-4f72-8258-f1c4fad57f07"
-            />
-          </AtomText>
+            color="default"
+            icon="https://storage.googleapis.com/cdn-bucket-ixulabs-platform/IXU-0001/icon.svg"
+          />
         </AtomButton>
         <AtomWrapper
           css={css`
@@ -132,7 +130,7 @@ const Navbar: FC<Props> = () => {
             >
               <AtomText
                 as="a"
-                margin="15px 0"
+                margin="10px 0"
                 fontSize="18px"
                 css={css`
                   display: flex;
@@ -210,7 +208,7 @@ const Navbar: FC<Props> = () => {
           <AtomButton
             padding="0px"
             width="100%"
-            height="180px"
+            height="100%"
             onClick={() => {
               dispatch({
                 type: 'HIDEIMAGESIDEBAR',
@@ -219,10 +217,17 @@ const Navbar: FC<Props> = () => {
           >
             <AtomImage
               width="100%"
-              height="180px"
+              height="100%"
               alt="swap"
               borderRadius="10px"
               src={controls.image}
+              css={css`
+                img {
+                  transition: transform 0.5s ease-in-out;
+
+                  height: 100%;
+                }
+              `}
             />
           </AtomButton>
         )}

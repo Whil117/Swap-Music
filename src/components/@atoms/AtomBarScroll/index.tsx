@@ -68,7 +68,6 @@ const AtomBarScroll: FC = () => {
         css`
           background: ${colors[0]};
         `}
-        padding: 10px;
         display: flex;
         justify-content: ${router.asPath.includes('swap/library')
           ? 'space-between'
@@ -77,6 +76,7 @@ const AtomBarScroll: FC = () => {
           ? 'space-between'
           : 'flex-end'};
         align-items: center;
+        width: 100%;
         position: sticky;
         top: 0;
         z-index: 2;

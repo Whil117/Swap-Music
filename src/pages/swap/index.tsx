@@ -98,71 +98,37 @@ const SwapPage: NextPageFCProps = () => {
         description="Welcome"
         image={user?.SavedAlbums?.items[0]?.album?.images[0].url}
       />
-      <AtomWrapper
-        css={css`
-          margin-top: 50px;
-          margin: 50px 40px 40px 40px;
-          max-width: 1440px;
-          @media (max-width: 980px) {
-            margin: 20px;
-          }
-        `}
-      >
-        <AtomWrapper>
-          <AtomText as="h1">
-            {Greetings()} - {user?.me?.display_name}!
-          </AtomText>
-          <AtomWrapper
-            css={css`
-              display: flex;
-              flex-direction: row;
-              flex-wrap: wrap;
-              gap: 10px;
-              justify-content: flex-start;
-              @media (max-width: 980px) {
-                /* flex-direction: column; */
-                align-items: center;
-                justify-content: center;
-              }
-            `}
-          >
-            <AtomButton
+      <AtomWrapper alignItems="center" justifyContent="center">
+        <AtomWrapper
+          width="1440px"
+          padding="0px 90px"
+          css={css`
+            margin-top: 50px;
+            @media (max-width: 980px) {
+              padding: 0px 30px;
+              width: auto;
+              margin: 20px;
+            }
+          `}
+        >
+          <AtomWrapper>
+            <AtomText as="h1">
+              {Greetings()} - {user?.me?.display_name}!
+            </AtomText>
+            <AtomWrapper
               css={css`
-                padding: 0px;
-                text-align: left;
-                cursor: pointer;
-                display: flex;
-                flex-direction: row;
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+                gap: 10px;
                 justify-content: flex-start;
-                width: 300px;
-                background: #191922;
-                border-radius: 10px;
                 @media (max-width: 980px) {
-                  width: 100%;
-                  height: auto;
+                  /* flex-direction: column; */
+                  align-items: center;
+                  justify-content: center;
                 }
               `}
             >
-              <Svg
-                src="/icons/heart"
-                width="30px"
-                height="30px"
-                css={css`
-                  display: flex;
-                  justify-content: center;
-                  align-items: center;
-                  width: 80px;
-                  height: 80px;
-                `}
-              />
-              Liked Songs
-            </AtomButton>
-            {recent?.map((item) => (
               <AtomButton
-                onClick={() => {
-                  router.push(item?.url)
-                }}
-                key={item.id}
                 css={css`
                   padding: 0px;
                   text-align: left;
@@ -170,7 +136,7 @@ const SwapPage: NextPageFCProps = () => {
                   display: flex;
                   flex-direction: row;
                   justify-content: flex-start;
-                  width: 300px;
+                  width: 100%;
                   background: #191922;
                   border-radius: 10px;
                   @media (max-width: 980px) {
@@ -179,83 +145,120 @@ const SwapPage: NextPageFCProps = () => {
                   }
                 `}
               >
-                <AtomImage
-                  width={80}
-                  height={80}
-                  borderRadius="10px 0 0 10px"
-                  src={item.image ?? ''}
-                  alt={item.name}
+                <Svg
+                  src="/icons/heart"
+                  width="30px"
+                  height="30px"
+                  css={css`
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    width: 80px;
+                    height: 80px;
+                  `}
                 />
-                {item.name.length > 12 ? (
-                  <AtomText
-                    as="p"
-                    css={css`
-                      /* width: 100px; */
-                      padding: 0 10px;
-                    `}
-                  >
-                    {item.name.slice(0, 40)}...
-                  </AtomText>
-                ) : (
-                  <AtomText
-                    as="p"
-                    css={css`
-                      /* width: 100px; */
-                      padding: 0 10px;
-                    `}
-                  >
-                    {item.name}
-                  </AtomText>
-                )}
+                Liked Songs
               </AtomButton>
-            ))}
+              {recent?.map((item) => (
+                <AtomButton
+                  onClick={() => {
+                    router.push(item?.url)
+                  }}
+                  key={item.id}
+                  css={css`
+                    padding: 0px;
+                    text-align: left;
+                    cursor: pointer;
+                    display: flex;
+                    flex-direction: row;
+                    justify-content: flex-start;
+                    width: 100%;
+                    background: #191922;
+                    border-radius: 10px;
+                    @media (max-width: 980px) {
+                      width: 100%;
+                      height: auto;
+                    }
+                  `}
+                >
+                  <AtomImage
+                    width={80}
+                    height={80}
+                    borderRadius="10px 0 0 10px"
+                    src={item.image ?? ''}
+                    alt={item.name}
+                  />
+                  {item.name.length > 12 ? (
+                    <AtomText
+                      as="p"
+                      css={css`
+                        /* width: 100px; */
+                        padding: 0 10px;
+                      `}
+                    >
+                      {item.name.slice(0, 40)}...
+                    </AtomText>
+                  ) : (
+                    <AtomText
+                      as="p"
+                      css={css`
+                        /* width: 100px; */
+                        padding: 0 10px;
+                      `}
+                    >
+                      {item.name}
+                    </AtomText>
+                  )}
+                </AtomButton>
+              ))}
+            </AtomWrapper>
           </AtomWrapper>
-        </AtomWrapper>
-        {data.map((item) => (
-          <AtomWrapper key={item.id}>
+          {data.map((item) => (
+            <AtomWrapper key={item.id}>
+              <SectionProps
+                Elements={({ setShow }) => (
+                  <AtomSectionHeader setShow={setShow} title={item.title} />
+                )}
+              >
+                {item.assets?.map((artist) => (
+                  <SwiperSlide key={artist.id} style={{ width: 'auto' }}>
+                    <Card
+                      {...{
+                        id: artist.id,
+                        type: artist.type,
+                        image: artist.images[0].url,
+                        name: artist.name,
+                      }}
+                    />
+                  </SwiperSlide>
+                ))}
+              </SectionProps>
+            </AtomWrapper>
+          ))}
+          <AtomWrapper>
             <SectionProps
               Elements={({ setShow }) => (
-                <AtomSectionHeader setShow={setShow} title={item.title} />
+                <AtomSectionHeader
+                  setShow={setShow}
+                  title="Today's suggestions"
+                />
               )}
             >
-              {item.assets?.map((artist) => (
-                <SwiperSlide key={artist.id} style={{ width: 'auto' }}>
+              {user?.SavedAlbums?.items?.map((artist, index) => (
+                <SwiperSlide key={index} style={{ width: 'auto' }}>
                   <Card
+                    key={artist.album.id}
                     {...{
-                      id: artist.id,
-                      type: artist.type,
-                      image: artist.images[0].url,
-                      name: artist.name,
+                      id: artist.album.id,
+                      type: artist.album.type,
+                      image: artist.album.images[0].url,
+                      name: artist.album.name,
                     }}
                   />
                 </SwiperSlide>
               ))}
             </SectionProps>
           </AtomWrapper>
-        ))}
-        <AtomWrapper>
-          <SectionProps
-            Elements={({ setShow }) => (
-              <AtomSectionHeader
-                setShow={setShow}
-                title="Today's suggestions"
-              />
-            )}
-          >
-            {user?.SavedAlbums?.items?.map((artist, index) => (
-              <SwiperSlide key={index} style={{ width: 'auto' }}>
-                <Card
-                  key={artist.album.id}
-                  {...{
-                    id: artist.album.id,
-                    type: artist.album.type,
-                    image: artist.album.images[0].url,
-                    name: artist.album.name,
-                  }}
-                />
-              </SwiperSlide>
-            ))}
-          </SectionProps>
         </AtomWrapper>
       </AtomWrapper>
     </>

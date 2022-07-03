@@ -36,7 +36,7 @@ const AtomButton = styled.button<AtombuttonProps>`
   display: flex;
   align-items: ${(props) => props.alignItems || 'center'};
   justify-content: ${(props) => props.justifyContent || 'center'};
-  padding: ${(props) => props.padding || '0.5rem 1rem'};
+  padding: ${(props) => props.padding || '0px'};
   color: ${(props) => props.color || '#fff'};
   border-radius: ${(props) => props.borderRadius || '5px'};
   font-size: ${(props) => props.fontSize || '1rem'};

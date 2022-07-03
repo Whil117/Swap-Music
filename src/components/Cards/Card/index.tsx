@@ -6,6 +6,7 @@ import { useReducerAtom } from 'jotai/utils'
 import AtomButton from 'lib/Atombutton'
 import AtomImage from 'lib/AtomImage'
 import AtomText from 'lib/AtomText'
+import AtomWrapper from 'lib/Atomwrapper'
 import { useRouter } from 'next/router'
 import { RecentListened, recentListened, reducerRecent } from 'pages/swap'
 import { FC } from 'react'
@@ -64,17 +65,16 @@ const Card: FC<Card> = (props) => {
         transition: all 0.3s ease;
         flex-direction: column;
         align-items: center;
-        justify-content: space-between;
+        justify-content: flex-start;
         color: ${colors.white};
         padding: 10px;
         background-color: ${colors.black_quinary};
-        /* margin: 10px; */
+        /* background: ${colors.black_quaternary}; */
         border-radius: 5px;
         width: 200px;
         height: 264px;
         &:hover {
-          /* transform: scale(1.05); */
-          box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+          box-shadow: 0px 0px 10px #0000007f;
           background: ${colors.black_quaternary};
         }
         @media (max-width: 520px) {
@@ -130,43 +130,35 @@ const Card: FC<Card> = (props) => {
           }
         `}
       />
-      {props.name.length > 35 ? (
-        <AtomText
-          as="h4"
-          css={css`
-            width: 100%;
-            line-height: 1.2;
-            text-align: center;
-            font-size: 1rem;
-          `}
-        >
-          {props.name.slice(0, 35)}...
-        </AtomText>
-      ) : (
-        <AtomText
-          as="h4"
-          css={css`
-            width: 100%;
-            line-height: 1.2;
-            text-align: center;
-            font-size: 1rem;
-          `}
-        >
-          {props.name}
-        </AtomText>
-      )}
+      <AtomWrapper padding="10px 0px">
+        {props.name.length > 35 ? (
+          <AtomText
+            as="h4"
+            css={css`
+              width: 100%;
+              line-height: 1.2;
+              text-align: center;
+              font-size: 1rem;
+            `}
+          >
+            {props.name.slice(0, 35)}...
+          </AtomText>
+        ) : (
+          <AtomText
+            as="h4"
+            css={css`
+              width: 100%;
+              line-height: 1.2;
+              text-align: center;
+              font-size: 1rem;
+            `}
+          >
+            {props.name}
+          </AtomText>
+        )}
+      </AtomWrapper>
     </AtomButton>
   )
 }
-
-// <Link
-//   href={{
-//     pathname: `/swap/${props.type}/[id]`,
-//     query: {
-//       id: props.id,
-//     },
-//   }}
-//   passHref
-// ></Link>
 
 export default Card
