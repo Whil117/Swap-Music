@@ -1,31 +1,18 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 /* eslint-disable no-unused-vars */
-import { titleBanner } from '@Components/@organisms/OrganismBanner'
+import { controlsAtom } from '@Components/Navbar/player'
 import Track from '@Components/Track/Track'
 import { css } from '@emotion/react'
-import { ActionPlayerTracks } from '@Redux/reducers/player'
-import { SelectFor } from '@Types/redux/reducers/user/types'
-import { useAtom } from 'jotai'
+import reducerplayer, { Inti } from '@Redux/reducers/player/controls'
+import { useReducerAtom } from 'jotai/utils'
 import AtomWrapper from 'lib/Atomwrapper'
 import { NextPageFCProps } from 'next'
-import { useEffect } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { Dispatch } from 'redux'
-import { convertPlayerTracks } from '../album/[id]'
 
-const Queue: NextPageFCProps = () => {
-  const user = useSelector((state: SelectFor) => state.user)
-  const dispatch = useDispatch<Dispatch<ActionPlayerTracks>>()
-  const [_, setTitle] = useAtom(titleBanner)
-  useEffect(() => {
-    setTitle('Queue')
-  }, [])
-  return (
-    <AtomWrapper
-      css={css`
-        padding: 20px;
-      `}
-    >
-      <h1>Queue</h1>
+const typeQueue = {
+  album: () => {
+    const [controls, dispatch] = useReducerAtom(controlsAtom, reducerplayer)
+
+    return (
       <AtomWrapper
         css={css`
           display: flex;
@@ -38,28 +25,62 @@ const Queue: NextPageFCProps = () => {
           }
         `}
       >
-        {user?.SavedTracks?.items?.map((item, index) => (
+        {controls?.player?.context?.map((item, index) => (
           <Track
-            {...{ ...item.track }}
-            key={item.track.id}
-            position={index}
-            withImage
-            onPlayer={() => {
-              convertPlayerTracks(dispatch, {
-                id: item?.track?.id,
-                position: index,
-                data: user?.SavedTracks?.items,
-              })
+            {...{ ...item }}
+            key={item.id}
+            context={controls?.player?.context}
+            album={{
+              id: controls?.player?.currentSite?.album?.id,
             }}
+            withImage
+            position={index}
+            type="album"
+            site={{
+              album: {
+                id: controls?.player?.currentSite?.album?.id,
+                name: controls?.player?.currentSite?.album?.name,
+                image: controls?.player?.currentSite?.album?.image,
+              },
+            }}
+            image={controls?.player?.currentSite?.album?.image}
           />
         ))}
       </AtomWrapper>
+    )
+  },
+  playlist: (controls: Inti) => (
+    <AtomWrapper
+      css={css`
+        display: flex;
+        alig-items: flex-start;
+        padding: 0 90px;
+        flex-direction: column;
+        gap: 20px;
+        @media (max-width: 980px) {
+          padding: 0 30px;
+        }
+      `}
+    >
+      {controls?.player?.context?.map((item, index) => (
+        <Track {...{ ...item }} key={item.id} position={index} withImage />
+      ))}
+    </AtomWrapper>
+  ),
+}
+
+const Queue: NextPageFCProps = () => {
+  const [controls, dispatch] = useReducerAtom(controlsAtom, reducerplayer)
+
+  return (
+    <AtomWrapper>
+      <h1>Queue</h1>
+      {typeQueue[controls?.player?.currentSite.type as keyof typeof typeQueue](
+        controls
+      )}
     </AtomWrapper>
   )
 }
 Queue.Layout = 'swap'
 
-// export async function getServerSideProps(params: NextPageContext) {
-//   titleBanner('Queue')
-// }
 export default Queue

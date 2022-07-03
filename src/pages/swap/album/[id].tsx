@@ -113,6 +113,14 @@ const AlbumPage: NextPageFC<Props> = ({
               album={{
                 id: Album.id,
               }}
+              type="album"
+              site={{
+                album: {
+                  id: id,
+                  name: Album.name,
+                  image: Album.images[0].url,
+                },
+              }}
               position={idx}
               onPlayer={() => {
                 convertPlayerTracks(dispatch, {

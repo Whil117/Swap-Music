@@ -10,6 +10,19 @@ export type Inti = {
   volumen?: number
   color?: string
   player?: {
+    currentSite: {
+      type: 'album' | 'artist' | 'playlist' | 'track'
+      album?: {
+        id: string
+        name: string
+        image: string
+      }
+      playlist?: {
+        id: string
+        name: string
+        image: string
+      }
+    }
     currentTrack: {
       id: string
       position: number
@@ -43,6 +56,19 @@ export const initialState = {
   volumen: 5,
   color: colors.green_light,
   player: {
+    currentSite: {
+      type: '' as 'album' | 'artist' | 'playlist' | 'track',
+      album: {
+        id: '',
+        name: '',
+        image: '',
+      },
+      playlist: {
+        id: '',
+        name: '',
+        image: '',
+      },
+    },
     currentTrack: {
       id: '',
       position: 0,

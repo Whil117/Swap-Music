@@ -34,6 +34,19 @@ type Props = {
   context: []
   preview_url?: string | null
   duration_ms?: number
+  type: 'album' | 'artist' | 'playlist' | 'track'
+  site?: {
+    album?: {
+      id: string
+      name: string
+      image: string
+    }
+    playlist?: {
+      id: string
+      name: string
+      image: string
+    }
+  }
   withImage?: boolean
 }
 
@@ -93,6 +106,10 @@ const Track: FC<Props> = (props) => {
                   type: 'SETTRACK',
                   payload: {
                     player: {
+                      currentSite: {
+                        type: props.type,
+                        ...props.site,
+                      },
                       currentTrack: {
                         position: props?.position as number,
                         id: props.id as string,
@@ -148,9 +165,12 @@ const Track: FC<Props> = (props) => {
           {(props.position as number) + 1}
         </AtomText>
       </AtomButton>
-      {props.withImage && props?.album?.images && (
+      {props.withImage && (
         <AtomImage
-          src={(props?.album?.images[0]?.url as string) ?? ''}
+          src={
+            props.image ??
+            ((props?.album?.images && props?.album?.images[0]?.url) as string)
+          }
           width="60px"
           height="60px"
           alt={props.name as string}

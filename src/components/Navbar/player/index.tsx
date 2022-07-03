@@ -24,7 +24,6 @@ export const handleSong = async (trackId: string, accessToken: string) => {
   spotifyAPI.setAccessToken(accessToken as string)
   return await spotifyAPI.getTrack(trackId ?? '').then((res) => res)
 }
-
 const NavbarPlayer: FC = () => {
   const audio = useRef<HTMLAudioElement>(null)
   const img = useRef<HTMLImageElement>(null)
