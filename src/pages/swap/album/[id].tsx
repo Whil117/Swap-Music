@@ -125,7 +125,15 @@ const AlbumPage: NextPageFC<Props> = ({
                 {item.assets
                   ?.filter((asset) => asset.id !== id)
                   ?.map((artist) => (
-                    <SwiperSlide key={artist.id} style={{ width: 'auto' }}>
+                    <SwiperSlide
+                      key={artist.id}
+                      style={{
+                        width: 'auto',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}
+                    >
                       <Card
                         {...{
                           id: artist.id,

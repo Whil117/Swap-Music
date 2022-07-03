@@ -77,78 +77,94 @@ const AtomBarScroll: FC = () => {
           : 'flex-end'};
         align-items: center;
         width: 100%;
+        padding: 15px 0px;
         position: sticky;
         top: 0;
         z-index: 2;
       `}
     >
-      {router.asPath.includes('swap/library') && (
-        <AtomWrapper
-          css={css`
-            display: flex;
-          `}
-        >
-          {['Playlists', 'Podcasts', 'Artists', 'Albums'].map((step, index) => (
-            <AtomButton
-              key={step + index}
-              onClick={() => {
-                setSteps(step)
-              }}
-              css={css`
-                border-radius: 5px;
-                color: white;
-                font-weight: bold;
-                padding: 10px;
-                background-color: ${steps === step
-                  ? 'rgba(255,255,255,0.25)'
-                  : 'transparent'};
-              `}
-            >
-              {step}
-            </AtomButton>
-          ))}
-        </AtomWrapper>
-      )}
-      {validPathsSongs.includes(router.pathname.split('/')[2]) &&
-        scrollPosition >= 280 && (
-          <AtomText
-            as="p"
-            fontWeight="bold"
-            fontSize="18px"
+      <AtomWrapper
+        flexDirection="row"
+        width="100%"
+        css={css`
+          display: flex;
+          padding: 0px 15px;
+          align-items: center;
+          justify-content: ${router.asPath.includes('swap/library')
+            ? 'space-between'
+            : validPathsSongs.includes(router.pathname.split('/')[2]) &&
+              scrollPosition >= 280
+            ? 'space-between'
+            : 'flex-end'};
+        `}
+      >
+        {router.asPath.includes('swap/library') && (
+          <AtomWrapper
             css={css`
-              @media (max-width: 768px) {
-                font-size: 18px;
-              }
-              @media (max-width: 480px) {
-                font-size: 14px;
-              }
+              display: flex;
             `}
           >
-            {title}
-          </AtomText>
+            {['Playlists', 'Podcasts', 'Artists', 'Albums'].map(
+              (step, index) => (
+                <AtomButton
+                  key={step + index}
+                  onClick={() => {
+                    setSteps(step)
+                  }}
+                  css={css`
+                    border-radius: 5px;
+                    color: white;
+                    font-weight: bold;
+                    padding: 10px;
+                    background-color: ${steps === step
+                      ? 'rgba(255,255,255,0.25)'
+                      : 'transparent'};
+                  `}
+                >
+                  {step}
+                </AtomButton>
+              )
+            )}
+          </AtomWrapper>
         )}
-      <AtomButton
-        onClick={() => {
-          screen >= 980
-            ? router.push('/swap/profile').then(() => {
-                document?.getElementById('view')?.scroll({
-                  top: 0,
+        {validPathsSongs.includes(router.pathname.split('/')[2]) &&
+          scrollPosition >= 280 && (
+            <AtomText
+              as="p"
+              fontWeight="bold"
+              fontSize="18px"
+              css={css`
+                @media (max-width: 980px) {
+                  font-size: 16px;
+                }
+                @media (max-width: 480px) {
+                  font-size: 14px;
+                }
+              `}
+            >
+              {title}
+            </AtomText>
+          )}
+        <AtomButton
+          onClick={() => {
+            screen >= 980
+              ? router.push('/swap/profile').then(() => {
+                  document?.getElementById('view')?.scroll({
+                    top: 0,
+                  })
                 })
-              })
-            : setNavbar(!navbar)
-        }}
-      >
-        <AtomImage
-          src={
-            (user?.me?.images[0]?.url as string) ||
-            'https://via.placeholder.com/150/92c952'
-          }
-          alt={user?.me?.display_name as string}
-          width={40}
-          height={40}
-          borderRadius="50%"
-        />
-      </AtomButton>
+              : setNavbar(!navbar)
+          }}
+        >
+          <AtomImage
+            src={user?.me?.images[0]?.url as string}
+            alt={user?.me?.display_name as string}
+            width={40}
+            height={40}
+            borderRadius="50%"
+          />
+        </AtomButton>
+      </AtomWrapper>
     </AtomWrapper>
   )
 }

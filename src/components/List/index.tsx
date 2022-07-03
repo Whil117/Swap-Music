@@ -115,11 +115,17 @@ const SectionProps: FC<Props> = ({ children, Elements }) => {
               margin-top: 20px;
               width: 100%;
               display: grid;
-              grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-              gap: 10px;
+              grid-template-columns: repeat(auto-fit, minmax(200px, 0.5fr));
+              gap: 6px;
               justify-content: flex-start;
               @media (max-width: 520px) {
                 /* flex-direction: column; */
+                align-items: center;
+                justify-content: center;
+              }
+              .swiper-slide {
+                gap: 10px;
+                display: flex;
                 align-items: center;
                 justify-content: center;
               }
