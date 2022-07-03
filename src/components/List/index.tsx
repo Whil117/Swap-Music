@@ -26,10 +26,7 @@ const SectionProps: FC<Props> = ({ children, Elements }) => {
           <AtomWrapper
             width="100%"
             css={css`
-              margin-top: 20px;
               .swiper {
-                /* gap: 20px; */
-                /* margin: 20px 0; */
                 width: 100%;
                 height: auto;
               }
@@ -117,9 +114,8 @@ const SectionProps: FC<Props> = ({ children, Elements }) => {
             css={css`
               margin-top: 20px;
               width: 100%;
-              display: flex;
-              flex-direction: row;
-              flex-wrap: wrap;
+              display: grid;
+              grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
               gap: 10px;
               justify-content: flex-start;
               @media (max-width: 520px) {

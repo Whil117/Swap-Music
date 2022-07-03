@@ -100,7 +100,7 @@ const SwapPage: NextPageFCProps = () => {
       />
       <AtomWrapper alignItems="center" justifyContent="center">
         <AtomWrapper
-          width="1440px"
+          maxWidth="1440px"
           padding="0px 90px"
           css={css`
             margin-top: 50px;

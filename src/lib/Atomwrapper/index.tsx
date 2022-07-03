@@ -22,11 +22,13 @@ export type AtomWrapperProps = {
     | 'center'
     | 'space-between'
     | 'space-around'
+  maxWidth?: string
 }
 
 export const AtomWrapper = styled.div<AtomWrapperProps>`
   width: ${(props) => props.width};
   gap: ${(props) => props.gap || '0px'};
+  max-width: ${(props) => props.maxWidth || 'none'};
   background-color: ${(props) => props.backgroundColor || 'transparent'};
   flex-wrap: ${(props) => props.flexWrap || 'wrap'};
   flex-direction: ${(props) => props.flexDirection || 'row'};
