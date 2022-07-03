@@ -51,7 +51,9 @@ const NavbarPlayer: FC = () => {
           },
         ],
       })
-      audio.current.volume = controls.volumen / 100
+      if (controls.volumen) {
+        audio.current.volume = controls.volumen / 100
+      }
     }
   }
   const handlePause = () => {
@@ -81,8 +83,6 @@ const NavbarPlayer: FC = () => {
       payload: { ...controls, play: true },
     })
   }
-
-  console.log(controls)
 
   return (
     <>
@@ -120,45 +120,52 @@ const NavbarPlayer: FC = () => {
                 }
               `}
             >
-              <AtomWrapper
-                css={css`
-                  width: 80px;
-                  grid-row: 1 /-1;
-                  @media (max-width: 980px) {
-                    display: none;
-                  }
-                `}
-              >
-                <AtomButton
-                  padding="0px"
-                  width="100%"
-                  height="100%"
-                  onClick={() => {
-                    dispatch({
-                      type: 'VIEWIMAGESIDEBAR',
-                      payload: {
-                        view: !controls.view,
-                        image: controls?.player?.currentTrack?.image,
-                      },
-                    })
-                  }}
+              {!controls?.view && (
+                <AtomWrapper
+                  css={css`
+                    width: 80px;
+                    grid-row: 1 /-1;
+                    @media (max-width: 980px) {
+                      display: none;
+                    }
+                  `}
                 >
-                  <AtomImage
-                    ref={img}
-                    src={controls?.player?.currentTrack?.image}
-                    alt={controls?.player?.currentTrack?.name as string}
-                    borderRadius="10px"
-                    id="IMAGE"
+                  <AtomButton
+                    padding="0px"
                     width="100%"
                     height="100%"
-                    css={css`
-                      grid-row: 1 / -1;
-                    `}
-                  />
-                </AtomButton>
-              </AtomWrapper>
+                    onClick={() => {
+                      dispatch({
+                        type: 'VIEWIMAGESIDEBAR',
+                        payload: {
+                          view: !controls.view,
+                          image: controls?.player?.currentTrack?.image,
+                        },
+                      })
+                    }}
+                  >
+                    <AtomImage
+                      ref={img}
+                      src={controls?.player?.currentTrack?.image}
+                      alt={controls?.player?.currentTrack?.name as string}
+                      borderRadius="10px"
+                      id="IMAGE"
+                      width="100%"
+                      height="100%"
+                      css={css`
+                        grid-row: 1 / -1;
+                      `}
+                    />
+                  </AtomButton>
+                </AtomWrapper>
+              )}
               <AtomButton
                 width="max-content"
+                css={css`
+                  &:hover {
+                    text-decoration: underline;
+                  }
+                `}
                 onClick={() => {
                   router
                     .push({
@@ -193,7 +200,6 @@ const NavbarPlayer: FC = () => {
               </AtomButton>
               <AtomWrapper
                 css={css`
-                  grid-column: 2;
                   grid-row: 2;
                   align-self: center;
                   @media (max-width: 980px) {
