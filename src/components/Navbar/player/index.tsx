@@ -1,12 +1,10 @@
 /* eslint-disable no-unused-vars */
 import { css } from '@emotion/react'
-import { colorsAtom } from '@Hooks/UseColor'
 import reducerplayer, {
   initialState,
   Inti,
 } from '@Redux/reducers/player/controls'
 import Svg from '@Whil/components/Svg'
-import { useAtom } from 'jotai'
 import { atomWithStorage, useReducerAtom } from 'jotai/utils'
 import AtomButton from 'lib/Atombutton'
 import AtomImage from 'lib/AtomImage'
@@ -14,7 +12,7 @@ import AtomText from 'lib/AtomText'
 import AtomWrapper from 'lib/Atomwrapper'
 import spotifyAPI from 'lib/spotify/spotify'
 import { NextRouter, useRouter } from 'next/router'
-import { FC, useRef } from 'react'
+import { FC, MutableRefObject, useEffect, useRef } from 'react'
 import Progressbar from './progressbar'
 import BarVolumen from './volumen.bar'
 
@@ -25,11 +23,9 @@ export const handleSong = async (trackId: string, accessToken: string) => {
   return await spotifyAPI.getTrack(trackId ?? '').then((res) => res)
 }
 const NavbarPlayer: FC = () => {
-  const audio = useRef<HTMLAudioElement>(null)
-  const img = useRef<HTMLImageElement>(null)
+  const audio = useRef<HTMLAudioElement>()
   const [controls, dispatch] = useReducerAtom(controlsAtom, reducerplayer)
   const router = useRouter()
-  const [colors] = useAtom(colorsAtom)
 
   const handlePlay = () => {
     audio.current?.play()
@@ -51,7 +47,8 @@ const NavbarPlayer: FC = () => {
         ],
       })
       if (controls.volumen) {
-        audio.current.volume = controls.volumen / 100
+        const volumen = localStorage.getItem('VOLUMENSWAP')
+        audio.current.volume = Number(volumen) / 100
       }
     }
   }
@@ -82,6 +79,15 @@ const NavbarPlayer: FC = () => {
       payload: { ...controls, play: true },
     })
   }
+
+  useEffect(() => {
+    if (audio.current) {
+      const currentTime = localStorage.getItem('PROGRESSBAR')
+      const volumen = localStorage.getItem('VOLUMENSWAP')
+      audio.current.currentTime = currentTime as unknown as number
+      audio.current.volume = (volumen as unknown as number) / 100
+    }
+  }, [])
 
   return (
     <>
@@ -144,7 +150,6 @@ const NavbarPlayer: FC = () => {
                     }}
                   >
                     <AtomImage
-                      ref={img}
                       src={controls?.player?.currentTrack?.image}
                       alt={controls?.player?.currentTrack?.name as string}
                       borderRadius="10px"
@@ -328,6 +333,15 @@ const NavbarPlayer: FC = () => {
                         onClick={() => {
                           controls.play ? handlePause() : handlePlay()
                         }}
+                        //detect keydown
+                        onKeyDown={(e) => {
+                          if (e.key === 'MediaPlayPause') {
+                            controls.play ? handlePause() : handlePlay()
+                          }
+                          // if (e.key === 'MediaNextTrack') {
+                          //   handleNext()
+                          // }
+                        }}
                       >
                         <Svg
                           src={`/icons/${controls.play ? 'pause' : 'play'}`}
@@ -348,9 +362,8 @@ const NavbarPlayer: FC = () => {
                 ))}
               </AtomWrapper>
               <Progressbar
-                audio={audio}
+                audio={audio as MutableRefObject<HTMLAudioElement | null>}
                 track={controls?.player?.currentTrack?.preview_url as string}
-                colorbar={colors[0]}
                 dispatch={dispatch}
                 autoplay={controls.play as boolean}
               />
@@ -373,11 +386,7 @@ const NavbarPlayer: FC = () => {
                   <Svg src={`/icons/${item.icon}`} />
                 </AtomButton>
               ))}
-              <BarVolumen
-                audio={audio}
-                color={colors[0]}
-                volumen={controls.volumen as number}
-              />
+              <BarVolumen audio={audio} />
             </AtomWrapper>
           </AtomWrapper>
         </>

@@ -1,32 +1,30 @@
 /* eslint-disable no-unused-vars */
 import { css } from '@emotion/react'
+import { colorsAtom } from '@Hooks/UseColor'
 import useScreen from '@Hooks/useScreen'
 import { ActionPlayer } from '@Redux/reducers/player/controls'
+import { useAtom } from 'jotai'
+import { atomWithStorage } from 'jotai/utils'
 import AtomInput from 'lib/AtomInput'
 import AtomText from 'lib/AtomText'
 import AtomWrapper from 'lib/Atomwrapper'
-import { FC, RefObject, useEffect, useState } from 'react'
+import { FC, MutableRefObject, useEffect } from 'react'
 // import { useDispatch } from 'react-redux'
 
 type Props = {
-  audio: RefObject<HTMLAudioElement>
+  audio: MutableRefObject<HTMLAudioElement | null>
   autoplay: boolean
-  colorbar: string
   track: string
   dispatch: (action: ActionPlayer) => void
 }
 
-const Progressbar: FC<Props> = ({
-  audio,
-  colorbar,
-  track,
-  autoplay,
-  dispatch,
-}) => {
-  const [currentTime, setCurrentTime] = useState<number>(0)
-  const screen = useScreen()
-  //   const dispatch = useDispatch()
+export const progressBarAtom = atomWithStorage('PROGRESSBAR', 0 as number)
 
+const Progressbar: FC<Props> = ({ audio, track, autoplay, dispatch }) => {
+  const [currentTime, setCurrentTime] = useAtom(progressBarAtom)
+  const screen = useScreen()
+  const [colors] = useAtom(colorsAtom)
+  const colorbar = colors[0]
   useEffect(() => {
     if (audio.current) {
       audio.current.ontimeupdate = (event: any) => {
