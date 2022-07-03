@@ -66,13 +66,12 @@ const Navbar: FC<Props> = () => {
       <AtomWrapper
         as="nav"
         css={css`
-          padding: 0rem 1rem;
           color: ${colors.white};
           height: 100%;
           z-index: 2;
           background: #191922;
           display: grid;
-          grid-template-rows: 65px auto auto;
+          grid-template-rows: auto auto;
           border-radius: 0px 10px 0px 0px;
           top: 0;
           @media (max-width: 980px) {
@@ -86,79 +85,43 @@ const Navbar: FC<Props> = () => {
           }
         `}
       >
-        <AtomButton
-          padding="0px"
-          css={css`
-            display: flex;
-            align-items: center;
-            justify-content: flex-start;
-          `}
-          onClick={() =>
-            router.push('/').then(() =>
-              document?.getElementById('view')?.scroll({
-                top: 0,
-              })
-            )
-          }
-        >
-          <AtomIcon
-            width="50px"
-            height="50px"
-            customCSS={css`
-              grid-row: 1 / 2;
-              gap: 2px;
-              align-self: center;
+        <AtomWrapper padding="0rem 1rem">
+          <AtomButton
+            padding="0px"
+            css={css`
               display: flex;
               align-items: center;
+              justify-content: flex-start;
             `}
-            color="default"
-            icon="https://storage.googleapis.com/cdn-bucket-ixulabs-platform/IXU-0001/icon.svg"
-          />
-        </AtomButton>
-        <AtomWrapper
-          css={css`
-            grid-row: 2;
-          `}
-        >
-          {Sections.map((section) => (
-            <AtomLink
-              key={`section_option_${section.path}`}
-              href={{
-                pathname: section.path,
-              }}
-              passHref
-            >
-              <AtomText
-                as="a"
-                margin="10px 0"
-                fontSize="18px"
-                css={css`
-                  display: flex;
-                  align-items: center;
-                  gap: 15px;
-                `}
-              >
-                <Svg src={`/icons/${section.icon}`} />
-                <AtomText
-                  as="p"
-                  css={css`
-                    color: ${colors.white};
-                    font-weight: 400;
-                  `}
-                >
-                  {section.name}
-                </AtomText>
-              </AtomText>
-            </AtomLink>
-          ))}
-          {user?.Playlists?.items
-            ?.map((playlist) => ({
-              name: playlist.name,
-              path: `/swap/playlist/${playlist.id}`,
-              icon: 'playlist',
-            }))
-            .map((section) => (
-              <Link
+            onClick={() =>
+              router.push('/').then(() =>
+                document?.getElementById('view')?.scroll({
+                  top: 0,
+                })
+              )
+            }
+          >
+            <AtomIcon
+              width="50px"
+              height="50px"
+              customCSS={css`
+                grid-row: 1 / 2;
+                gap: 2px;
+                align-self: center;
+                display: flex;
+                align-items: center;
+              `}
+              color="default"
+              icon="https://storage.googleapis.com/cdn-bucket-ixulabs-platform/IXU-0001/icon.svg"
+            />
+          </AtomButton>
+          <AtomWrapper
+            css={css`
+              grid-row: 2;
+            `}
+          >
+            {Sections.map((section) => (
+              <AtomLink
                 key={`section_option_${section.path}`}
                 href={{
                   pathname: section.path,
@@ -167,42 +130,80 @@ const Navbar: FC<Props> = () => {
               >
                 <AtomText
                   as="a"
-                  margin="15px 0"
+                  margin="10px 0"
                   fontSize="18px"
                   css={css`
-                    opacity: 0.5;
                     display: flex;
                     align-items: center;
                     gap: 15px;
                   `}
                 >
                   <Svg src={`/icons/${section.icon}`} />
-                  {section.name.length > 15 ? (
-                    <AtomText
-                      as="p"
-                      css={css`
-                        color: ${colors.white};
-                        font-size: 16px;
-                        font-weight: 400;
-                      `}
-                    >
-                      {section.name.slice(0, 17)}...
-                    </AtomText>
-                  ) : (
-                    <AtomText
-                      as="p"
-                      css={css`
-                        color: ${colors.white};
-                        font-size: 16px;
-                        font-weight: 400;
-                      `}
-                    >
-                      {section.name}
-                    </AtomText>
-                  )}
+                  <AtomText
+                    as="p"
+                    css={css`
+                      color: ${colors.white};
+                      font-weight: 400;
+                    `}
+                  >
+                    {section.name}
+                  </AtomText>
                 </AtomText>
-              </Link>
+              </AtomLink>
             ))}
+            {user?.Playlists?.items
+              ?.map((playlist) => ({
+                name: playlist.name,
+                path: `/swap/playlist/${playlist.id}`,
+                icon: 'playlist',
+              }))
+              .map((section) => (
+                <Link
+                  key={`section_option_${section.path}`}
+                  href={{
+                    pathname: section.path,
+                  }}
+                  passHref
+                >
+                  <AtomText
+                    as="a"
+                    margin="15px 0"
+                    fontSize="18px"
+                    css={css`
+                      opacity: 0.5;
+                      display: flex;
+                      align-items: center;
+                      gap: 15px;
+                    `}
+                  >
+                    <Svg src={`/icons/${section.icon}`} />
+                    {section.name.length > 15 ? (
+                      <AtomText
+                        as="p"
+                        css={css`
+                          color: ${colors.white};
+                          font-size: 16px;
+                          font-weight: 400;
+                        `}
+                      >
+                        {section.name.slice(0, 17)}...
+                      </AtomText>
+                    ) : (
+                      <AtomText
+                        as="p"
+                        css={css`
+                          color: ${colors.white};
+                          font-size: 16px;
+                          font-weight: 400;
+                        `}
+                      >
+                        {section.name}
+                      </AtomText>
+                    )}
+                  </AtomText>
+                </Link>
+              ))}
+          </AtomWrapper>
         </AtomWrapper>
         {controls?.view && (
           <AtomButton
@@ -219,8 +220,8 @@ const Navbar: FC<Props> = () => {
               width="100%"
               height="100%"
               alt="swap"
-              borderRadius="10px"
-              src={controls.image}
+              borderRadius="10px 10px 0px 0px"
+              src={controls.image as string}
               css={css`
                 img {
                   transition: transform 0.5s ease-in-out;
