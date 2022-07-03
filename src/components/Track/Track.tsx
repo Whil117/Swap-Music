@@ -41,18 +41,17 @@ const Track: FC<Props> = (props) => {
   return (
     <AtomWrapper
       css={css`
+        margin: 15px 0px;
         display: grid;
-        /* grid-template-columns: 50px 70px 1fr 1fr 50px; */
-        grid-template-columns: ${
-          props.withImage ? '50px 70px 1fr 1fr 50px' : '50px  1fr 50px'
-        };
+        grid-template-columns: ${props.withImage
+          ? '50px 70px 1fr 1fr 50px'
+          : '50px  1fr 50px'};
         gap: 10px;
         width: 100%;
         align-items: center;
         cursor: ${screen <= 980 ? 'pointer' : 'default'};
         @media (max-width: 568px) {
           grid-template-columns: 1fr;
-        }
         }
       `}
       key={props.id}

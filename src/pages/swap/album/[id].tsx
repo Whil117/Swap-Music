@@ -5,7 +5,6 @@ import SectionProps from '@Components/List'
 import Track from '@Components/Track/Track'
 import { css } from '@emotion/react'
 import { ActionPlayerTracks } from '@Redux/reducers/player'
-import { ArtistWrapper } from '@Styles/pages/swap/artist'
 import AtomSeoLayout from 'lib/AtomSeo'
 import AtomWrapper from 'lib/Atomwrapper'
 import spotifyAPI from 'lib/spotify/spotify'
@@ -69,7 +68,14 @@ const AlbumPage: NextPageFC<Props> = ({
         image={Album.images[0].url}
         keywords={[Album.album_type]}
       />
-      <ArtistWrapper>
+      <AtomWrapper
+        css={css`
+          width: 100%;
+          @media (max-width: 980px) {
+            width: auto;
+          }
+        `}
+      >
         <OrganismBanner
           title={Album.name}
           id={Album.artists[0].id}
@@ -88,14 +94,12 @@ const AlbumPage: NextPageFC<Props> = ({
         />
 
         <AtomWrapper
-          width="1440px"
+          maxWidth="1440px"
           css={css`
-            display: flex;
-            alig-items: flex-start;
             padding: 0 90px;
             flex-direction: column;
-            gap: 25px;
             @media (max-width: 980px) {
+              width: auto;
               padding: 0 20px;
             }
           `}
@@ -148,7 +152,7 @@ const AlbumPage: NextPageFC<Props> = ({
             </AtomWrapper>
           ))}
         </AtomWrapper>
-      </ArtistWrapper>
+      </AtomWrapper>
     </>
   )
 }
