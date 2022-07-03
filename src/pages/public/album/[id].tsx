@@ -1,5 +1,5 @@
+import AtomBanner from '@Components/public/@atoms/AtomBanner'
 import * as cookie from 'cookie'
-import AtomText from 'lib/AtomText'
 import AtomWrapper from 'lib/Atomwrapper'
 import spotifyAPI from 'lib/spotify/spotify'
 import { NextPageContext, NextPageFC } from 'next'
@@ -12,19 +12,11 @@ type Props = {
   id: string
 }
 
-const AlbumId: NextPageFC<Props> = ({ Album, TracksAlbum }) => {
+const AlbumId: NextPageFC<Props> = () => {
   return (
     <AtomWrapper>
       <h1>AlbumId</h1>
-      <AtomText>{Album?.name}</AtomText>
-      <AtomWrapper flexDirection="column">
-        {TracksAlbum?.items?.map((item) => (
-          <AtomWrapper key={item?.id} flexDirection="column">
-            <AtomText color="white">{item?.name}</AtomText>
-            <AtomText as="p">{item.preview_url}</AtomText>
-          </AtomWrapper>
-        ))}
-      </AtomWrapper>
+      <AtomBanner type="album" image_url="dsf" name="sdf" />
     </AtomWrapper>
   )
 }
@@ -37,22 +29,22 @@ export async function getServerSideProps(context: NextPageContext) {
   const Album = await spotifyAPI.getAlbum(id as string).then((res) => res.body)
 
   const ArtistId = Album?.artists?.find((artist) => artist?.id)?.id
-  const DurationTracks = Album.tracks.items.reduce(
-    (acc, curr) => acc + curr.duration_ms,
-    0
-  )
+  // const DurationTracks = Album.tracks.items.reduce(
+  //   (acc, curr) => acc + curr.duration_ms,
+  //   0
+  // )
 
-  const Artist = await spotifyAPI
-    .getArtist(ArtistId as string)
-    .then((artist) => artist.body)
+  // const Artist = await spotifyAPI
+  //   .getArtist(ArtistId as string)
+  //   .then((artist) => artist.body)
 
-  const ArtistAlbums = await spotifyAPI
-    .getArtistAlbums(Artist.id)
-    .then((releases) => releases.body)
+  // const ArtistAlbums = await spotifyAPI
+  //   .getArtistAlbums(Artist.id)
+  //   .then((releases) => releases.body)
 
-  const TracksAlbum = await spotifyAPI
-    .getAlbumTracks(id as string)
-    .then((res) => res.body)
+  // const TracksAlbum = await spotifyAPI
+  //   .getAlbumTracks(id as string)
+  //   .then((res) => res.body)
   AlbumId.SEO = {
     title: Album.name,
     image: Album.images[0].url,
@@ -60,14 +52,7 @@ export async function getServerSideProps(context: NextPageContext) {
   }
 
   return {
-    props: {
-      id,
-      Album,
-      ArtistAlbums,
-      DurationTracks,
-      TracksAlbum,
-      Artist,
-    },
+    props: {},
   }
 }
 AlbumId.Layout = 'public'

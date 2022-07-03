@@ -65,11 +65,9 @@ const Navbar: FC<Props> = () => {
       <AtomWrapper
         as="nav"
         css={css`
-          gap: 10px;
           padding: 1rem 1.5rem;
           color: ${colors.white};
           /* width: 225px; */
-          height: 100%;
           z-index: 2;
           background: #191922;
           display: grid;
