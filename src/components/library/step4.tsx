@@ -11,7 +11,10 @@ const Step4: FC = () => {
     <AtomWrapper
       css={css`
         display: flex;
-        flex-wrap: wrap;
+        align-items: center;
+        justify-content: center;
+        margin-top: 65px;
+        gap: 10px;
       `}
     >
       {user?.SavedAlbums?.items?.map((artist) => (

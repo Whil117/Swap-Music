@@ -1,16 +1,23 @@
-import { useEffect, useState } from 'react'
+import { atom, useAtom } from 'jotai'
+import { useEffect } from 'react'
+const ScreenAtom = atom(0 as number)
+
+const updateHeight = () => {
+  const w = document.documentElement.clientWidth
+  return w
+}
 
 const useScreen = () => {
-  const [screenWidth, setscreenWidth] = useState<number>(0)
+  const [screenWidth, setscreenWidth] = useAtom(ScreenAtom)
 
   useEffect(() => {
-    const updateHeight = () => {
-      const w = document.documentElement.clientWidth
-      setscreenWidth(w)
+    setscreenWidth(updateHeight())
+    window.addEventListener(`resize`, () => updateHeight())
+    return () => {
+      window.removeEventListener(`resize`, () => {})
     }
-    updateHeight()
-    window.addEventListener(`resize`, updateHeight)
   }, [])
+
   return screenWidth
 }
 

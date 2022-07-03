@@ -34,20 +34,31 @@ const Library: NextPageFCProps = () => {
   const [stepById] = useAtom(stepsId)
   return (
     <AtomWrapper
+      width="100%"
       css={css`
-        margin-top: 100px;
         display: flex;
-        flex-direction: column;
         align-items: center;
         justify-content: center;
-        padding: 0px 90px;
-        @media (max-width: 1024px) {
-          padding: 0px 20px;
-        }
       `}
     >
-      {step[stepById]?.component}
+      <AtomWrapper
+        padding="0px 90px"
+        alignItems="center"
+        maxWidth="1440px"
+        css={css`
+          display: flex;
+          flex-direction: row;
+          align-items: center;
+          justify-content: center;
+          @media (max-width: 980px) {
+            padding: 0px 15px;
+          }
+        `}
+      >
+        {step[stepById]?.component}
+      </AtomWrapper>
     </AtomWrapper>
+    // </AtomWrapper>
   )
 }
 Library.Layout = 'swap'

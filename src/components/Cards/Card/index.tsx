@@ -71,7 +71,7 @@ const Card: FC<Card> = (props) => {
         background-color: ${colors.black_quinary};
         /* background: ${colors.black_quaternary}; */
         border-radius: 5px;
-        width: 200px;
+        width: 197px;
         height: 264px;
         &:hover {
           box-shadow: 0px 0px 10px #0000007f;

@@ -5,13 +5,13 @@ import { css } from '@emotion/react'
 import UseColor from '@Hooks/UseColor'
 import { UseTimeProps } from '@Hooks/useTime'
 import FollowNumbers from '@Utils/Followers'
-import { atom, useAtom } from 'jotai'
+import { atom } from 'jotai'
 import AtomImage from 'lib/AtomImage'
 import AtomLink from 'lib/AtomLink'
 import AtomText from 'lib/AtomText'
 import AtomWrapper from 'lib/Atomwrapper'
 import { useRouter } from 'next/router'
-import { FC, useEffect } from 'react'
+import { FC } from 'react'
 
 type Props = {
   id?: string
@@ -57,12 +57,7 @@ export const titleBanner = atom('')
 export const colorBanner = atom<string[]>([])
 
 const OrganismBanner: FC<Props> = (props) => {
-  const [_, setTitle] = useAtom(titleBanner)
-
   const router = useRouter()
-  useEffect(() => {
-    setTitle(props.title)
-  }, [props])
   const colors = UseColor({ url: props.image_url as string })
 
   return (
@@ -157,6 +152,7 @@ const OrganismBanner: FC<Props> = (props) => {
                 text-align: center;
               }
             `}
+            id="headerBarScrollTitle"
           >
             {props.title}
           </AtomText>
