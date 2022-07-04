@@ -3,6 +3,7 @@ import AtomSectionHeader from '@Components/@atoms/AtomSection/Header'
 import Card from '@Components/Cards/Card'
 import SectionProps from '@Components/List'
 import { css } from '@emotion/react'
+import useScreen from '@Hooks/useScreen'
 import { SelectFor } from '@Types/redux/reducers/user/types'
 import Greetings from '@Utils/greetings'
 import Svg from '@Whil/components/Svg'
@@ -84,6 +85,7 @@ export const reducerRecent = (state: RecentListened[], action: Action) =>
 const SwapPage: NextPageFCProps = () => {
   const user = useSelector((state: SelectFor) => state.user)
   const router = useRouter()
+  const screen = useScreen()
   const [recent] = useReducerAtom(
     recentListened as PrimitiveAtom<RecentListened[]>,
     reducerRecent
@@ -104,15 +106,21 @@ const SwapPage: NextPageFCProps = () => {
           padding="0px 90px"
           css={css`
             margin-top: 50px;
+            gap: 20px;
             @media (max-width: 980px) {
-              padding: 0px 30px;
+              padding: 0px 10px;
               width: auto;
               margin: 20px;
             }
           `}
         >
-          <AtomWrapper>
-            <AtomText as="h1">
+          <AtomWrapper
+            css={css`
+              display: grid;
+              gap: 20px;
+            `}
+          >
+            <AtomText as="h1" fontWeight="700">
               {Greetings()} - {user?.me?.display_name}!
             </AtomText>
             <AtomWrapper
@@ -147,70 +155,84 @@ const SwapPage: NextPageFCProps = () => {
               >
                 <Svg
                   src="/icons/heart"
-                  width="30px"
-                  height="30px"
+                  width="40px"
+                  height="40px"
                   css={css`
                     display: flex;
                     justify-content: center;
                     align-items: center;
+                    background: #0072ff;
+                    border-radius: 10px 0 0 10px;
                     width: 80px;
                     height: 80px;
-                  `}
-                />
-                Liked Songs
-              </AtomButton>
-              {recent?.map((item) => (
-                <AtomButton
-                  onClick={() => {
-                    router.push(item?.url)
-                  }}
-                  key={item.id}
-                  css={css`
-                    padding: 0px;
-                    text-align: left;
-                    cursor: pointer;
-                    display: flex;
-                    flex-direction: row;
-                    justify-content: flex-start;
-                    width: 100%;
-                    background: #191922;
-                    border-radius: 10px;
-                    @media (max-width: 980px) {
-                      width: 100%;
-                      height: auto;
+                    svg {
+                      fill: white;
                     }
                   `}
+                />
+                <AtomText
+                  as="p"
+                  css={css`
+                    padding: 0 10px;
+                  `}
                 >
-                  <AtomImage
-                    width={80}
-                    height={80}
-                    borderRadius="10px 0 0 10px"
-                    src={item.image ?? ''}
-                    alt={item.name}
-                  />
-                  {item.name.length > 12 ? (
-                    <AtomText
-                      as="p"
-                      css={css`
-                        /* width: 100px; */
-                        padding: 0 10px;
-                      `}
-                    >
-                      {item.name.slice(0, 40)}...
-                    </AtomText>
-                  ) : (
-                    <AtomText
-                      as="p"
-                      css={css`
-                        /* width: 100px; */
-                        padding: 0 10px;
-                      `}
-                    >
-                      {item.name}
-                    </AtomText>
-                  )}
-                </AtomButton>
-              ))}
+                  Liked Songs
+                </AtomText>
+              </AtomButton>
+              {recent
+                .filter((item, index) => (screen > 980 ? 8 : index < 3))
+                ?.map((item) => (
+                  <AtomButton
+                    onClick={() => {
+                      router.push(item?.url)
+                    }}
+                    key={item.id}
+                    css={css`
+                      padding: 0px;
+                      text-align: left;
+                      cursor: pointer;
+                      display: flex;
+                      flex-direction: row;
+                      justify-content: flex-start;
+                      width: 100%;
+                      background: #191922;
+                      border-radius: 10px;
+                      @media (max-width: 980px) {
+                        width: 100%;
+                        height: auto;
+                      }
+                    `}
+                  >
+                    <AtomImage
+                      width={80}
+                      height={80}
+                      borderRadius="10px 0 0 10px"
+                      src={item.image ?? ''}
+                      alt={item.name}
+                    />
+                    {item.name.length > 12 ? (
+                      <AtomText
+                        as="p"
+                        css={css`
+                          /* width: 100px; */
+                          padding: 0 10px;
+                        `}
+                      >
+                        {item.name.slice(0, 40)}...
+                      </AtomText>
+                    ) : (
+                      <AtomText
+                        as="p"
+                        css={css`
+                          /* width: 100px; */
+                          padding: 0 10px;
+                        `}
+                      >
+                        {item.name}
+                      </AtomText>
+                    )}
+                  </AtomButton>
+                ))}
             </AtomWrapper>
           </AtomWrapper>
           {data.map((item) => (
