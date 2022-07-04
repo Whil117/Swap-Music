@@ -108,9 +108,8 @@ const SwapPage: NextPageFCProps = () => {
             margin-top: 50px;
             gap: 20px;
             @media (max-width: 980px) {
-              padding: 0px 10px;
+              padding: 0px 15px;
               width: auto;
-              margin: 20px;
             }
           `}
         >
