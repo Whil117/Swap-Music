@@ -15,7 +15,7 @@ import { useSelector } from 'react-redux'
 
 export const stepsId = atom('Playlists')
 
-const validPathsSongs = ['album', 'playlist', 'artist', 'library']
+const validPathsSongs = ['album', 'artist', 'library']
 
 export const NavBarAtom = atom(false)
 
@@ -76,27 +76,25 @@ const AtomBarScroll: FC = () => {
                   display: flex;
                 `}
               >
-                {['Playlists', 'Podcasts', 'Artists', 'Albums'].map(
-                  (step, index) => (
-                    <AtomButton
-                      key={step + index}
-                      onClick={() => {
-                        setSteps(step)
-                      }}
-                      css={css`
-                        border-radius: 5px;
-                        color: white;
-                        font-weight: bold;
-                        padding: 10px;
-                        background-color: ${steps === step
-                          ? 'rgba(255,255,255,0.25)'
-                          : 'transparent'};
-                      `}
-                    >
-                      {step}
-                    </AtomButton>
-                  )
-                )}
+                {['Playlists', 'Artists', 'Albums'].map((step, index) => (
+                  <AtomButton
+                    key={step + index}
+                    onClick={() => {
+                      setSteps(step)
+                    }}
+                    css={css`
+                      border-radius: 5px;
+                      color: white;
+                      font-weight: bold;
+                      padding: 10px;
+                      background-color: ${steps === step
+                        ? 'rgba(255,255,255,0.25)'
+                        : 'transparent'};
+                    `}
+                  >
+                    {step}
+                  </AtomButton>
+                ))}
               </AtomWrapper>
             )}
             {validPathsSongs.includes(router.pathname.split('/')[2]) &&

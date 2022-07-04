@@ -1,6 +1,5 @@
 import { stepsId } from '@Components/@atoms/AtomBarScroll'
 import Step1 from '@Components/library/step1'
-import Step2 from '@Components/library/step2'
 import Step3 from '@Components/library/step3'
 import Step4 from '@Components/library/step4'
 import { css } from '@emotion/react'
@@ -13,10 +12,10 @@ const steps = atom({
     title: 'Playlists',
     component: <Step1 />,
   },
-  Podcasts: {
-    title: 'Podcasts',
-    component: <Step2 />,
-  },
+  // Podcasts: {
+  //   title: 'Podcasts',
+  //   component: <Step2 />,
+  // },
   Artists: {
     title: 'Artists',
     component: <Step3 />,

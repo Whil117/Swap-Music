@@ -1,34 +1,29 @@
 import Card from '@Components/Cards/Card'
 import { css } from '@emotion/react'
 import { SelectFor } from '@Types/redux/reducers/user/types'
-import Div from '@Whil/components/Div'
-import P from '@Whil/components/P'
-import AtomButton from 'lib/Atombutton'
-import AtomText from 'lib/AtomText'
 import AtomWrapper from 'lib/Atomwrapper'
-import { useRouter } from 'next/router'
 import { FC } from 'react'
 import { useSelector } from 'react-redux'
 
 const Step1: FC = () => {
   const user = useSelector((state: SelectFor) => state.user)
-  const router = useRouter()
+  // const router = useRouter()
   return (
     <AtomWrapper>
-      <AtomText as="h2">Playlists</AtomText>
       <AtomWrapper
         css={css`
-            display: flex;
-            flex-wrap: wrap;
-            /* align-items: center; */
-
-            aign-items: flex-start;
-            @media (max-width: 712px) {
-              justify-content: center;8
-            }
-          `}
+          margin-top: 65px;
+          display: flex;
+          align-items: center;
+          justify-content: flex-start;
+          flex-wrap: wrap;
+          gap: 10px;
+          @media (max-width: 712px) {
+            justify-content: center;
+          }
+        `}
       >
-        <AtomButton
+        {/* <AtomButton
           css={css`
             width: 420px;
             height: 264px;
@@ -73,7 +68,7 @@ const Step1: FC = () => {
               {user.SavedTracks.total} Liked Songs
             </P>
           </Div>
-        </AtomButton>
+        </AtomButton> */}
         {user.Playlists.items.map((item) => (
           <Card
             key={item.id}

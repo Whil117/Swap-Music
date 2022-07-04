@@ -12,7 +12,7 @@ const Step4: FC = () => {
       css={css`
         display: flex;
         align-items: center;
-        justify-content: center;
+        justify-content: flex-start;
         margin-top: 65px;
         gap: 10px;
       `}

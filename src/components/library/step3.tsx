@@ -9,22 +9,36 @@ const Step3: FC = () => {
   const user = useSelector((state: SelectFor) => state.user)
   return (
     <AtomWrapper
+      width="100%"
       css={css`
         display: flex;
-        flex-wrap: wrap;
+        align-items: center;
+        justify-content: center;
       `}
     >
-      {user?.followedArtists?.artists?.items.map((artist) => (
-        <Card
-          key={artist.id}
-          {...{
-            id: artist.id,
-            type: artist.type,
-            image: artist.images[0].url,
-            name: artist.name,
-          }}
-        />
-      ))}
+      <AtomWrapper
+        maxWidth="1440px"
+        css={css`
+          margin-top: 65px;
+          display: flex;
+          align-items: center;
+          justify-content: flex-start;
+          flex-wrap: wrap;
+          gap: 10px;
+        `}
+      >
+        {user?.followedArtists?.artists?.items.map((artist) => (
+          <Card
+            key={artist.id}
+            {...{
+              id: artist.id,
+              type: artist.type,
+              image: artist.images[0].url,
+              name: artist.name,
+            }}
+          />
+        ))}
+      </AtomWrapper>
     </AtomWrapper>
   )
 }
