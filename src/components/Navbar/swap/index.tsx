@@ -85,7 +85,7 @@ const Navbar: FC<Props> = () => {
           }
         `}
       >
-        <AtomWrapper padding="0rem 1rem">
+        <AtomWrapper padding="0.5rem 1rem">
           <AtomButton
             padding="0px"
             css={css`
@@ -151,58 +151,78 @@ const Navbar: FC<Props> = () => {
                 </AtomText>
               </AtomLink>
             ))}
-            {user?.Playlists?.items
-              ?.map((playlist) => ({
-                name: playlist.name,
-                path: `/swap/playlist/${playlist.id}`,
-                icon: 'playlist',
-              }))
-              .map((section) => (
-                <Link
-                  key={`section_option_${section.path}`}
-                  href={{
-                    pathname: section.path,
-                  }}
-                  passHref
-                >
-                  <AtomText
-                    as="a"
-                    margin="15px 0"
-                    fontSize="18px"
-                    css={css`
-                      opacity: 0.5;
-                      display: flex;
-                      align-items: center;
-                      gap: 15px;
-                    `}
+            <AtomWrapper
+              css={css`
+                overflow: hidden;
+                overflow-y: auto;
+                height: ${controls?.view ? '385px' : '100%'};
+                ::-webkit-scrollbar {
+                  width: 5px;
+                  /* height: 8px; */
+                }
+                ::-webkit-scrollbar-thumb {
+                  background: #ccc;
+                  border-radius: 4px;
+                }
+                ::-webkit-scrollbar-thumb:hover {
+                  background: #b3b3b3;
+                  box-shadow: 0 0 2px 1px rgba(0, 0, 0, 0.2);
+                }
+              `}
+            >
+              {user?.Playlists?.items
+                ?.map((playlist) => ({
+                  name: playlist.name,
+                  path: `/swap/playlist/${playlist.id}`,
+                  icon: 'playlist',
+                }))
+                .map((section) => (
+                  <Link
+                    key={`section_option_${section.path}`}
+                    href={{
+                      pathname: section.path,
+                    }}
+                    passHref
                   >
-                    <Svg src={`/icons/${section.icon}`} />
-                    {section.name.length > 15 ? (
-                      <AtomText
-                        as="p"
-                        css={css`
-                          color: ${colors.white};
-                          font-size: 16px;
-                          font-weight: 400;
-                        `}
-                      >
-                        {section.name.slice(0, 17)}...
-                      </AtomText>
-                    ) : (
-                      <AtomText
-                        as="p"
-                        css={css`
-                          color: ${colors.white};
-                          font-size: 16px;
-                          font-weight: 400;
-                        `}
-                      >
-                        {section.name}
-                      </AtomText>
-                    )}
-                  </AtomText>
-                </Link>
-              ))}
+                    <AtomText
+                      as="a"
+                      margin="15px 0"
+                      fontSize="18px"
+                      css={css`
+                        opacity: 0.5;
+                        display: flex;
+                        align-items: center;
+                        gap: 15px;
+                      `}
+                    >
+                      <Svg src={`/icons/${section.icon}`} />
+                      {section.name.length > 15 ? (
+                        <AtomText
+                          as="p"
+                          css={css`
+                            color: ${colors.white};
+                            font-size: 16px;
+                            font-weight: 400;
+                          `}
+                        >
+                          {section.name.slice(0, 17)}...
+                        </AtomText>
+                      ) : (
+                        <AtomText
+                          as="p"
+                          css={css`
+                            color: ${colors.white};
+                            font-size: 16px;
+                            font-weight: 400;
+                          `}
+                        >
+                          {section.name}
+                        </AtomText>
+                      )}
+                    </AtomText>
+                  </Link>
+                ))}
+            </AtomWrapper>
           </AtomWrapper>
         </AtomWrapper>
         {controls?.view && (
