@@ -1,5 +1,4 @@
 import { atom, useAtom } from 'jotai'
-import { Vec3 } from 'node-vibrant/lib/color'
 import { useEffect } from 'react'
 import parseImage from './colors/parseImage'
 
@@ -7,7 +6,7 @@ type Props = {
   url: string
 }
 
-export const colorsAtom = atom(['gray'] as (string | Vec3)[])
+export const colorsAtom = atom(['gray'] as any[])
 
 const UseColor = ({ url }: Props) => {
   const [first, setfirst] = useAtom(colorsAtom)

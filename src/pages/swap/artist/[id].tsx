@@ -2,15 +2,13 @@
 /* eslint-disable no-unused-vars */
 import AtomSectionHeader from '@Components/@atoms/AtomSection/Header'
 import AtomTable from '@Components/@atoms/AtomTable'
-import OrganismBanner, {
-  titleBanner,
-} from '@Components/@organisms/OrganismBanner'
+import OrganismBanner from '@Components/@organisms/OrganismBanner'
 import Card from '@Components/Cards/Card'
 import SectionProps from '@Components/List'
 import { css } from '@emotion/react'
 import useTime from '@Hooks/useTime'
+import { SelectFor } from '@Types/redux/reducers/user/types'
 import Button from '@Whil/components/Button'
-import { useAtom } from 'jotai'
 import AtomButton from 'lib/Atombutton'
 import AtomSeoLayout from 'lib/AtomSeo'
 import AtomText from 'lib/AtomText'
@@ -19,7 +17,8 @@ import spotifyAPI from 'lib/spotify/spotify'
 import { NextPageContext, NextPageFC } from 'next'
 import { getSession } from 'next-auth/react'
 import { useRouter } from 'next/router'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
+import { useSelector } from 'react-redux'
 import { SwiperSlide } from 'swiper/react'
 
 type ArtistById = {
@@ -37,18 +36,20 @@ const ArtistById: NextPageFC<ArtistById> = ({
   ArtistRelated,
 }) => {
   const [display, setDisplay] = useState(true)
-  const [_, setTitle] = useAtom(titleBanner)
-
-  useEffect(() => {
-    setTitle(Artist.name)
-  }, [Artist.name])
-
+  const user = useSelector((state: SelectFor) => state.user)
   const data = [
     {
       id: '1',
       title: 'Albums',
       assets: ArtistAlbums.items,
     },
+    // {
+    //   id: '3',
+    //   title: `Your Favorites Albums from ${Artist.name}`,
+    //   assets: user.SavedAlbums?.items?.filter((item) =>
+    //     item.album.artists.find((artist) => artist.name === Artist.name)
+    //   ),
+    // },
     {
       id: '2',
       title: 'Similiar Artists',
@@ -225,6 +226,45 @@ const ArtistById: NextPageFC<ArtistById> = ({
               </SectionProps>
             </AtomWrapper>
           ))}
+        </AtomWrapper>
+        <AtomWrapper
+          width="1440px"
+          css={css`
+            display: flex;
+            alig-items: flex-start;
+            padding: 0 90px;
+            flex-direction: column;
+            @media (max-width: 768px) {
+              padding: 0 30px;
+            }
+          `}
+        >
+          <SectionProps
+            Elements={({ setShow }) => (
+              <AtomSectionHeader
+                setShow={setShow}
+                title={`Your Favorites Albums from ${Artist.name}`}
+              />
+            )}
+          >
+            {user.SavedAlbums?.items
+              ?.filter((item) =>
+                item.album.artists.find((artist) => artist.name === Artist.name)
+              )
+              ?.map((artist, index) => (
+                <SwiperSlide key={index} style={{ width: 'auto' }}>
+                  <Card
+                    key={artist.album.id}
+                    {...{
+                      id: artist.album.id,
+                      type: artist.album.type,
+                      image: artist.album.images[0].url,
+                      name: artist.album.name,
+                    }}
+                  />
+                </SwiperSlide>
+              ))}
+          </SectionProps>
         </AtomWrapper>
       </AtomWrapper>
     </>

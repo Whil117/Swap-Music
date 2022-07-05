@@ -15,7 +15,7 @@ import { useSelector } from 'react-redux'
 
 export const stepsId = atom('Playlists')
 
-const validPathsSongs = ['album', 'artist', 'library']
+const validPathsSongs = ['album', 'artist', 'library', 'profile', 'playlist']
 
 export const NavBarAtom = atom(false)
 
@@ -39,7 +39,7 @@ const AtomBarScroll: FC = () => {
               backgroun-opacity: 0.75;
               background: ${colors[0]};
             `}
-            backdrop-filter: blur(8px);
+            /* backdrop-filter: blur(8px); */
             display: flex;
             justify-content: ${router.asPath.includes('swap/library')
               ? 'space-between'
