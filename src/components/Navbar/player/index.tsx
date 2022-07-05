@@ -7,6 +7,7 @@ import reducerplayer, {
 import Svg from '@Whil/components/Svg'
 import { atomWithStorage, useReducerAtom } from 'jotai/utils'
 import AtomButton from 'lib/Atombutton'
+import AtomIcon from 'lib/AtomIcon'
 import AtomImage from 'lib/AtomImage'
 import AtomText from 'lib/AtomText'
 import AtomWrapper from 'lib/Atomwrapper'
@@ -26,9 +27,10 @@ const NavbarPlayer: FC = () => {
   const audio = useRef<HTMLAudioElement>()
   const [controls, dispatch] = useReducerAtom(controlsAtom, reducerplayer)
   const router = useRouter()
-
+  const caudio = document.createElement('audio')
   const handlePlay = () => {
     audio.current?.play()
+    caudio.play()
     if (audio.current) {
       dispatch({
         type: 'PLAY',
@@ -381,11 +383,24 @@ const NavbarPlayer: FC = () => {
                 }
               `}
             >
-              {buttonsActions(router).map((item) => (
+              {buttonsActions(router, controls).map((item) => (
                 <AtomButton key={item.key} onClick={item.onClick} padding="0px">
-                  <Svg src={`/icons/${item.icon}`} />
+                  <AtomIcon
+                    icon={item.icon}
+                    width="22px"
+                    height="22px"
+                    color={item.active ? 'blue' : 'white'}
+                  />
                 </AtomButton>
               ))}
+              <AtomButton padding="0px">
+                <AtomIcon
+                  icon="https://storage.googleapis.com/cdn-bucket-ixulabs-platform/WHIL/icons/sound.svg"
+                  width="22px"
+                  height="22px"
+                  // color="#fff"
+                />
+              </AtomButton>
               <BarVolumen audio={audio} />
             </AtomWrapper>
           </AtomWrapper>
@@ -395,28 +410,31 @@ const NavbarPlayer: FC = () => {
   )
 }
 
-const buttonsActions = (router: NextRouter) => [
+const buttonsActions = (router: NextRouter, controls: Inti) => [
   {
     key: 1,
     id: 'repeat',
-    icon: 'repeat',
+    active: controls.repeat,
+    icon: 'https://storage.googleapis.com/cdn-bucket-ixulabs-platform/WHIL/icons/repeat2.svg',
   },
   {
     key: 2,
     id: 'aleatory',
-    icon: 'aleatory',
+    active: controls.aleatory,
+    icon: 'https://storage.googleapis.com/cdn-bucket-ixulabs-platform/WHIL/icons/aleatory.svg',
   },
   {
     key: 3,
     id: 'queue',
+    active: false,
     onClick: () => router.push('/swap/queue'),
-    icon: 'queue',
+    icon: 'https://storage.googleapis.com/cdn-bucket-ixulabs-platform/WHIL/icons/queue.svg',
   },
-  {
-    key: 4,
-    id: 'sound',
-    icon: 'sound',
-  },
+  // {
+  //   key: 4,
+  //   id: 'sound',
+  //   icon: 'https://storage.googleapis.com/cdn-bucket-ixulabs-platform/WHIL/icons/sound.svg',
+  // },
 ]
 const playerButtons = [
   {

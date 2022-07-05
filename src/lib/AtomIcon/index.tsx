@@ -56,7 +56,7 @@ const AtomIcon: FC<AtomIconTypes> = (props) => {
   return getIcon ? (
     <IconContainer
       {...props}
-      color="default"
+      color={props.color || 'default'}
       dangerouslySetInnerHTML={{
         __html: getIcon,
       }}
