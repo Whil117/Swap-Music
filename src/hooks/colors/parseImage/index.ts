@@ -2,13 +2,13 @@
 /* eslint-disable no-unused-vars */
 
 import Vibrant from 'node-vibrant'
-import { Palette, Vec3 } from 'node-vibrant/lib/color'
+import { Vec3 } from 'node-vibrant/lib/color'
 import { ImageSource } from 'node-vibrant/lib/typing'
 import { ReactNode } from 'react'
 
 export type Props = {
   onError: (err: Object) => void
-  getColors: (colors: (string | Vec3)[]) => void
+  getColors?: (colors: (string | Vec3)[]) => void
   rgb: boolean
   src: string
   maxColors: number
@@ -17,13 +17,18 @@ export type Props = {
 
 export type Image = ImageSource
 
-const parseImage = (props: Props) => {
-  Vibrant.from(props?.src)
+const parseImage = async (props: Props) => {
+  const colors = await Vibrant.from(props?.src)
     .maxColorCount(props.maxColors)
     .getSwatches()
     .then((swatches) => {
-      props.getColors(getColorsFromSwatches(swatches as Palette, props))
+      props?.getColors &&
+        props?.getColors(
+          getColorsFromSwatches(swatches as getColorsFromSwatches, props)
+        )
+      return getColorsFromSwatches(swatches as getColorsFromSwatches, props)
     })
+  return colors
 }
 
 type getColorsFromSwatches = {
@@ -33,21 +38,15 @@ type getColorsFromSwatches = {
   }
 }
 
-const getColorsFromSwatches = (swatches = {} as any, props: Props) => {
-  const colors = []
-  for (let swatch in swatches) {
-    if (swatches.hasOwnProperty(swatch) && swatches[swatch]) {
-      if (props.rgb) {
-        const rgb = swatches[swatch] && swatches[swatch].getRgb()
-        colors.push(rgb)
-      } else {
-        const hex = swatches[swatch] && swatches[swatch].getHex()
-        colors.push(hex)
-      }
-    }
-  }
+const getColorsFromSwatches = (
+  swatches = {} as getColorsFromSwatches,
+  props: Props
+) => {
+  const colors = Object.entries(swatches).map(([key, swatch]) => {
+    return props?.rgb ? swatch?.getRgb() : swatch?.getHex()
+  })
 
-  return colors as (string | Vec3)[]
+  return colors
 }
 
 export default parseImage

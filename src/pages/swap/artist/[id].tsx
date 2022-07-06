@@ -43,13 +43,6 @@ const ArtistById: NextPageFC<ArtistById> = ({
       title: 'Albums',
       assets: ArtistAlbums.items,
     },
-    // {
-    //   id: '3',
-    //   title: `Your Favorites Albums from ${Artist.name}`,
-    //   assets: user.SavedAlbums?.items?.filter((item) =>
-    //     item.album.artists.find((artist) => artist.name === Artist.name)
-    //   ),
-    // },
     {
       id: '2',
       title: 'Similiar Artists',
@@ -90,7 +83,6 @@ const ArtistById: NextPageFC<ArtistById> = ({
           type={Artist.type}
           fullData={Artist}
         />
-
         <AtomWrapper
           padding="0 90px"
           css={css`
