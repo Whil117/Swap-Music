@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import AtomTracksDuration from '@Components/@atoms/AtomTracksDuration'
+import AtomDuration from '@Components/@atoms/AtomDuration'
 import SwapArtist from '@Components/swap/artist'
 import { css } from '@emotion/react'
 import UseColor from '@Hooks/UseColor'
@@ -228,7 +228,7 @@ const OrganismBanner: FC<Props> = (props) => {
               </AtomLink>
             )}
             {props.total_tracks && (
-              <AtomTracksDuration
+              <AtomDuration
                 release={props.release_date as string}
                 totalTracks={props.total_tracks}
                 useTime={props.useTime as UseTimeProps}

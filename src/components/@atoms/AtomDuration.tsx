@@ -10,7 +10,7 @@ type Props = {
   type?: string
 }
 
-const AtomTracksDuration: FC<Props> = (props) => {
+const AtomDuration: FC<Props> = (props) => {
   const [hours, minutes, seconds] = useTime(props.useTime)
   return (
     <AtomText
@@ -36,4 +36,4 @@ const AtomTracksDuration: FC<Props> = (props) => {
   )
 }
 
-export default AtomTracksDuration
+export default AtomDuration

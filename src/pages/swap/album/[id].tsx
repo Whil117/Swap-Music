@@ -1,5 +1,5 @@
+import AtomBanner from '@Components/@atoms/AtomBanner'
 import AtomSectionHeader from '@Components/@atoms/AtomSection/Header'
-import OrganismBanner from '@Components/@organisms/OrganismBanner'
 import Card from '@Components/Cards/Card'
 import SectionProps from '@Components/List'
 import Track from '@Components/Track/Track'
@@ -76,23 +76,21 @@ const AlbumPage: NextPageFC<Props> = ({
           }
         `}
       >
-        <OrganismBanner
-          title={Album.name}
-          id={Album.artists[0].id}
-          name={Album.artists[0].name}
-          fullData={Album}
-          image_url={
-            Album.images[0].url ??
-            'https://firebasestorage.googleapis.com/v0/b/swap-4f04f.appspot.com/o/images%2FFrame%2094.svg?alt=media&token=e9c9283e-808b-40ac-ba7b-3ce37452a9a2'
-          }
-          type={Album.album_type}
-          release_date={Album.release_date}
-          total_tracks={Album.total_tracks}
-          useTime={{
-            ms,
+        <AtomBanner
+          type="album"
+          image_url={Album.images[0].url}
+          name={Album.name}
+          album={{
+            type: Album.album_type,
+            artist: {
+              name: Album.artists[0].name,
+              id: Album.artists[0].id,
+            },
+            total_tracks: Album.total_tracks,
+            release_date: Album.release_date,
+            duration_ms: ms,
           }}
         />
-
         <AtomWrapper
           maxWidth="1440px"
           css={css`

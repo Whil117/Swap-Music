@@ -1,8 +1,8 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 /* eslint-disable no-unused-vars */
+import AtomBanner from '@Components/@atoms/AtomBanner'
 import AtomSectionHeader from '@Components/@atoms/AtomSection/Header'
 import AtomTable from '@Components/@atoms/AtomTable'
-import OrganismBanner from '@Components/@organisms/OrganismBanner'
 import Card from '@Components/Cards/Card'
 import SectionProps from '@Components/List'
 import { css } from '@emotion/react'
@@ -74,14 +74,11 @@ const ArtistById: NextPageFC<ArtistById> = ({
           }
         `}
       >
-        <OrganismBanner
+        <AtomBanner
+          type="artist"
           image_url={Artist.images[0].url}
           name={Artist.name}
-          title={Artist.name}
-          borderRadiusImage={'50%'}
-          followers={Artist?.followers?.total as unknown as number}
-          type={Artist.type}
-          fullData={Artist}
+          followers={Artist.followers.total}
         />
         <AtomWrapper
           padding="0 90px"

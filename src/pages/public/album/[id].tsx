@@ -1,4 +1,4 @@
-import AtomBanner from '@Components/public/@atoms/AtomBanner'
+import AtomBanner from '@Components/@atoms/AtomBanner'
 import * as cookie from 'cookie'
 import AtomWrapper from 'lib/Atomwrapper'
 import spotifyAPI from 'lib/spotify/spotify'

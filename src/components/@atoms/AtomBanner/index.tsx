@@ -1,7 +1,10 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 import { css } from '@emotion/react'
 import UseColor from '@Hooks/UseColor'
+import useTime from '@Hooks/useTime'
 import FollowNumbers from '@Utils/Followers'
 import AtomImage from 'lib/AtomImage'
+import AtomLink from 'lib/AtomLink'
 import AtomText from 'lib/AtomText'
 import AtomWrapper from 'lib/Atomwrapper'
 import { FC } from 'react'
@@ -17,6 +20,17 @@ type PropsArtist = {
 
 type PropsAlbum = {
   folowers?: number | undefined
+  album?: {
+    type?: string
+    artist?: {
+      name: string
+      id: string
+    }
+    description?: string
+    duration_ms?: number
+    release_date?: string
+    total_tracks?: number
+  }
 } & PropsArtist
 
 type typeBanners = {
@@ -70,7 +84,7 @@ const typeBanners = {
             width={260}
             height={260}
             alt={props.name}
-            borderRadius={props.borderRadiusImage || '10px'}
+            borderRadius="50%"
           />
           <AtomWrapper
             css={css`
@@ -137,6 +151,9 @@ const typeBanners = {
     )
   },
   album: (props: typeBanners['album']) => {
+    const [hours, minutes, seconds] = useTime({
+      ms: props.album?.duration_ms as number,
+    })
     return (
       <AtomWrapper
         id="background-dynamic-color"
@@ -210,7 +227,7 @@ const typeBanners = {
                 }
               `}
             >
-              {props?.type?.toUpperCase()}
+              {props?.album?.type?.toUpperCase()}
             </AtomText>
             <AtomText
               as="h1"
@@ -232,6 +249,50 @@ const typeBanners = {
             >
               {props.name}
             </AtomText>
+            <AtomWrapper>
+              <AtomLink
+                href={{
+                  pathname: '/swap/artist/[id]',
+                  query: { id: props?.album?.artist?.id },
+                }}
+                passHref
+              >
+                <a>
+                  <AtomText
+                    as="p"
+                    css={css`
+                      display: flex;
+                      align-items: center;
+                      font-weight: 600;
+                      margin: 20px 1px;
+                    `}
+                  >
+                    {props.album?.artist?.name}
+                  </AtomText>
+                </a>
+              </AtomLink>
+              <AtomText
+                as="p"
+                css={css`
+                  margin: 0 10px;
+                  font-weight: 400;
+                  display: flex;
+                  align-items: center;
+                `}
+              >
+                {props?.album?.release_date &&
+                  `${props?.album?.release_date.slice(0, 4)} •  `}
+                {props.album?.total_tracks}
+                {' Songs'}, {hours ? `${hours} hr ${minutes} min` : ''}{' '}
+                {!hours
+                  ? `${minutes} Min ${
+                      seconds?.toFixed(0).length === 1
+                        ? `0${seconds.toFixed()} Min`
+                        : `${seconds?.toFixed()} Sec`
+                    }`
+                  : ''}
+              </AtomText>
+            </AtomWrapper>
           </AtomWrapper>
         </AtomWrapper>
       </AtomWrapper>
@@ -241,7 +302,8 @@ const typeBanners = {
 
 type AtomProps = {
   type: 'artist' | 'album'
-} & PropsArtist
+} & PropsArtist &
+  PropsAlbum
 
 const AtomBanner: FC<AtomProps> = (props) => {
   const colors = UseColor({ url: props.image_url })
