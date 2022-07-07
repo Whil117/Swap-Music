@@ -6,8 +6,8 @@ import useScreen from '@Hooks/useScreen'
 import { SelectFor } from '@Types/redux/reducers/user/types'
 import Greetings from '@Utils/greetings'
 import Svg from '@Whil/components/Svg'
-import { atom, PrimitiveAtom, useAtom } from 'jotai'
-import { atomFamily, atomWithStorage, useReducerAtom } from 'jotai/utils'
+import { atom, useAtom } from 'jotai'
+import { atomFamily, atomWithStorage } from 'jotai/utils'
 import AtomButton from 'lib/Atombutton'
 import AtomImage from 'lib/AtomImage'
 import AtomSeoLayout from 'lib/AtomSeo'
@@ -72,6 +72,17 @@ const typesReduers: typesReducers = {
     }
   },
 }
+const ATOMSTORAGE = atomWithStorage('recentListened', [] as RecentListened[])
+const reducerAtom = (
+  reducer: (v: RecentListened[], a: Action) => RecentListened[]
+) => {
+  const anAtom = atom(
+    (get) => get(ATOMSTORAGE),
+    (get, set, action: Action) =>
+      set(ATOMSTORAGE, reducer(get(ATOMSTORAGE), action))
+  )
+  return anAtom
+}
 
 type Action = {
   type: keyof typeof typesReduers
@@ -81,14 +92,13 @@ type Action = {
 export const reducerRecent = (state: RecentListened[], action: Action) =>
   typesReduers[action.type](state, action.payload) as RecentListened[]
 
+export const countReducerAtom = reducerAtom(reducerRecent)
+
 const SwapPage: NextPageFCProps = () => {
   const user = useSelector((state: SelectFor) => state.user)
   const router = useRouter()
   const screen = useScreen()
-  const [recent] = useReducerAtom(
-    recentListened as PrimitiveAtom<RecentListened[]>,
-    reducerRecent
-  )
+  const [recent] = useAtom(countReducerAtom)
   const [data] = useAtom(dataFamily(user))
 
   return (

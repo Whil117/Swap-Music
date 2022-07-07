@@ -1,14 +1,13 @@
 /* eslint-disable no-unused-vars */
 import { css } from '@emotion/react'
 import colors from '@Styles/global/colors'
-import { PrimitiveAtom } from 'jotai'
-import { useReducerAtom } from 'jotai/utils'
+import { useSetAtom } from 'jotai'
 import AtomButton from 'lib/Atombutton'
 import AtomImage from 'lib/AtomImage'
 import AtomText from 'lib/AtomText'
 import AtomWrapper from 'lib/Atomwrapper'
 import { useRouter } from 'next/router'
-import { RecentListened, recentListened, reducerRecent } from 'pages/swap'
+import { countReducerAtom } from 'pages/swap'
 import { FC } from 'react'
 
 type Card = {
@@ -27,10 +26,7 @@ type Card = {
 const ImageTypes = ['album', 'track', 'playlist']
 const AtomCard: FC<Card> = (props) => {
   const router = useRouter()
-  const [_, setRecent] = useReducerAtom(
-    recentListened as PrimitiveAtom<RecentListened[]>,
-    reducerRecent
-  )
+  const setRecent = useSetAtom(countReducerAtom)
   return (
     <AtomButton
       onClick={() => {
