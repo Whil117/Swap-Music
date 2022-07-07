@@ -1,7 +1,8 @@
 import { ApolloClient, ApolloProvider, InMemoryCache } from '@apollo/client'
-import HeadApp from '@Components/HeadApp'
 import Layout from '@Components/layout'
+import { Global } from '@emotion/react'
 import { persistor, store } from '@Redux/store'
+import Normalize from '@Styles/global/normalize'
 import AtomSeoLayout from 'lib/AtomSeo'
 import { SessionProvider } from 'next-auth/react'
 import type { AppPropsWithLayout } from 'next/app'
@@ -42,10 +43,9 @@ const MyApp = ({
           <Provider store={store}>
             <PersistGate persistor={persistor}>
               <Layout Layout={Component.Layout} SEO={SEO}>
-                <HeadApp>
-                  <ToastContainer />
-                  <Component {...pageProps} />
-                </HeadApp>
+                <Global styles={Normalize} />
+                <ToastContainer />
+                <Component {...pageProps} />
               </Layout>
             </PersistGate>
           </Provider>

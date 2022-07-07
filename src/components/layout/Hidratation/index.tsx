@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable no-console */
-import AtomLoader from '@Components/Loading'
+import AtomLoader from '@Components/@atoms/AtomLoader'
 import { atom, useAtom } from 'jotai'
 import spotifyAPI from 'lib/spotify/spotify'
 import { getSession } from 'next-auth/react'

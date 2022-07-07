@@ -1,7 +1,7 @@
 import { useMutation, useQuery } from '@apollo/client'
 import { CREATEARTIST } from '@Apollo/client/mutations/Artist'
 import { ARTISTBYID } from '@Apollo/client/querys/artist'
-import AtomLoader from '@Components/Loading'
+import AtomLoader from '@Components/@atoms/AtomLoader'
 import { css } from '@emotion/react'
 import colors from '@Styles/global/colors'
 import { SelectFor } from '@Types/redux/reducers/user/types'
