@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
 import { ARTISTBYID } from '@Apollo/client/querys/artist'
-import AtomBanner from '@Components/public/@atoms/AtomBanner'
+import AtomBanner from '@Components/@atoms/AtomBanner'
 import { IArtist, IQueryFilter } from '@Types/index'
 import AtomSeoLayout from 'lib/AtomSeo'
 import AtomWrapper from 'lib/Atomwrapper'

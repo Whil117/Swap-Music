@@ -1,7 +1,6 @@
 import { clientId, clientSecret } from '@Assets/swap'
 import { css } from '@emotion/react'
 import colors from '@Styles/global/colors'
-import * as S from '@Styles/pages'
 import Svg from '@Whil/components/Svg'
 import axios from 'axios'
 import Cookies from 'js-cookie'
@@ -124,9 +123,25 @@ const LandingPage: NextPageFC<SpotifyAuthProps> = ({
             >
               ¡NOTE!: Your session is manage for Spotify Inc.
             </AtomText>
-            <S.LandingPageButton onClick={() => signIn(providers.spotify.id)}>
+            <AtomButton
+              onClick={() => signIn(providers.spotify.id)}
+              css={css`
+                background-color: ${colors.green_light};
+                color: ${colors.white};
+                border: none;
+                border-radius: 50px;
+                padding: 10px 20px;
+                font-size: 16px;
+                font-weight: bold;
+                cursor: pointer;
+                transition: all 0.3s ease-in-out;
+                &:hover {
+                  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+                }
+              `}
+            >
               Sign In
-            </S.LandingPageButton>
+            </AtomButton>
             <AtomText>Do you not have an account?</AtomText>
             <AtomButton
               backgroundColor="#3f1ed7"
