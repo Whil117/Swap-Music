@@ -1,5 +1,4 @@
 import AtomBanner from '@Components/@atoms/AtomBanner'
-import AtomSectionHeader from '@Components/@atoms/AtomSection/Header'
 import Card from '@Components/Cards/Card'
 import SectionProps from '@Components/List'
 import Track from '@Components/Track/Track'
@@ -132,11 +131,7 @@ const AlbumPage: NextPageFC<Props> = ({
 
           {data.map((item) => (
             <AtomWrapper key={item.id} width="100%  ">
-              <SectionProps
-                Elements={({ setShow }) => (
-                  <AtomSectionHeader setShow={setShow} title={item.title} />
-                )}
-              >
+              <SectionProps title={item.title}>
                 {item.assets
                   ?.filter((asset) => asset.id !== id)
                   ?.map((artist) => (
