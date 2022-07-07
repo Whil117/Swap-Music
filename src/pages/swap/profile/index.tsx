@@ -1,5 +1,4 @@
 import AtomBanner from '@Components/@atoms/AtomBanner'
-import AtomSectionHeader from '@Components/@atoms/AtomSection/Header'
 import Card from '@Components/Cards/Card'
 import SectionProps from '@Components/List'
 import { css } from '@emotion/react'
@@ -39,22 +38,27 @@ const Profile: FC & NextPageFC<Props> = () => {
         }}
       />
       <AtomWrapper
+        maxWidth="1440px"
+        padding="0px 90px"
         css={css`
           margin-top: 50px;
-          margin: 100px 40px 40px 40px;
-          max-width: 1440px;
+          gap: 20px;
           @media (max-width: 980px) {
-            margin: 0px 20px;
+            padding: 0px 15px;
+            width: auto;
           }
         `}
       >
-        {data.map((item) => (
-          <AtomWrapper key={item.id}>
-            <SectionProps
-              Elements={({ setShow }) => (
-                <AtomSectionHeader setShow={setShow} title={item.title} />
-              )}
-            >
+        <AtomWrapper
+          maxWidth="1440px"
+          css={css`
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+          `}
+        >
+          {data.map((item) => (
+            <SectionProps title={item.title} key={item.id}>
               {item.assets?.map((artist) => (
                 <SwiperSlide key={artist.id} style={{ width: 'auto' }}>
                   <Card
@@ -68,17 +72,8 @@ const Profile: FC & NextPageFC<Props> = () => {
                 </SwiperSlide>
               ))}
             </SectionProps>
-          </AtomWrapper>
-        ))}
-        <AtomWrapper>
-          <SectionProps
-            Elements={({ setShow }) => (
-              <AtomSectionHeader
-                setShow={setShow}
-                title="Today's suggestions"
-              />
-            )}
-          >
+          ))}
+          <SectionProps title="Today's suggestions">
             {user?.SavedAlbums?.items?.map((artist, index) => (
               <SwiperSlide key={index} style={{ width: 'auto' }}>
                 <Card
