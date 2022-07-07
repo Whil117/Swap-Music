@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import OrganismBanner from '@Components/@organisms/OrganismBanner'
+import AtomBanner from '@Components/@atoms/AtomBanner'
 import { controlsAtom } from '@Components/Navbar/player'
 import Track from '@Components/Track/Track'
 import { css } from '@emotion/react'
@@ -39,6 +39,7 @@ const convertPlayerTracks = (
 const Playlist: NextPageFC<Props> = ({ Playlist }) => {
   const dispatch = useDispatch<Dispatch<ActionPlayerTracks>>()
   const [_, dispatchImage] = useReducerAtom(controlsAtom, reducerplayer)
+
   return (
     <>
       <AtomSeoLayout
@@ -48,31 +49,24 @@ const Playlist: NextPageFC<Props> = ({ Playlist }) => {
         keywords={[Playlist.description as string]}
       />
       <ArtistWrapper>
-        <OrganismBanner
-          fullData={[] as any}
-          id={
-            Playlist?.tracks?.items?.find(
-              (item) =>
-                item?.track?.artists[0]?.name === Playlist?.owner?.display_name
-            )?.track?.artists[0]?.id as string
-          }
-          title={Playlist.name}
-          name={Playlist.owner.display_name as string}
-          image_url={
-            Playlist?.images[0]?.url ??
-            'https://firebasestorage.googleapis.com/v0/b/swap-4f04f.appspot.com/o/images%2FFrame%2094.svg?alt=media&token=e9c9283e-808b-40ac-ba7b-3ce37452a9a2'
-          }
-          type={Playlist.type}
-          release_date=""
-          total_tracks={Playlist.tracks.total}
-          useTime={{
-            tracks: [
-              ...Playlist.tracks.items.map(
-                (item) => item.track as SpotifyApi.TrackObjectSimplified
-              ),
-            ],
+        <AtomBanner
+          type="playlist"
+          image_url={Playlist?.images[0]?.url}
+          name={Playlist.name}
+          playlist={{
+            artist: {
+              name: Playlist.owner.display_name as string,
+              id: Playlist.owner.id,
+            },
+            type: Playlist.type,
+            total_tracks: Playlist.tracks.items.length,
+            duration_ms: Playlist.tracks.items.reduce(
+              (acc, cur) => acc + (cur?.track?.duration_ms as number),
+              0
+            ),
           }}
         />
+
         <AtomWrapper
           css={css`
             display: flex;
