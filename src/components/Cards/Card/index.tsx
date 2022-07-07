@@ -69,7 +69,6 @@ const Card: FC<Card> = (props) => {
         color: ${colors.white};
         padding: 10px;
         background-color: ${colors.black_quinary};
-        /* background: ${colors.black_quaternary}; */
         border-radius: 5px;
         width: 197px;
         height: 264px;
@@ -80,7 +79,7 @@ const Card: FC<Card> = (props) => {
         @media (max-width: 520px) {
           width: 190px;
           height: 240px;
-          margin: 5px;
+          margin: 0px;
           /* height: 180px; */
         }
         @media (max-width: 465px) {
@@ -88,7 +87,7 @@ const Card: FC<Card> = (props) => {
           /* height: 180px; */
         }
         @media (max-width: 445px) {
-          width: 170px;
+          width: 150px;
           /* height: 180px; */
         }
         @media (max-width: 425px) {
@@ -114,17 +113,17 @@ const Card: FC<Card> = (props) => {
         borderRadius={ImageTypes.includes(props.type) ? '5px' : '50%'}
         css={css`
           @media (max-width: 520px) {
-            width: 170px;
+            width: -webkit-fill-available;
             height: 170px;
           }
 
           @media (max-width: 445px) {
-            width: 160px;
-            height: 160px;
+            width: -webkit-fill-available;
+            height: 130px;
             /* height: 180px; */
           }
           @media (max-width: 425px) {
-            width: 130px;
+            width: -webkit-fill-available;
             height: 130px;
             /* height: 180px; */
           }

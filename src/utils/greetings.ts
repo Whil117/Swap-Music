@@ -1,5 +1,6 @@
 const Greetings = () => {
   const hour = new Date().getHours()
+
   const greeting =
     hour >= 0 && hour <= 12
       ? 'Good Morning'

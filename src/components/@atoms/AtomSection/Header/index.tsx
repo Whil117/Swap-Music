@@ -33,6 +33,8 @@ const AtomSectionHeader: FC<Props> = ({ setShow, title }) => {
         onClick={() => setShow((show) => !show)}
       >
         <AtomIcon
+          width="25px"
+          height="25px"
           icon="https://storage.googleapis.com/cdn-bucket-ixulabs-platform/WHIL/icons/list.svg"
           color="default"
         />
