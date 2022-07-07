@@ -5,7 +5,6 @@ import Track from '@Components/Track/Track'
 import { css } from '@emotion/react'
 import { ActionPlayerTracks } from '@Redux/reducers/player'
 import reducerplayer from '@Redux/reducers/player/controls'
-import { ArtistWrapper } from '@Styles/pages/swap/artist'
 import { useReducerAtom } from 'jotai/utils'
 import AtomSeoLayout from 'lib/AtomSeo'
 import AtomWrapper from 'lib/Atomwrapper'
@@ -48,7 +47,14 @@ const Playlist: NextPageFC<Props> = ({ Playlist }) => {
         image={Playlist.images[0].url}
         keywords={[Playlist.description as string]}
       />
-      <ArtistWrapper>
+      <AtomWrapper
+        css={css`
+          width: 100%;
+          @media (max-width: 980px) {
+            width: auto;
+          }
+        `}
+      >
         <AtomBanner
           type="playlist"
           image_url={Playlist?.images[0]?.url}
@@ -100,7 +106,7 @@ const Playlist: NextPageFC<Props> = ({ Playlist }) => {
             />
           ))}
         </AtomWrapper>
-      </ArtistWrapper>
+      </AtomWrapper>
     </>
   )
 }

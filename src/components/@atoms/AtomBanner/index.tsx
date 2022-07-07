@@ -132,6 +132,7 @@ const typeBanners = {
             </AtomText>
             <AtomText
               as="h1"
+              id="headerBarScrollTitle"
               fontWeight="bold"
               css={css`
                 margin: 0;
@@ -247,6 +248,7 @@ const typeBanners = {
             <AtomText
               as="h1"
               fontWeight="bold"
+              id="headerBarScrollTitle"
               css={css`
                 margin: 0;
                 font-size: 48px;
@@ -264,7 +266,14 @@ const typeBanners = {
             >
               {props.name}
             </AtomText>
-            <AtomWrapper>
+            <AtomWrapper
+              css={css`
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                justify-content: flex-start;
+              `}
+            >
               <AtomLink
                 href={{
                   pathname: '/swap/artist/[id]',
@@ -395,6 +404,7 @@ const typeBanners = {
             <AtomText
               as="h1"
               fontWeight="bold"
+              id="headerBarScrollTitle"
               css={css`
                 margin: 0;
                 font-size: 48px;
