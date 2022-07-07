@@ -1,7 +1,7 @@
 import { css } from '@emotion/react'
 import colors from '@Styles/global/colors'
-import Svg from '@Whil/components/Svg'
 import AtomButton from 'lib/Atombutton'
+import AtomIcon from 'lib/AtomIcon'
 import AtomText from 'lib/AtomText'
 import AtomWrapper from 'lib/Atomwrapper'
 import { Dispatch, FC, SetStateAction } from 'react'
@@ -32,7 +32,10 @@ const AtomSectionHeader: FC<Props> = ({ setShow, title }) => {
         `}
         onClick={() => setShow((show) => !show)}
       >
-        <Svg src="/icons/list" />
+        <AtomIcon
+          icon="https://storage.googleapis.com/cdn-bucket-ixulabs-platform/WHIL/icons/list.svg"
+          color="default"
+        />
       </AtomButton>
     </AtomWrapper>
   )

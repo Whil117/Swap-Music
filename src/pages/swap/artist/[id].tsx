@@ -8,7 +8,6 @@ import SectionProps from '@Components/List'
 import { css } from '@emotion/react'
 import useTime from '@Hooks/useTime'
 import { SelectFor } from '@Types/redux/reducers/user/types'
-import Button from '@Whil/components/Button'
 import AtomButton from 'lib/Atombutton'
 import AtomSeoLayout from 'lib/AtomSeo'
 import AtomText from 'lib/AtomText'
@@ -177,9 +176,9 @@ const ArtistById: NextPageFC<ArtistById> = ({
               display ? index < 5 : index < 10
             )}
           />
-          <Button props={{ type: 'none' }} click={() => setDisplay(!display)}>
+          <AtomButton onClick={() => setDisplay(!display)}>
             {display ? 'Show More' : 'Show Less'}
-          </Button>
+          </AtomButton>
         </AtomWrapper>
         <AtomWrapper
           width="1440px"

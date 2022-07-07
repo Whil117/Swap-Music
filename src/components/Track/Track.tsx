@@ -4,7 +4,6 @@ import { css } from '@emotion/react'
 import useScreen from '@Hooks/useScreen'
 import useTime from '@Hooks/useTime'
 import reducerplayer from '@Redux/reducers/player/controls'
-import P from '@Whil/components/P'
 import { useReducerAtom } from 'jotai/utils'
 import AtomButton from 'lib/Atombutton'
 import AtomImage from 'lib/AtomImage'
@@ -217,16 +216,9 @@ const Track: FC<Props> = (props) => {
                     })
                 }}
               >
-                <P
-                  styles={{
-                    opacity: 0.5,
-
-                    width: 'auto',
-                  }}
-                  key={artist.id}
-                >
+                <AtomText key={artist.id}>
                   {index === 0 ? artist.name : `, ${artist.name}`}
-                </P>
+                </AtomText>
               </AtomButton>
             ))}
           </AtomWrapper>
