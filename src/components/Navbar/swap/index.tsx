@@ -45,6 +45,7 @@ const Navbar: FC<Props> = () => {
   const user = useSelector((state: SelectFor) => state.user)
   const router = useRouter()
   const [controls, dispatch] = useReducerAtom(controlsAtom, reducerplayer)
+  // const setNavbar = useSetAtom(NavBarAtom)
   const [navbar, setNavbar] = useAtom(NavBarAtom)
 
   return (

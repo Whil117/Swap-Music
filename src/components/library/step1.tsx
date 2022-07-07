@@ -1,4 +1,4 @@
-import Card from '@Components/Cards/Card'
+import AtomCard from '@Components/@atoms/AtomCard'
 import { css } from '@emotion/react'
 import { SelectFor } from '@Types/redux/reducers/user/types'
 import AtomWrapper from 'lib/Atomwrapper'
@@ -70,7 +70,7 @@ const Step1: FC = () => {
           </Div>
         </AtomButton> */}
         {user.Playlists.items.map((item) => (
-          <Card
+          <AtomCard
             key={item.id}
             {...{
               id: item.id,

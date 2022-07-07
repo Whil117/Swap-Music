@@ -1,9 +1,8 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 /* eslint-disable no-unused-vars */
 import AtomBanner from '@Components/@atoms/AtomBanner'
-import AtomSectionHeader from '@Components/@atoms/AtomSection/Header'
+import AtomCard from '@Components/@atoms/AtomCard'
 import AtomTable from '@Components/@atoms/AtomTable'
-import Card from '@Components/Cards/Card'
 import SectionProps from '@Components/List'
 import { css } from '@emotion/react'
 import useTime from '@Hooks/useTime'
@@ -194,14 +193,10 @@ const ArtistById: NextPageFC<ArtistById> = ({
         >
           {data.map((item) => (
             <AtomWrapper key={item.id} width="100%  ">
-              <SectionProps
-                Elements={({ setShow }) => (
-                  <AtomSectionHeader setShow={setShow} title={item.title} />
-                )}
-              >
+              <SectionProps title={item.title}>
                 {item.assets?.map((artist) => (
                   <SwiperSlide key={artist.id} style={{ width: 'auto' }}>
-                    <Card
+                    <AtomCard
                       {...{
                         id: artist.id,
                         type: artist.type,
@@ -227,21 +222,14 @@ const ArtistById: NextPageFC<ArtistById> = ({
             }
           `}
         >
-          <SectionProps
-            Elements={({ setShow }) => (
-              <AtomSectionHeader
-                setShow={setShow}
-                title={`Your Favorites Albums from ${Artist.name}`}
-              />
-            )}
-          >
+          <SectionProps title={`Your Favorites Albums from ${Artist.name}`}>
             {user.SavedAlbums?.items
               ?.filter((item) =>
                 item.album.artists.find((artist) => artist.name === Artist.name)
               )
               ?.map((artist, index) => (
                 <SwiperSlide key={index} style={{ width: 'auto' }}>
-                  <Card
+                  <AtomCard
                     key={artist.album.id}
                     {...{
                       id: artist.album.id,

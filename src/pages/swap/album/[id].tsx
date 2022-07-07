@@ -1,5 +1,5 @@
 import AtomBanner from '@Components/@atoms/AtomBanner'
-import Card from '@Components/Cards/Card'
+import AtomCard from '@Components/@atoms/AtomCard'
 import SectionProps from '@Components/List'
 import Track from '@Components/Track/Track'
 import { css } from '@emotion/react'
@@ -144,7 +144,7 @@ const AlbumPage: NextPageFC<Props> = ({
                         justifyContent: 'center',
                       }}
                     >
-                      <Card
+                      <AtomCard
                         {...{
                           id: artist.id,
                           type: artist.type,

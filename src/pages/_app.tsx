@@ -14,7 +14,6 @@ import 'swiper/css'
 import 'swiper/css/navigation'
 import 'swiper/css/pagination'
 import 'swiper/css/scrollbar'
-import '../styles/global/style.css'
 
 export const client = new ApolloClient({
   uri: `https://swapbackend.vercel.app/api/graphql`,

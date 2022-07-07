@@ -24,8 +24,8 @@ type Card = {
   }
 }
 
-const Card: FC<Card> = (props) => {
-  const ImageTypes = ['album', 'track', 'playlist']
+const ImageTypes = ['album', 'track', 'playlist']
+const AtomCard: FC<Card> = (props) => {
   const router = useRouter()
   const [_, setRecent] = useReducerAtom(
     recentListened as PrimitiveAtom<RecentListened[]>,
@@ -160,4 +160,4 @@ const Card: FC<Card> = (props) => {
   )
 }
 
-export default Card
+export default AtomCard

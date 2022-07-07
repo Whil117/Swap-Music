@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import Card from '@Components/Cards/Card'
+import AtomCard from '@Components/@atoms/AtomCard'
 import SectionProps from '@Components/List'
 import { css } from '@emotion/react'
 import useScreen from '@Hooks/useScreen'
@@ -238,7 +238,7 @@ const SwapPage: NextPageFCProps = () => {
               <SectionProps key={item.id} title={item.title}>
                 {item.assets?.map((artist) => (
                   <SwiperSlide key={artist.id} style={{ width: 'auto' }}>
-                    <Card
+                    <AtomCard
                       {...{
                         id: artist.id,
                         type: artist.type,
@@ -253,7 +253,7 @@ const SwapPage: NextPageFCProps = () => {
             <SectionProps title="Today's suggestions">
               {user?.SavedAlbums?.items?.map((artist, index) => (
                 <SwiperSlide key={index} style={{ width: 'auto' }}>
-                  <Card
+                  <AtomCard
                     key={artist.album.id}
                     {...{
                       id: artist.album.id,

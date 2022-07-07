@@ -1,5 +1,5 @@
 import { LISTARTISTS } from '@Apollo/client/querys/artist'
-import Card from '@Components/Cards/Card'
+import AtomCard from '@Components/@atoms/AtomCard'
 import { css } from '@emotion/react'
 import { IArtist, IQueryFilter } from '@Types/index'
 import AtomButton from 'lib/Atombutton'
@@ -47,7 +47,7 @@ const Public: NextPageFC<PropsPage> = ({ listArtist }) => {
         >
           {listArtist?.map((artist: any) => (
             <>
-              <Card
+              <AtomCard
                 key={artist?.id}
                 id={artist?.id}
                 name={artist?.name}

@@ -1,6 +1,5 @@
 import AtomNavbar from '@Components/Navbar/public'
 import { css } from '@emotion/react'
-import { Wrapper } from '@Styles/components/layout'
 import AtomWrapper from 'lib/Atomwrapper'
 import { FC } from 'react'
 
@@ -20,7 +19,41 @@ const Public: FC<Props> = (props) => {
       `}
     >
       <AtomNavbar />
-      <Wrapper id="view">
+      <AtomWrapper
+        id="view"
+        css={css`
+          width: auto;
+          display: flex;
+          grid-column: 2;
+          grid-row: 1 /2;
+          position: relative;
+          overflow: hidden;
+          overflor-y: scroll;
+          display: flex;
+          flex-direction: column;
+          overflow: auto;
+          alig-items: flex-start;
+          ::-webkit-scrollbar {
+            width: 5px;
+            /* height: 8px; */
+          }
+          ::-webkit-scrollbar-thumb {
+            background: #ccc;
+            border-radius: 4px;
+          }
+          ::-webkit-scrollbar-thumb:hover {
+            background: #b3b3b3;
+            box-shadow: 0 0 2px 1px rgba(0, 0, 0, 0.2);
+          }
+          @media (max-width: 980px) {
+            margin: 2rem;
+            grid-column: 1/ -1;
+            overflow-x: hidden;
+            margin-left: 0;
+            margin: 0;
+          }
+        `}
+      >
         <AtomWrapper
           css={css`
             position: absolute;
@@ -34,7 +67,7 @@ const Public: FC<Props> = (props) => {
         >
           {props.children}
         </AtomWrapper>
-      </Wrapper>
+      </AtomWrapper>
       {/* <NavbarPlayer /> */}
     </AtomWrapper>
   )

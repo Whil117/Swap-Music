@@ -1,4 +1,4 @@
-import Card from '@Components/Cards/Card'
+import AtomCard from '@Components/@atoms/AtomCard'
 import { css } from '@emotion/react'
 import { SelectFor } from '@Types/redux/reducers/user/types'
 import AtomWrapper from 'lib/Atomwrapper'
@@ -15,7 +15,7 @@ const Step2: FC = () => {
       `}
     >
       {user?.followedArtists?.artists?.items.map((artist) => (
-        <Card
+        <AtomCard
           key={artist.id}
           {...{
             id: artist.id,

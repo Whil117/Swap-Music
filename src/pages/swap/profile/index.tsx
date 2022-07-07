@@ -1,5 +1,5 @@
 import AtomBanner from '@Components/@atoms/AtomBanner'
-import Card from '@Components/Cards/Card'
+import AtomCard from '@Components/@atoms/AtomCard'
 import SectionProps from '@Components/List'
 import { css } from '@emotion/react'
 import { SelectFor } from '@Types/redux/reducers/user/types'
@@ -61,7 +61,7 @@ const Profile: FC & NextPageFC<Props> = () => {
             <SectionProps title={item.title} key={item.id}>
               {item.assets?.map((artist) => (
                 <SwiperSlide key={artist.id} style={{ width: 'auto' }}>
-                  <Card
+                  <AtomCard
                     {...{
                       id: artist.id,
                       type: artist.type,
@@ -76,7 +76,7 @@ const Profile: FC & NextPageFC<Props> = () => {
           <SectionProps title="Today's suggestions">
             {user?.SavedAlbums?.items?.map((artist, index) => (
               <SwiperSlide key={index} style={{ width: 'auto' }}>
-                <Card
+                <AtomCard
                   key={artist.album.id}
                   {...{
                     id: artist.album.id,

@@ -1,5 +1,4 @@
 import { atom, useAtom, useSetAtom } from 'jotai'
-import { atomWithStorage } from 'jotai/utils'
 import { useEffect } from 'react'
 import parseImage from './colors/parseImage'
 
@@ -13,8 +12,7 @@ const colorFetch = async (url: string) =>
     src: url,
   })
 
-const colorValueAtom = atomWithStorage(
-  'COLORS',
+const colorValueAtom = atom(
   'https://upload.wikimedia.org/wikipedia/commons/thumb/4/49/A_black_image.jpg/800px-A_black_image.jpg?20201103073518'
 )
 export const colorsAtom = atom(
