@@ -15,6 +15,9 @@ export type State = {
     uri: string
     href: string
     accessToken: string
+    followers: {
+      total: number
+    }
   }
   Playlists: SpotifyApi.CursorBasedPagingObject<SpotifyApi.PlaylistObjectSimplified>
   TopArtists: SpotifyApi.CursorBasedPagingObject<SpotifyApi.ArtistObjectFull>

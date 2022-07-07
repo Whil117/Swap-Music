@@ -1,5 +1,5 @@
+import AtomBanner from '@Components/@atoms/AtomBanner'
 import AtomSectionHeader from '@Components/@atoms/AtomSection/Header'
-import OrganismBanner from '@Components/@organisms/OrganismBanner'
 import Card from '@Components/Cards/Card'
 import SectionProps from '@Components/List'
 import { css } from '@emotion/react'
@@ -26,15 +26,17 @@ const Profile: FC & NextPageFC<Props> = () => {
       assets: user?.followedArtists?.artists?.items,
     },
   ]
+
   return (
     <AtomWrapper>
-      <OrganismBanner
-        fullData={[] as any}
-        title={user.me.display_name}
-        id={user.me.id}
-        name={user.me.display_name}
+      <AtomBanner
         image_url={user.me.images[0].url}
-        type={user.me.type}
+        type="profile"
+        profile={{
+          name: user.me.display_name,
+          type: user.me.type,
+          followers: user.me.followers.total,
+        }}
       />
       <AtomWrapper
         css={css`
