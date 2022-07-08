@@ -4,7 +4,7 @@ import { colorsAtom } from '@Hooks/UseColor'
 import useScreen from '@Hooks/useScreen'
 import UseScroll from '@Hooks/useScroll'
 import { SelectFor } from '@Types/redux/reducers/user/types'
-import { atom, useAtom } from 'jotai'
+import { atom, useAtom, useAtomValue, useSetAtom } from 'jotai'
 import AtomButton from 'lib/Atombutton'
 import AtomImage from 'lib/AtomImage'
 import AtomText from 'lib/AtomText'
@@ -21,9 +21,9 @@ export const NavBarAtom = atom(false)
 
 const AtomBarScroll: FC = () => {
   const user = useSelector((state: SelectFor) => state.user)
-  const [colors] = useAtom(colorsAtom)
+  const colors = useAtomValue(colorsAtom)
   const [steps, setSteps] = useAtom(stepsId)
-  const [_, setNavbar] = useAtom(NavBarAtom)
+  const setNavbar = useSetAtom(NavBarAtom)
   const router = useRouter()
   const screen = useScreen()
   const scrollPosition = UseScroll()
@@ -35,11 +35,9 @@ const AtomBarScroll: FC = () => {
             ${validPathsSongs.includes(router.pathname.split('/')[2]) &&
             scrollPosition >= 280 &&
             css`
-              /* opacity: 0.75; */
               backgroun-opacity: 0.75;
               background: ${colors[0]};
             `}
-            /* backdrop-filter: blur(8px); */
             display: flex;
             justify-content: ${router.asPath.includes('swap/library')
               ? 'space-between'

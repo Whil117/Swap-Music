@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 import { css } from '@emotion/react'
 import { colorsAtom } from '@Hooks/UseColor'
-import { useAtom } from 'jotai'
+import { useAtom, useAtomValue } from 'jotai'
 import { atomWithStorage } from 'jotai/utils'
 import AtomInput from 'lib/AtomInput'
 import { ChangeEvent, FC, MutableRefObject } from 'react'
@@ -14,8 +14,7 @@ const volumenAtom = atomWithStorage('VOLUMENSWAP', 5 as number)
 
 const BarVolumen: FC<Props> = ({ audio }) => {
   const [volumen, setvolumen] = useAtom(volumenAtom)
-  const [colors] = useAtom(colorsAtom)
-  const color = colors[0]
+  const [color] = useAtomValue(colorsAtom)
 
   return (
     <AtomInput
