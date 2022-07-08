@@ -246,6 +246,7 @@ const ArtistById: NextPageFC<ArtistById> = ({
     </>
   )
 }
+ArtistById.Layout = 'swap'
 
 export async function getServerSideProps(context: NextPageContext) {
   const { id } = context.query
@@ -266,6 +267,8 @@ export async function getServerSideProps(context: NextPageContext) {
   const ArtistRelated = await spotifyAPI
     .getArtistRelatedArtists(id as string)
     .then((releases) => releases.body)
+
+  ArtistById.Layout = 'swap'
   ArtistById.SEO = {
     title: Artist.name,
     description:
@@ -283,5 +286,4 @@ export async function getServerSideProps(context: NextPageContext) {
     },
   }
 }
-ArtistById.Layout = 'swap'
 export default ArtistById

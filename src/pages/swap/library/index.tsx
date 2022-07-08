@@ -57,9 +57,16 @@ const Library: NextPageFCProps = () => {
         {step[stepById]?.component}
       </AtomWrapper>
     </AtomWrapper>
-    // </AtomWrapper>
   )
 }
+
+export async function getServerSideProps() {
+  Library.Layout = 'swap'
+  return {
+    props: {},
+  }
+}
+
 Library.Layout = 'swap'
 
 export default Library

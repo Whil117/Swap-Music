@@ -162,6 +162,8 @@ const AlbumPage: NextPageFC<Props> = ({
     </>
   )
 }
+AlbumPage.Layout = 'swap'
+
 export async function getServerSideProps(context: NextPageContext) {
   const { id } = context.query
   const Session = await getSession(context)
@@ -174,7 +176,7 @@ export async function getServerSideProps(context: NextPageContext) {
     (acc, curr) => acc + curr.duration_ms,
     0
   )
-
+  AlbumPage.Layout = 'swap'
   const Artist = await spotifyAPI
     .getArtist(ArtistId as string)
     .then((artist) => artist.body)
@@ -211,5 +213,4 @@ export async function getServerSideProps(context: NextPageContext) {
         },
       }
 }
-AlbumPage.Layout = 'swap'
 export default AlbumPage
