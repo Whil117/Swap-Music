@@ -2,29 +2,27 @@
 import { css } from '@emotion/react'
 import { colorsAtom } from '@Hooks/UseColor'
 import useScreen from '@Hooks/useScreen'
-import { ActionPlayer } from '@Redux/reducers/player/controls'
-import { useAtom } from 'jotai'
+import { useAtom, useAtomValue } from 'jotai'
 import { atomWithStorage } from 'jotai/utils'
 import AtomInput from 'lib/AtomInput'
 import AtomText from 'lib/AtomText'
 import AtomWrapper from 'lib/Atomwrapper'
 import { FC, MutableRefObject, useEffect } from 'react'
+import { controlsAtom } from '.'
 // import { useDispatch } from 'react-redux'
 
 type Props = {
   audio: MutableRefObject<HTMLAudioElement | null>
-  autoplay: boolean
-  track: string
-  dispatch: (action: ActionPlayer) => void
 }
 
 export const progressBarAtom = atomWithStorage('PROGRESSBAR', 0 as number)
 
-const Progressbar: FC<Props> = ({ audio, track, autoplay, dispatch }) => {
+const Progressbar: FC<Props> = ({ audio }) => {
   const [currentTime, setCurrentTime] = useAtom(progressBarAtom)
+  const [controls, dispatch] = useAtom(controlsAtom)
   const screen = useScreen()
-  const [colors] = useAtom(colorsAtom)
-  const colorbar = colors[0]
+  const colors = useAtomValue(colorsAtom)
+
   useEffect(() => {
     if (audio.current) {
       audio.current.ontimeupdate = (event: any) => {
@@ -92,7 +90,7 @@ const Progressbar: FC<Props> = ({ audio, track, autoplay, dispatch }) => {
           background: rgb(92 86 86 / 60%);
           border: none;
           border-radius: 5px;
-          background-image: linear-gradient(${colorbar}, ${colorbar});
+          background-image: linear-gradient(${colors[0]}, ${colors[0]});
           background-repeat: no-repeat;
           background-size: ${Math.floor(((currentTime - 0) * 100) / 30 - 0)}%
             100%;
@@ -101,7 +99,7 @@ const Progressbar: FC<Props> = ({ audio, track, autoplay, dispatch }) => {
             height: 15px;
             width: 15px;
             border-radius: 50%;
-            background: ${colorbar};
+            background: ${colors[0]};
             cursor: pointer;
             box-shadow: 0 0 2px 0 #555;
             transition: background 0.3s ease-in-out;
@@ -110,7 +108,7 @@ const Progressbar: FC<Props> = ({ audio, track, autoplay, dispatch }) => {
             -webkit-appearance: none;
             height: 20px;
             border-radius: 50%;
-            background: ${colorbar};
+            background: ${colors[0]};
             cursor: pointer;
             box-shadow: 0 0 2px 0 #555;
             transition: background 0.3s ease-in-out;
@@ -120,19 +118,19 @@ const Progressbar: FC<Props> = ({ audio, track, autoplay, dispatch }) => {
             height: 20px;
             width: 20px;
             border-radius: 50%;
-            background: ${colorbar};
+            background: ${colors[0]};
             cursor: ew-resize;
             box-shadow: 0 0 2px 0 #555;
             transition: background 0.3s ease-in-out;
           }
           ::-webkit-slider-thumb:hover {
-            background: ${colorbar};
+            background: ${colors[0]};
           }
           ::-moz-range-thumb:hover {
-            background: ${colorbar};
+            background: ${colors[0]};
           }
           ::-ms-thumb:hover {
-            background: ${colorbar};
+            background: ${colors[0]};
           }
 
           ::-webkit-slider-runnable-track {
@@ -171,12 +169,12 @@ const Progressbar: FC<Props> = ({ audio, track, autoplay, dispatch }) => {
           }
         `}
       />
-      {track && (
+      {controls?.player?.currentTrack?.preview_url && (
         <audio
           ref={audio}
           // loop={player.play}
-          src={track as string}
-          autoPlay={autoplay}
+          src={controls?.player?.currentTrack?.preview_url as string}
+          autoPlay={controls.play}
           onEnded={() => {
             dispatch({
               type: 'PLAY',

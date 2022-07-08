@@ -4,8 +4,7 @@ import { controlsAtom } from '@Components/Navbar/player'
 import Track from '@Components/Track/Track'
 import { css } from '@emotion/react'
 import { ActionPlayerTracks } from '@Redux/reducers/player'
-import reducerplayer from '@Redux/reducers/player/controls'
-import { useReducerAtom } from 'jotai/utils'
+import { useSetAtom } from 'jotai'
 import AtomSeoLayout from 'lib/AtomSeo'
 import AtomWrapper from 'lib/Atomwrapper'
 import spotifyAPI from 'lib/spotify/spotify'
@@ -37,7 +36,7 @@ const convertPlayerTracks = (
 
 const Playlist: NextPageFC<Props> = ({ Playlist }) => {
   const dispatch = useDispatch<Dispatch<ActionPlayerTracks>>()
-  const [_, dispatchImage] = useReducerAtom(controlsAtom, reducerplayer)
+  const dispatchImage = useSetAtom(controlsAtom)
 
   return (
     <>

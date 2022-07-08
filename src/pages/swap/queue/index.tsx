@@ -3,14 +3,14 @@
 import { controlsAtom } from '@Components/Navbar/player'
 import Track from '@Components/Track/Track'
 import { css } from '@emotion/react'
-import reducerplayer, { Inti } from '@Redux/reducers/player/controls'
-import { useReducerAtom } from 'jotai/utils'
+import { Inti } from '@Redux/reducers/player/controls'
+import { useAtomValue } from 'jotai/utils'
 import AtomWrapper from 'lib/Atomwrapper'
 import { NextPageFCProps } from 'next'
 
 const typeQueue = {
   album: () => {
-    const [controls, dispatch] = useReducerAtom(controlsAtom, reducerplayer)
+    const controls = useAtomValue(controlsAtom)
 
     return (
       <AtomWrapper
@@ -70,7 +70,7 @@ const typeQueue = {
 }
 
 const Queue: NextPageFCProps = () => {
-  const [controls, dispatch] = useReducerAtom(controlsAtom, reducerplayer)
+  const controls = useAtomValue(controlsAtom)
 
   return (
     <AtomWrapper>

@@ -1,11 +1,12 @@
 /* eslint-disable no-unused-vars */
 import { css } from '@emotion/react'
-import reducerplayer, {
-  initialState,
+import ReducerAtomPlayer, {
   Inti,
+  reducerplayer,
 } from '@Redux/reducers/player/controls'
+
 import Svg from '@Whil/components/Svg'
-import { atomWithStorage, useReducerAtom } from 'jotai/utils'
+import { useAtom } from 'jotai'
 import AtomButton from 'lib/Atombutton'
 import AtomIcon from 'lib/AtomIcon'
 import AtomImage from 'lib/AtomImage'
@@ -17,7 +18,7 @@ import { FC, MutableRefObject, useEffect, useRef } from 'react'
 import Progressbar from './progressbar'
 import BarVolumen from './volumen.bar'
 
-export const controlsAtom = atomWithStorage('SWAPPLAYER', initialState as Inti)
+export const controlsAtom = ReducerAtomPlayer(reducerplayer)
 
 export const handleSong = async (trackId: string, accessToken: string) => {
   spotifyAPI.setAccessToken(accessToken as string)
@@ -25,7 +26,7 @@ export const handleSong = async (trackId: string, accessToken: string) => {
 }
 const NavbarPlayer: FC = () => {
   const audio = useRef<HTMLAudioElement>()
-  const [controls, dispatch] = useReducerAtom(controlsAtom, reducerplayer)
+  const [controls, dispatch] = useAtom(controlsAtom)
   const router = useRouter()
   const caudio = document.createElement('audio')
   const handlePlay = () => {
@@ -365,9 +366,6 @@ const NavbarPlayer: FC = () => {
               </AtomWrapper>
               <Progressbar
                 audio={audio as MutableRefObject<HTMLAudioElement | null>}
-                track={controls?.player?.currentTrack?.preview_url as string}
-                dispatch={dispatch}
-                autoplay={controls.play as boolean}
               />
             </AtomWrapper>
             <AtomWrapper

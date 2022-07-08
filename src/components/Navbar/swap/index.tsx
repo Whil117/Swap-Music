@@ -1,11 +1,9 @@
 import { NavBarAtom } from '@Components/@atoms/AtomBarScroll'
 import { css } from '@emotion/react'
-import reducerplayer from '@Redux/reducers/player/controls'
 import colors from '@Styles/global/colors'
 import { SelectFor } from '@Types/redux/reducers/user/types'
 import Svg from '@Whil/components/Svg'
 import { useAtom } from 'jotai'
-import { useReducerAtom } from 'jotai/utils'
 import AtomButton from 'lib/Atombutton'
 import AtomIcon from 'lib/AtomIcon'
 import AtomImage from 'lib/AtomImage'
@@ -44,7 +42,7 @@ const Sections = [
 const Navbar: FC<Props> = () => {
   const user = useSelector((state: SelectFor) => state.user)
   const router = useRouter()
-  const [controls, dispatch] = useReducerAtom(controlsAtom, reducerplayer)
+  const [controls, dispatch] = useAtom(controlsAtom)
   // const setNavbar = useSetAtom(NavBarAtom)
   const [navbar, setNavbar] = useAtom(NavBarAtom)
 

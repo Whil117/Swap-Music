@@ -1,4 +1,6 @@
 import colors from '@Styles/global/colors'
+import { atom } from 'jotai'
+import { atomWithStorage } from 'jotai/utils'
 
 /* eslint-disable no-unused-vars */
 
@@ -152,7 +154,18 @@ export const reducerplayer = (
   const newState = handler
     ? handler(state, payload as typeof initialState)
     : state
-  return newState
+  return newState as Inti
 }
 
-export default reducerplayer
+export const controls = atomWithStorage('SWAPPLAYER', initialState as Inti)
+
+const ReducerAtomPlayer = (reducer: (v: Inti, a: ActionPlayer) => Inti) => {
+  const anAtom = atom(
+    (get) => get(controls),
+    (get, set, action: ActionPlayer) =>
+      set(controls, reducer(get(controls), action))
+  )
+  return anAtom
+}
+
+export default ReducerAtomPlayer

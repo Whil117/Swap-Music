@@ -3,8 +3,7 @@ import { controlsAtom } from '@Components/Navbar/player'
 import { css } from '@emotion/react'
 import useScreen from '@Hooks/useScreen'
 import useTime from '@Hooks/useTime'
-import reducerplayer from '@Redux/reducers/player/controls'
-import { useReducerAtom } from 'jotai/utils'
+import { useSetAtom } from 'jotai'
 import AtomButton from 'lib/Atombutton'
 import AtomImage from 'lib/AtomImage'
 import AtomText from 'lib/AtomText'
@@ -51,7 +50,7 @@ type Props = {
 
 const Track: FC<Props> = (props) => {
   const [hours, minutes, seconds] = useTime({ ms: props.duration_ms })
-  const [controls, dispatch] = useReducerAtom(controlsAtom, reducerplayer)
+  const dispatch = useSetAtom(controlsAtom)
   const router = useRouter()
   const screen = useScreen()
 
