@@ -24,14 +24,14 @@ export const handleSong = async (trackId: string, accessToken: string) => {
   spotifyAPI.setAccessToken(accessToken as string)
   return await spotifyAPI.getTrack(trackId ?? '').then((res) => res)
 }
+
 const NavbarPlayer: FC = () => {
   const audio = useRef<HTMLAudioElement>()
   const [controls, dispatch] = useAtom(controlsAtom)
   const router = useRouter()
-  const caudio = document.createElement('audio')
+
   const handlePlay = () => {
     audio.current?.play()
-    caudio.play()
     if (audio.current) {
       dispatch({
         type: 'PLAY',

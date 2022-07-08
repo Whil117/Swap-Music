@@ -1,3 +1,4 @@
+import NavbarPlayer from '@Components/Navbar/player'
 import AtomNavbar from '@Components/Navbar/public'
 import { css } from '@emotion/react'
 import AtomWrapper from 'lib/Atomwrapper'
@@ -68,7 +69,7 @@ const Public: FC<Props> = (props) => {
           {props.children}
         </AtomWrapper>
       </AtomWrapper>
-      {/* <NavbarPlayer /> */}
+      <NavbarPlayer />
     </AtomWrapper>
   )
 }

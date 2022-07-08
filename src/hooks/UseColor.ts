@@ -16,7 +16,7 @@ const colorValueAtom = atom(
   'https://upload.wikimedia.org/wikipedia/commons/thumb/4/49/A_black_image.jpg/800px-A_black_image.jpg?20201103073518'
 )
 export const colorsAtom = atom(
-  async (get) => await colorFetch(get(colorValueAtom) ?? ['#000000'])
+  async (get) => (await colorFetch(get(colorValueAtom))) ?? ['#000000']
 )
 
 const UseColor = ({ url }: { url: string }) => {
