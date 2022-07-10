@@ -6,7 +6,7 @@ import ReducerAtomPlayer, {
 } from '@Redux/reducers/player/controls'
 
 import Svg from '@Whil/components/Svg'
-import { useAtom } from 'jotai'
+import { useAtom, useAtomValue } from 'jotai'
 import AtomButton from 'lib/Atombutton'
 import AtomIcon from 'lib/AtomIcon'
 import AtomImage from 'lib/AtomImage'
@@ -15,8 +15,8 @@ import AtomWrapper from 'lib/Atomwrapper'
 import spotifyAPI from 'lib/spotify/spotify'
 import { NextRouter, useRouter } from 'next/router'
 import { FC, MutableRefObject, useEffect, useRef } from 'react'
-import Progressbar from './progressbar'
-import BarVolumen from './volumen.bar'
+import Progressbar, { progressBarAtom } from './progressbar'
+import BarVolumen, { volumenAtom } from './volumen.bar'
 
 export const controlsAtom = ReducerAtomPlayer(reducerplayer)
 
@@ -26,6 +26,8 @@ export const handleSong = async (trackId: string, accessToken: string) => {
 }
 
 const NavbarPlayer: FC = () => {
+  const progressBar = useAtomValue(progressBarAtom)
+  const volumen = useAtomValue(volumenAtom)
   const audio = useRef<HTMLAudioElement>()
   const [controls, dispatch] = useAtom(controlsAtom)
   const router = useRouter()
@@ -50,7 +52,6 @@ const NavbarPlayer: FC = () => {
         ],
       })
       if (controls.volumen) {
-        const volumen = localStorage.getItem('VOLUMENSWAP')
         audio.current.volume = Number(volumen) / 100
       }
     }
@@ -85,9 +86,7 @@ const NavbarPlayer: FC = () => {
 
   useEffect(() => {
     if (audio.current) {
-      const currentTime = localStorage.getItem('PROGRESSBAR')
-      const volumen = localStorage.getItem('VOLUMENSWAP')
-      audio.current.currentTime = currentTime as unknown as number
+      audio.current.currentTime = progressBar as unknown as number
       audio.current.volume = (volumen as unknown as number) / 100
     }
   }, [])

@@ -10,7 +10,7 @@ type Props = {
   audio: MutableRefObject<HTMLAudioElement | undefined>
 }
 
-const volumenAtom = atomWithStorage('VOLUMENSWAP', 5 as number)
+export const volumenAtom = atomWithStorage('VOLUMENSWAP', 5 as number)
 
 const BarVolumen: FC<Props> = ({ audio }) => {
   const [volumen, setvolumen] = useAtom(volumenAtom)
