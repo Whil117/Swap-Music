@@ -163,7 +163,7 @@ const Progressbar: FC<Props> = ({ audio }) => {
         <audio
           id="AUDIOPLAYER"
           ref={audio}
-          loop={controls.loop}
+          loop={controls.repeat}
           src={controls?.player?.currentTrack?.preview_url as string}
           autoPlay={playerPlayer}
           onPlaying={() => {

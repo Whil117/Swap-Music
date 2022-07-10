@@ -4,7 +4,7 @@ import { controlsAtom, Navigator } from '@Components/Navbar/player'
 import { css } from '@emotion/react'
 import useScreen from '@Hooks/useScreen'
 import useTime from '@Hooks/useTime'
-import { ActionPlayer } from '@Redux/reducers/player/controls'
+import { ActionPlayer, PLAYATOM } from '@Redux/reducers/player/controls'
 import { useSetAtom } from 'jotai'
 import AtomButton from 'lib/Atombutton'
 import AtomIcon from 'lib/AtomIcon'
@@ -32,6 +32,7 @@ const handleError = (screen: number) => {
 const typeTracks = ({ dispatch, type, screen, router }: DefsTrack) => ({
   album: (props: Props) => {
     const [hours, minutes, seconds] = useTime({ ms: props?.album?.duration })
+    const setPlayPlayer = useSetAtom(PLAYATOM)
     const handleClick = () => {
       Navigator({
         title: props?.album?.name as string,
@@ -40,10 +41,12 @@ const typeTracks = ({ dispatch, type, screen, router }: DefsTrack) => ({
         album_name: props?.album?.name as string,
         image: props?.album?.image as string,
       })
+      setPlayPlayer(true)
       dispatch({
         type: 'SEVERAL',
         payload: {
           play: true,
+          currentTime: 0,
           image: props?.album?.image,
           player: {
             currentSite: {

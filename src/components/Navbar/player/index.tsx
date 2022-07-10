@@ -1,13 +1,15 @@
 /* eslint-disable no-unused-vars */
 import { css } from '@emotion/react'
+import { colorsAtom } from '@Hooks/UseColor'
 import ReducerAtomPlayer, {
+  ActionPlayer,
   Inti,
   PLAYATOM,
   reducerplayer,
 } from '@Redux/reducers/player/controls'
 
 import Svg from '@Whil/components/Svg'
-import { useAtom, useSetAtom } from 'jotai'
+import { useAtom, useAtomValue, useSetAtom } from 'jotai'
 import AtomButton from 'lib/Atombutton'
 import AtomIcon from 'lib/AtomIcon'
 import AtomImage from 'lib/AtomImage'
@@ -43,6 +45,7 @@ export const Navigator = (props: NavigatorProps) => {
 }
 
 const NavbarPlayer: FC = () => {
+  const colors = useAtomValue(colorsAtom)
   const [controls, dispatch] = useAtom(controlsAtom)
   const setPlayPlayer = useSetAtom(PLAYATOM)
   const audio = useRef<HTMLAudioElement>()
@@ -313,7 +316,7 @@ const NavbarPlayer: FC = () => {
                   gap: 10px;
                 `}
               >
-                {playerButtons.map((button) => (
+                {playerButtons(controls, dispatch).map((button) => (
                   <>
                     {typeof button.icon === 'object' ? (
                       <AtomButton
@@ -330,37 +333,43 @@ const NavbarPlayer: FC = () => {
                             display: none;
                           }
                         `}
-                        // onPointerUp={() => {
-                        //   if (button.action) {
-                        //     button.action()
-                        //   }
-                        // }}
                         onClick={() => {
                           controls.play ? handlePause() : handlePlay()
                         }}
-                        //detect keydown
                         onKeyDown={(e) => {
                           if (e.key === 'MediaPlayPause') {
                             controls.play ? handlePause() : handlePlay()
                           }
-                          // if (e.key === 'MediaNextTrack') {
-                          //   handleNext()
-                          // }
                         }}
                       >
-                        <Svg
-                          src={`/icons/${controls.play ? 'pause' : 'play'}`}
+                        <AtomIcon
+                          width="50px"
+                          height="50px"
+                          icon={
+                            controls.play ? button.icon.pause : button.icon.play
+                          }
+                          color={
+                            button.active ? (colors[0] as string) : 'white'
+                          }
                         />
                       </AtomButton>
                     ) : (
                       <AtomButton
+                        onClick={button.onClick}
                         css={css`
                           @media (max-width: 980px) {
                             display: none;
                           }
                         `}
                       >
-                        <Svg src={`/icons/${button.icon}`} />
+                        <AtomIcon
+                          icon={button.icon}
+                          width="22px"
+                          height="22px"
+                          color={
+                            button.active ? (colors[0] as string) : 'white'
+                          }
+                        />
                       </AtomButton>
                     )}
                   </>
@@ -383,13 +392,13 @@ const NavbarPlayer: FC = () => {
                 }
               `}
             >
-              {buttonsActions(router, controls).map((item) => (
+              {buttonsActions(router, controls, dispatch).map((item) => (
                 <AtomButton key={item.key} onClick={item.onClick} padding="0px">
                   <AtomIcon
                     icon={item.icon}
                     width="22px"
                     height="22px"
-                    color={item.active ? 'blue' : 'white'}
+                    color={item.active ? (colors[0] as string) : 'white'}
                   />
                 </AtomButton>
               ))}
@@ -410,10 +419,22 @@ const NavbarPlayer: FC = () => {
   )
 }
 
-const buttonsActions = (router: NextRouter, controls: Inti) => [
+const buttonsActions = (
+  router: NextRouter,
+  controls: Inti,
+  dispatch: (update: ActionPlayer) => void
+) => [
   {
     key: 1,
     id: 'repeat',
+    onClick: () => {
+      dispatch({
+        type: 'REPEAT',
+        payload: {
+          repeat: !controls.repeat,
+        },
+      })
+    },
     active: controls.repeat,
     icon: 'https://storage.googleapis.com/cdn-bucket-ixulabs-platform/WHIL/icons/repeat2.svg',
   },
@@ -426,44 +447,57 @@ const buttonsActions = (router: NextRouter, controls: Inti) => [
   {
     key: 3,
     id: 'queue',
-    active: false,
-    onClick: () => router.push('/swap/queue'),
+    active: router.asPath.includes('/queue'),
+    color: '#fff',
+    onClick: () =>
+      router.asPath.includes('/queue')
+        ? router.back()
+        : router.push('/swap/queue'),
     icon: 'https://storage.googleapis.com/cdn-bucket-ixulabs-platform/WHIL/icons/queue.svg',
   },
-  // {
-  //   key: 4,
-  //   id: 'sound',
-  //   icon: 'https://storage.googleapis.com/cdn-bucket-ixulabs-platform/WHIL/icons/sound.svg',
-  // },
 ]
-const playerButtons = [
+const playerButtons = (
+  controls: Inti,
+  dispatch: (update: ActionPlayer) => void
+) => [
   {
-    key: 1,
+    key: 2,
     id: 'aleatory',
-    icon: 'aleatory',
+    active: controls.aleatory,
+    icon: 'https://storage.googleapis.com/cdn-bucket-ixulabs-platform/WHIL/icons/aleatory.svg',
   },
   {
     key: 1,
     id: 'back',
-    icon: 'back',
+    icon: 'https://storage.googleapis.com/cdn-bucket-ixulabs-platform/WHIL/icons/backsong.svg',
   },
   {
     key: 2,
     id: 'play',
     icon: {
-      play: 'play',
-      pause: 'pause',
+      play: 'https://storage.googleapis.com/cdn-bucket-ixulabs-platform/WHIL/icons/play.svg',
+      pause:
+        'https://storage.googleapis.com/cdn-bucket-ixulabs-platform/WHIL/icons/pause.svg',
     },
   },
   {
     key: 3,
     id: 'next',
-    icon: 'next',
+    icon: 'https://storage.googleapis.com/cdn-bucket-ixulabs-platform/WHIL/icons/nextsong.svg',
   },
   {
     key: 1,
     id: 'repeat',
-    icon: 'repeat',
+    onClick: () => {
+      dispatch({
+        type: 'REPEAT',
+        payload: {
+          repeat: !controls.repeat,
+        },
+      })
+    },
+    active: controls.repeat,
+    icon: 'https://storage.googleapis.com/cdn-bucket-ixulabs-platform/WHIL/icons/repeat2.svg',
   },
 ]
 
