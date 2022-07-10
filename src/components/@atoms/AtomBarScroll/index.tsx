@@ -3,9 +3,11 @@ import { css } from '@emotion/react'
 import { colorsAtom } from '@Hooks/UseColor'
 import useScreen from '@Hooks/useScreen'
 import UseScroll from '@Hooks/useScroll'
+import { PLAYATOM } from '@Redux/reducers/player/controls'
 import { SelectFor } from '@Types/redux/reducers/user/types'
 import { atom, useAtom, useAtomValue, useSetAtom } from 'jotai'
 import AtomButton from 'lib/Atombutton'
+import AtomIcon from 'lib/AtomIcon'
 import AtomImage from 'lib/AtomImage'
 import AtomText from 'lib/AtomText'
 import AtomWrapper from 'lib/Atomwrapper'
@@ -22,6 +24,7 @@ export const NavBarAtom = atom(false)
 const AtomBarScroll: FC = () => {
   const user = useSelector((state: SelectFor) => state.user)
   const colors = useAtomValue(colorsAtom)
+  const [play, setPlay] = useAtom(PLAYATOM)
   const [steps, setSteps] = useAtom(stepsId)
   const setNavbar = useSetAtom(NavBarAtom)
   const router = useRouter()
@@ -97,21 +100,60 @@ const AtomBarScroll: FC = () => {
             )}
             {validPathsSongs.includes(router.pathname.split('/')[2]) &&
               scrollPosition >= 280 && (
-                <AtomText
-                  as="p"
-                  fontWeight="bold"
-                  fontSize="18px"
+                <AtomWrapper
                   css={css`
-                    @media (max-width: 980px) {
-                      font-size: 16px;
-                    }
-                    @media (max-width: 480px) {
-                      font-size: 14px;
-                    }
+                    display: flex;
+                    align-items: center;
+                    justify-content: space-between;
+                    gap: 10px;
                   `}
                 >
-                  {document.getElementById('headerBarScrollTitle')?.innerText}
-                </AtomText>
+                  <AtomButton
+                    width="40px"
+                    height="40px"
+                    css={css`
+                      background-color: white;
+                      border-radius: 50%;
+                    `}
+                    onClick={() => {
+                      setPlay((prev) => !prev)
+                      const audio = document.getElementById(
+                        'AUDIOPLAYER'
+                      ) as HTMLAudioElement
+                      play ? audio.pause() : audio.play()
+                    }}
+                  >
+                    <AtomIcon
+                      customCSS={css`
+                        padding: 5px;
+                        margin-left: ${play ? '0px' : '2px'};
+                      `}
+                      width="20px"
+                      height="20px"
+                      color={colors[0] as string}
+                      icon={
+                        play
+                          ? 'https://storage.googleapis.com/cdn-bucket-ixulabs-platform/WHIL/icons/pausee.svg'
+                          : 'https://storage.googleapis.com/cdn-bucket-ixulabs-platform/WHIL/icons/playho.svg'
+                      }
+                    />
+                  </AtomButton>
+                  <AtomText
+                    as="p"
+                    fontWeight="bold"
+                    fontSize="18px"
+                    css={css`
+                      @media (max-width: 980px) {
+                        font-size: 16px;
+                      }
+                      @media (max-width: 480px) {
+                        font-size: 14px;
+                      }
+                    `}
+                  >
+                    {document.getElementById('headerBarScrollTitle')?.innerText}
+                  </AtomText>
+                </AtomWrapper>
               )}
             <AtomButton
               onClick={() => {
