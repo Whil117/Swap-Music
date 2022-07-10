@@ -88,7 +88,6 @@ const Track: FC<Props> = (props) => {
           : () => {}
       }
     >
-      {/* {useseesion.data.accessToken} */}
       <AtomButton
         onClick={
           props.preview_url
@@ -215,7 +214,7 @@ const Track: FC<Props> = (props) => {
                     })
                 }}
               >
-                <AtomText key={artist.id}>
+                <AtomText key={artist.id} opacity={0.5}>
                   {index === 0 ? artist.name : `, ${artist.name}`}
                 </AtomText>
               </AtomButton>

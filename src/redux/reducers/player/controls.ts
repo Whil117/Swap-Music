@@ -139,6 +139,10 @@ const typesReducers: typesReducers = {
     ...state,
     player: payload.player,
   }),
+  SEVERAL: (state, payload) => ({
+    ...state,
+    ...payload,
+  }),
 }
 export type ActionPlayer = {
   type: keyof typeof typesReducers

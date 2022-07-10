@@ -1,6 +1,7 @@
 import { atom, useAtom } from 'jotai'
 import { useEffect } from 'react'
-const ScreenAtom = atom(0 as number)
+
+export const ScreenAtom = atom(0 as number)
 
 const updateHeight = () => {
   const w = document.documentElement.clientWidth

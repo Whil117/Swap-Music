@@ -28,12 +28,14 @@ export type AtombuttonProps = {
     | 'space-between'
     | 'space-around'
   height?: string
+  opacity?: number
 }
 
 const AtomButton = styled.button<AtombuttonProps>`
   border: none;
   outline: none;
   display: flex;
+  opacity: ${(props) => props.opacity ?? 'none'};
   align-items: ${(props) => props.alignItems || 'center'};
   justify-content: ${(props) => props.justifyContent || 'center'};
   padding: ${(props) => props.padding || '0px'};

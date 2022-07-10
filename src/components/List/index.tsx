@@ -37,6 +37,8 @@ const SectionProps: FC<Props> = ({ children, title }) => {
           {title}
         </AtomText>
         <AtomButton
+          width="35px"
+          height="35px"
           backgroundColor={colors.black_quaternary}
           css={css`
             padding: 5px;
@@ -45,8 +47,8 @@ const SectionProps: FC<Props> = ({ children, title }) => {
           onClick={() => setShow((show) => !show)}
         >
           <AtomIcon
-            width="25px"
-            height="25px"
+            width="20px"
+            height="20px"
             icon="https://storage.googleapis.com/cdn-bucket-ixulabs-platform/WHIL/icons/list.svg"
             color="default"
           />

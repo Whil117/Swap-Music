@@ -1,16 +1,13 @@
 import AtomBanner from '@Components/@atoms/AtomBanner'
 import AtomCard from '@Components/@atoms/AtomCard'
+import AtomTrack from '@Components/@atoms/AtomTrack'
 import SectionProps from '@Components/List'
-import Track from '@Components/Track/Track'
 import { css } from '@emotion/react'
-import { ActionPlayerTracks } from '@Redux/reducers/player'
 import AtomSeoLayout from 'lib/AtomSeo'
 import AtomWrapper from 'lib/Atomwrapper'
 import spotifyAPI from 'lib/spotify/spotify'
 import { NextPageContext, NextPageFC } from 'next'
 import { getSession } from 'next-auth/react'
-import { useDispatch } from 'react-redux'
-import { Dispatch } from 'redux'
 import { SwiperSlide } from 'swiper/react'
 
 type Props = {
@@ -21,24 +18,7 @@ type Props = {
   ArtistAlbums: SpotifyApi.ArtistsAlbumsResponse
   id: string
 }
-export const convertPlayerTracks = (
-  dispatch: Dispatch<ActionPlayerTracks>,
-  player: {
-    id: string
-    position: number
-    data: SpotifyApi.TrackObjectSimplified[] | SpotifyApi.SavedTrackObject[]
-  }
-) => {
-  dispatch({
-    type: 'SETPLAYERTRACKS',
-    payload: {
-      tracks: player.data,
-      position: player.position,
-      currentTrackId: player.id,
-      play: true,
-    },
-  })
-}
+
 const AlbumPage: NextPageFC<Props> = ({
   Album,
   TracksAlbum,
@@ -46,7 +26,6 @@ const AlbumPage: NextPageFC<Props> = ({
   DurationTracks: ms,
   id,
 }) => {
-  const dispatch = useDispatch<Dispatch<ActionPlayerTracks>>()
   const data = [
     {
       id: '1',
@@ -102,60 +81,48 @@ const AlbumPage: NextPageFC<Props> = ({
           `}
         >
           {TracksAlbum.items.map((track, idx) => (
-            <Track
-              image={Album.images[0].url}
-              context={TracksAlbum.items as []}
-              {...track}
+            <AtomTrack
               key={track.id}
+              type="album"
+              id={Album.id}
               album={{
                 id: Album.id,
-              }}
-              type="album"
-              site={{
-                album: {
-                  id: id,
-                  name: Album.name,
-                  image: Album.images[0].url,
-                },
-              }}
-              position={idx}
-              onPlayer={() => {
-                convertPlayerTracks(dispatch, {
-                  id: track?.id,
-                  position: idx,
-                  data: TracksAlbum?.items,
-                })
+                name: track.name,
+                preview_url: track.preview_url as string,
+                position: idx,
+                image: Album.images[0].url,
+                duration: track.duration_ms,
+                artists: track.artists,
+                context: TracksAlbum.items as any,
               }}
             />
           ))}
 
           {data.map((item) => (
-            <AtomWrapper key={item.id} width="100%  ">
-              <SectionProps title={item.title}>
-                {item.assets
-                  ?.filter((asset) => asset.id !== id)
-                  ?.map((artist) => (
-                    <SwiperSlide
-                      key={artist.id}
-                      style={{
-                        width: 'auto',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
+            <SectionProps title={item.title} key={item.id}>
+              {item.assets
+                ?.filter((asset) => asset.id !== id)
+                ?.map((artist) => (
+                  <SwiperSlide
+                    key={artist.id}
+                    style={{
+                      width: 'auto',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                    }}
+                  >
+                    <AtomCard
+                      {...{
+                        id: artist.id,
+                        type: artist.type,
+                        image: artist.images[0].url,
+                        name: artist.name,
                       }}
-                    >
-                      <AtomCard
-                        {...{
-                          id: artist.id,
-                          type: artist.type,
-                          image: artist.images[0].url,
-                          name: artist.name,
-                        }}
-                      />
-                    </SwiperSlide>
-                  ))}
-              </SectionProps>
-            </AtomWrapper>
+                    />
+                  </SwiperSlide>
+                ))}
+            </SectionProps>
           ))}
         </AtomWrapper>
       </AtomWrapper>
