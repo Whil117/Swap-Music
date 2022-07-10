@@ -2,7 +2,7 @@ import NavbarPlayer from '@Components/Navbar/player'
 import AtomNavbar from '@Components/Navbar/public'
 import { css } from '@emotion/react'
 import AtomWrapper from 'lib/Atomwrapper'
-import { FC } from 'react'
+import { FC, Suspense } from 'react'
 
 type Props = {}
 
@@ -69,7 +69,9 @@ const Public: FC<Props> = (props) => {
           {props.children}
         </AtomWrapper>
       </AtomWrapper>
-      <NavbarPlayer />
+      <Suspense fallback="loading">
+        <NavbarPlayer />
+      </Suspense>
     </AtomWrapper>
   )
 }

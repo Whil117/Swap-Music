@@ -7,6 +7,9 @@ module.exports = {
   images: {
     domains: ['i.scdn.co', "via.placeholder.com", "seed-mix-image.spotifycdn.com", 'dailymix-images.scdn.co']
   },
+  experimental: {
+    esmExternals: false
+  },
   webpack: (config) => {
     config.module.rules.push({
       test: /\.svg$/,
