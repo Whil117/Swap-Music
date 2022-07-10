@@ -161,13 +161,22 @@ export const reducerplayer = (
   return newState as Inti
 }
 
-export const controls = atomWithStorage('SWAPPLAYER', initialState as Inti)
+export const PLAYATOM = atom(false)
+
+export const controlsWithStorage = atomWithStorage(
+  'SWAPPLAYER',
+  initialState as Inti
+)
+const family = atom((get) => ({
+  ...get(controlsWithStorage),
+  play: get(PLAYATOM),
+}))
 
 const ReducerAtomPlayer = (reducer: (v: Inti, a: ActionPlayer) => Inti) => {
   const anAtom = atom(
-    (get) => get(controls),
+    (get) => get(family),
     (get, set, action: ActionPlayer) =>
-      set(controls, reducer(get(controls), action))
+      set(controlsWithStorage, reducer(get(controlsWithStorage), action))
   )
   return anAtom
 }

@@ -7,6 +7,7 @@ import useTime from '@Hooks/useTime'
 import { ActionPlayer } from '@Redux/reducers/player/controls'
 import { useSetAtom } from 'jotai'
 import AtomButton from 'lib/Atombutton'
+import AtomIcon from 'lib/AtomIcon'
 import AtomText from 'lib/AtomText'
 import AtomWrapper from 'lib/Atomwrapper'
 import { NextRouter, useRouter } from 'next/router'
@@ -100,6 +101,7 @@ const typeTracks = ({ dispatch, type, screen, router }: DefsTrack) => ({
             grid-column: 1;
             justify-self: center;
             align-self: center;
+            position: relative;
             margin: 0;
             padding: 0;
             @media (max-width: 980px) {
@@ -114,10 +116,29 @@ const typeTracks = ({ dispatch, type, screen, router }: DefsTrack) => ({
               padding: 0;
               font-size: 16px;
               font-weight: 600;
+              opacity: 1;
+              &:hover {
+                display: none;
+                opacity: 0;
+              }
             `}
           >
             {(props?.album?.position as number) + 1}
           </AtomText>
+          <AtomIcon
+            customCSS={css`
+              padding: 5px;
+              background-color: #121216;
+              position: absolute;
+              opacity: 0;
+              &:hover {
+                opacity: 1;
+              }
+            `}
+            width="18px"
+            height="18px"
+            icon="https://storage.googleapis.com/cdn-bucket-ixulabs-platform/WHIL/icons/playho.svg"
+          />
         </AtomButton>
         <AtomWrapper
           css={css`

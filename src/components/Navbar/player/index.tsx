@@ -2,20 +2,21 @@
 import { css } from '@emotion/react'
 import ReducerAtomPlayer, {
   Inti,
+  PLAYATOM,
   reducerplayer,
 } from '@Redux/reducers/player/controls'
 
 import Svg from '@Whil/components/Svg'
-import { useAtom, useAtomValue } from 'jotai'
+import { useAtom, useSetAtom } from 'jotai'
 import AtomButton from 'lib/Atombutton'
 import AtomIcon from 'lib/AtomIcon'
 import AtomImage from 'lib/AtomImage'
 import AtomText from 'lib/AtomText'
 import AtomWrapper from 'lib/Atomwrapper'
 import { NextRouter, useRouter } from 'next/router'
-import { FC, MutableRefObject, useEffect, useRef } from 'react'
-import Progressbar, { progressBarAtom } from './progressbar'
-import BarVolumen, { volumenAtom } from './volumen.bar'
+import { FC, MutableRefObject, useLayoutEffect, useRef } from 'react'
+import Progressbar from './progressbar'
+import BarVolumen from './volumen.bar'
 
 export const controlsAtom = ReducerAtomPlayer(reducerplayer)
 
@@ -42,42 +43,26 @@ export const Navigator = (props: NavigatorProps) => {
 }
 
 const NavbarPlayer: FC = () => {
-  const progressBar = useAtomValue(progressBarAtom)
-  const volumen = useAtomValue(volumenAtom)
-  const audio = useRef<HTMLAudioElement>()
   const [controls, dispatch] = useAtom(controlsAtom)
+  const setPlayPlayer = useSetAtom(PLAYATOM)
+  const audio = useRef<HTMLAudioElement>()
   const router = useRouter()
 
   const handlePlay = () => {
     audio.current?.play()
     if (audio.current) {
-      dispatch({
-        type: 'PLAY',
-        payload: { ...controls, play: true },
+      setPlayPlayer(true)
+      Navigator({
+        title: controls?.player?.currentTrack?.name as string,
+        artist_name: controls?.player?.currentTrack?.artists[0].name,
+        album_name: controls?.player?.currentTrack?.album.name as string,
+        image: controls?.player?.currentTrack?.image as string,
       })
-      navigator.mediaSession.metadata = new MediaMetadata({
-        title: controls?.player?.currentTrack?.name,
-        artist: controls?.player?.currentTrack?.artists[0].name,
-        album: controls?.player?.currentTrack?.album.name,
-        artwork: [
-          {
-            src: controls?.player?.currentTrack?.image as string,
-            sizes: '512x512',
-            type: 'image/png',
-          },
-        ],
-      })
-      if (controls.volumen) {
-        audio.current.volume = Number(volumen) / 100
-      }
     }
   }
   const handlePause = () => {
     audio.current?.pause()
-    dispatch({
-      type: 'PLAY',
-      payload: { ...controls, play: false },
-    })
+    setPlayPlayer(false)
   }
 
   const handleAudioRepeat = () => {
@@ -100,9 +85,11 @@ const NavbarPlayer: FC = () => {
     })
   }
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (audio.current) {
-      audio.current.currentTime = progressBar as unknown as number
+      const currentTime = localStorage.getItem('PROGRESSBAR')
+      const volumen = localStorage.getItem('VOLUMENSWAP')
+      audio.current.currentTime = currentTime as unknown as number
       audio.current.volume = (volumen as unknown as number) / 100
     }
   }, [])

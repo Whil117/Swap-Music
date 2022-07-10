@@ -2,14 +2,14 @@
 import { css } from '@emotion/react'
 import { colorsAtom } from '@Hooks/UseColor'
 import useScreen from '@Hooks/useScreen'
-import { useAtom, useAtomValue } from 'jotai'
+import { PLAYATOM } from '@Redux/reducers/player/controls'
+import { useAtom, useAtomValue, useSetAtom } from 'jotai'
 import { atomWithStorage } from 'jotai/utils'
 import AtomInput from 'lib/AtomInput'
 import AtomText from 'lib/AtomText'
 import AtomWrapper from 'lib/Atomwrapper'
-import { FC, MutableRefObject, useEffect } from 'react'
+import { FC, MutableRefObject } from 'react'
 import { controlsAtom } from '.'
-// import { useDispatch } from 'react-redux'
 
 type Props = {
   audio: MutableRefObject<HTMLAudioElement | null>
@@ -18,23 +18,13 @@ type Props = {
 export const progressBarAtom = atomWithStorage('PROGRESSBAR', 0 as number)
 
 const Progressbar: FC<Props> = ({ audio }) => {
+  const setPlayPlayer = useSetAtom(PLAYATOM)
+  const playerPlayer = useAtomValue(PLAYATOM)
   const [currentTime, setCurrentTime] = useAtom(progressBarAtom)
-  const [controls, dispatch] = useAtom(controlsAtom)
+  const controls = useAtomValue(controlsAtom)
   const screen = useScreen()
   const colors = useAtomValue(colorsAtom)
 
-  useEffect(() => {
-    if (audio.current) {
-      audio.current.ontimeupdate = (event: any) => {
-        setCurrentTime(Math.round(event.target.currentTime))
-      }
-    }
-    return () => {
-      if (audio.current) {
-        audio.current.ontimeupdate = null
-      }
-    }
-  }, [audio.current])
   return (
     <AtomWrapper
       css={css`
@@ -171,17 +161,26 @@ const Progressbar: FC<Props> = ({ audio }) => {
       />
       {controls?.player?.currentTrack?.preview_url && (
         <audio
+          id="AUDIOPLAYER"
           ref={audio}
-          // loop={player.play}
+          loop={controls.loop}
           src={controls?.player?.currentTrack?.preview_url as string}
-          autoPlay={controls.play}
+          autoPlay={playerPlayer}
+          onPlaying={() => {
+            if (audio.current) {
+              audio.current.ontimeupdate = (event: any) => {
+                setCurrentTime(Math.round(event.target.currentTime))
+              }
+            }
+          }}
           onEnded={() => {
-            dispatch({
-              type: 'PLAY',
-              payload: {
-                play: false,
-              },
-            })
+            setPlayPlayer(false)
+            // dispatch({
+            //   type: 'PLAY',
+            //   payload: {
+            //     play: false,
+            //   },
+            // })
           }}
         ></audio>
       )}
