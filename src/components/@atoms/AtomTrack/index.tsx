@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 /* eslint-disable no-unused-vars */
-import { controlsAtom } from '@Components/Navbar/player'
+import { controlsAtom, Navigator } from '@Components/Navbar/player'
 import { css } from '@emotion/react'
 import useScreen from '@Hooks/useScreen'
 import useTime from '@Hooks/useTime'
@@ -32,9 +32,17 @@ const typeTracks = ({ dispatch, type, screen, router }: DefsTrack) => ({
   album: (props: Props) => {
     const [hours, minutes, seconds] = useTime({ ms: props?.album?.duration })
     const handleClick = () => {
+      Navigator({
+        title: props?.album?.name as string,
+        artist_name:
+          props?.album?.artists && (props?.album?.artists[0]?.name as string),
+        album_name: props?.album?.name as string,
+        image: props?.album?.image as string,
+      })
       dispatch({
         type: 'SEVERAL',
         payload: {
+          play: true,
           image: props?.album?.image,
           player: {
             currentSite: {

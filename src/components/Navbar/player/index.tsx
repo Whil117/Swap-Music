@@ -12,7 +12,6 @@ import AtomIcon from 'lib/AtomIcon'
 import AtomImage from 'lib/AtomImage'
 import AtomText from 'lib/AtomText'
 import AtomWrapper from 'lib/Atomwrapper'
-import spotifyAPI from 'lib/spotify/spotify'
 import { NextRouter, useRouter } from 'next/router'
 import { FC, MutableRefObject, useEffect, useRef } from 'react'
 import Progressbar, { progressBarAtom } from './progressbar'
@@ -20,9 +19,26 @@ import BarVolumen, { volumenAtom } from './volumen.bar'
 
 export const controlsAtom = ReducerAtomPlayer(reducerplayer)
 
-export const handleSong = async (trackId: string, accessToken: string) => {
-  spotifyAPI.setAccessToken(accessToken as string)
-  return await spotifyAPI.getTrack(trackId ?? '').then((res) => res)
+type NavigatorProps = {
+  title: string
+  artist_name?: string
+  album_name: string
+  image: string
+}
+
+export const Navigator = (props: NavigatorProps) => {
+  navigator.mediaSession.metadata = new MediaMetadata({
+    title: props?.title,
+    artist: props?.artist_name,
+    album: props?.album_name,
+    artwork: [
+      {
+        src: props.image,
+        sizes: '512x512',
+        type: 'image/png',
+      },
+    ],
+  })
 }
 
 const NavbarPlayer: FC = () => {
