@@ -108,6 +108,13 @@ const AtomBarScroll: FC = () => {
                     gap: 10px;
                   `}
                 >
+                  <AtomButton onClick={() => router.back()}>
+                    <AtomIcon
+                      width="25px"
+                      height="25px"
+                      icon="https://storage.googleapis.com/cdn-bucket-ixulabs-platform/WHIL/icons/goback.svg"
+                    />
+                  </AtomButton>
                   <AtomButton
                     width="40px"
                     height="40px"
@@ -127,6 +134,7 @@ const AtomBarScroll: FC = () => {
                       customCSS={css`
                         padding: 5px;
                         margin-left: ${play ? '0px' : '2px'};
+                        margin-top: ${play ? '0px' : '2px'};
                       `}
                       width="20px"
                       height="20px"
