@@ -1,6 +1,5 @@
 import { stepsId } from '@Components/@atoms/AtomBarScroll'
 import Step1 from '@Components/library/step1'
-import Step2 from '@Components/library/step2'
 import Step3 from '@Components/library/step3'
 import Step4 from '@Components/library/step4'
 import { css } from '@emotion/react'
@@ -13,10 +12,10 @@ const steps = atom({
     title: 'Playlists',
     component: <Step1 />,
   },
-  Podcasts: {
-    title: 'Podcasts',
-    component: <Step2 />,
-  },
+  // Podcasts: {
+  //   title: 'Podcasts',
+  //   component: <Step2 />,
+  // },
   Artists: {
     title: 'Artists',
     component: <Step3 />,
@@ -34,22 +33,40 @@ const Library: NextPageFCProps = () => {
   const [stepById] = useAtom(stepsId)
   return (
     <AtomWrapper
+      width="100%"
       css={css`
-        margin-top: 100px;
         display: flex;
-        flex-direction: column;
         align-items: center;
         justify-content: center;
-        padding: 0px 90px;
-        @media (max-width: 1024px) {
-          padding: 0px 20px;
-        }
       `}
     >
-      {step[stepById]?.component}
+      <AtomWrapper
+        padding="0px 90px"
+        alignItems="center"
+        maxWidth="1440px"
+        css={css`
+          display: flex;
+          flex-direction: row;
+          align-items: center;
+          justify-content: center;
+          @media (max-width: 980px) {
+            padding: 0px 15px;
+          }
+        `}
+      >
+        {step[stepById]?.component}
+      </AtomWrapper>
     </AtomWrapper>
   )
 }
+
+export async function getServerSideProps() {
+  Library.Layout = 'swap'
+  return {
+    props: {},
+  }
+}
+
 Library.Layout = 'swap'
 
 export default Library

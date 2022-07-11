@@ -1,6 +1,5 @@
-import AtomSectionHeader from '@Components/@atoms/AtomSection/Header'
-import OrganismBanner from '@Components/@organisms/OrganismBanner'
-import Card from '@Components/Cards/Card'
+import AtomBanner from '@Components/@atoms/AtomBanner'
+import AtomCard from '@Components/@atoms/AtomCard'
 import SectionProps from '@Components/List'
 import { css } from '@emotion/react'
 import { SelectFor } from '@Types/redux/reducers/user/types'
@@ -26,35 +25,43 @@ const Profile: FC & NextPageFC<Props> = () => {
       assets: user?.followedArtists?.artists?.items,
     },
   ]
+
   return (
     <AtomWrapper>
-      <OrganismBanner
-        title={user.me.display_name}
-        id={user.me.id}
-        name={user.me.display_name}
+      <AtomBanner
         image_url={user.me.images[0].url}
-        type={user.me.type}
+        type="profile"
+        profile={{
+          name: user.me.display_name,
+          type: user.me.type,
+          followers: user.me.followers.total,
+        }}
       />
       <AtomWrapper
+        maxWidth="1440px"
+        padding="0px 90px"
         css={css`
           margin-top: 50px;
-          margin: 100px 40px 40px 40px;
-          max-width: 1440px;
+          gap: 20px;
           @media (max-width: 980px) {
-            margin: 0px 20px;
+            padding: 0px 15px;
+            width: auto;
           }
         `}
       >
-        {data.map((item) => (
-          <AtomWrapper key={item.id}>
-            <SectionProps
-              Elements={({ setShow }) => (
-                <AtomSectionHeader setShow={setShow} title={item.title} />
-              )}
-            >
+        <AtomWrapper
+          maxWidth="1440px"
+          css={css`
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+          `}
+        >
+          {data.map((item) => (
+            <SectionProps title={item.title} key={item.id}>
               {item.assets?.map((artist) => (
                 <SwiperSlide key={artist.id} style={{ width: 'auto' }}>
-                  <Card
+                  <AtomCard
                     {...{
                       id: artist.id,
                       type: artist.type,
@@ -65,20 +72,11 @@ const Profile: FC & NextPageFC<Props> = () => {
                 </SwiperSlide>
               ))}
             </SectionProps>
-          </AtomWrapper>
-        ))}
-        <AtomWrapper>
-          <SectionProps
-            Elements={({ setShow }) => (
-              <AtomSectionHeader
-                setShow={setShow}
-                title="Today's suggestions"
-              />
-            )}
-          >
+          ))}
+          <SectionProps title="Today's suggestions">
             {user?.SavedAlbums?.items?.map((artist, index) => (
               <SwiperSlide key={index} style={{ width: 'auto' }}>
-                <Card
+                <AtomCard
                   key={artist.album.id}
                   {...{
                     id: artist.album.id,

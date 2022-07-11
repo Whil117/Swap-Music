@@ -1,66 +1,79 @@
-import AtomBarScroll from '@Components/@atoms/AtomBarScroll'
-import Loading from '@Components/Loading'
 import NavbarPlayer from '@Components/Navbar/player'
-import Navbar from '@Components/Navbar/public'
+import AtomNavbar from '@Components/Navbar/public'
 import { css } from '@emotion/react'
-import { Wrapper } from '@Styles/components/layout'
 import AtomWrapper from 'lib/Atomwrapper'
-import { FC, useState } from 'react'
-import { PropsLayout } from '..'
-import Hidratation from '../Hidratation'
+import { FC, Suspense } from 'react'
 
-const SwapPublic: FC<PropsLayout> = (props) => {
-  const [show, setShow] = useState(true)
+type Props = {}
 
+const Public: FC<Props> = (props) => {
   return (
-    <Hidratation
-      {...{
-        hidratation: props.hidratation as boolean,
-        accessToken: props.accessToken as string,
-        setShow,
-      }}
+    <AtomWrapper
+      css={css`
+        display: grid;
+        grid-template-columns: 225px 1fr;
+        grid-template-rows: 1fr auto;
+        height: 100vh;
+        @media (max-width: 980px) {
+          grid-template-columns: 1fr;
+        }
+      `}
     >
-      {props?.router?.pathname.includes('/swap') ? (
-        <>
-          {show ? (
-            <Loading />
-          ) : (
-            <AtomWrapper
-              css={css`
-                display: grid;
-                grid-template-columns: 225px 1fr;
-                grid-template-rows: 1fr auto;
-                height: 100vh;
-                @media (max-width: 980px) {
-                  grid-template-columns: 1fr;
-                }
-              `}
-            >
-              <Navbar />
-              <Wrapper id="view">
-                <AtomBarScroll />
-                <AtomWrapper
-                  css={css`
-                    position: absolute;
-                    width: 100%;
-                    z-index: 1;
-                    top: 0;
-                    @media (max-width: 980px) {
-                      grid-column: 1 / -1;
-                    }
-                  `}
-                >
-                  {props.children}
-                </AtomWrapper>
-              </Wrapper>
-              <NavbarPlayer accessToken={props.accessToken} />
-            </AtomWrapper>
-          )}
-        </>
-      ) : (
-        props.children
-      )}
-    </Hidratation>
+      <AtomNavbar />
+      <AtomWrapper
+        id="view"
+        css={css`
+          width: auto;
+          display: flex;
+          grid-column: 2;
+          grid-row: 1 /2;
+          position: relative;
+          overflow: hidden;
+          overflor-y: scroll;
+          display: flex;
+          flex-direction: column;
+          overflow: auto;
+          alig-items: flex-start;
+          ::-webkit-scrollbar {
+            width: 5px;
+            /* height: 8px; */
+          }
+          ::-webkit-scrollbar-thumb {
+            background: #ccc;
+            border-radius: 4px;
+          }
+          ::-webkit-scrollbar-thumb:hover {
+            background: #b3b3b3;
+            box-shadow: 0 0 2px 1px rgba(0, 0, 0, 0.2);
+          }
+          @media (max-width: 980px) {
+            margin: 2rem;
+            grid-column: 1/ -1;
+            overflow-x: hidden;
+            margin-left: 0;
+            margin: 0;
+          }
+        `}
+      >
+        <AtomWrapper
+          css={css`
+            position: absolute;
+            width: 100%;
+            z-index: 1;
+            top: 0;
+            @media (max-width: 980px) {
+              grid-column: 1 / -1;
+            }
+          `}
+        >
+          {props.children}
+        </AtomWrapper>
+      </AtomWrapper>
+      <Suspense fallback="loading">
+        <NavbarPlayer />
+      </Suspense>
+    </AtomWrapper>
   )
 }
-export default SwapPublic
+
+export default Public

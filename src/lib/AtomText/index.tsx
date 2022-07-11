@@ -130,18 +130,41 @@ type TagsTexts =
 
 type Props = {
   children?: ReactNode
-  as: TagsTexts
+  as?: TagsTexts
   css?: SerializedStyles
   padding?: string
   margin?: string
   htmlFor?: string
+  textDecoration?: 'none' | 'underline' | 'line-through' | 'overline'
+  fontWeight?:
+    | 'normal'
+    | 'bold'
+    | 'bolder'
+    | 'lighter'
+    | '100'
+    | '200'
+    | '300'
+    | '400'
+    | '500'
+    | '600'
+    | '700'
+    | '800'
+    | '900'
   fontSize?: string
+  textAlign?: 'left' | 'center' | 'right' | 'justify'
+  opacity?: number
+  width?: string
 }
 export const AtomText = styled.span<Props>`
   font-size: ${(props) => props.fontSize};
+  text-align: ${(props) => props.textAlign};
+  opacity: ${(props) => props.opacity ?? 'none'};
+  font-weight: ${(props) => props.fontWeight ?? 'normal'};
   margin: ${(props) => (props.margin ? `${props.margin}` : '0 0 0 0')};
   padding: ${(props) => (props.padding ? `${props.padding}` : '0 0 0 0')};
+  text-decoration: ${(props) => props.textDecoration ?? 'none'};
   color: ${(props) => props.color || '#fff'};
+  width: ${(props) => props.width || 'auto'};
   ${(props) => props?.css};
 `
 

@@ -1,36 +1,40 @@
 /* eslint-disable no-unused-vars */
 import { css } from '@emotion/react'
-import { useAtom } from 'jotai'
+import { colorsAtom } from '@Hooks/UseColor'
+import { useAtom, useAtomValue } from 'jotai'
+import { atomWithStorage } from 'jotai/utils'
 import AtomInput from 'lib/AtomInput'
-import { ChangeEvent, FC, RefObject, useEffect } from 'react'
-import { controlsAtom } from '.'
+import { ChangeEvent, FC, MutableRefObject } from 'react'
 
 type Props = {
-  volumen: number
-  color: string
-  audio: RefObject<HTMLAudioElement>
+  audio: MutableRefObject<HTMLAudioElement | undefined>
 }
 
-const BarVolumen: FC<Props> = ({ audio, color }) => {
-  const [volumen, setvolumen] = useAtom(controlsAtom)
-  useEffect(() => {
-    if (audio.current) {
-      audio.current.volume = Number(volumen?.volumen as unknown as number) / 100
-    }
-    return () => {}
-  }, [volumen])
+export const volumenAtom = atomWithStorage('VOLUMENSWAP', 5 as number)
+
+const BarVolumen: FC<Props> = ({ audio }) => {
+  const [volumen, setvolumen] = useAtom(volumenAtom)
+  const [color] = useAtomValue(colorsAtom)
+
   return (
     <AtomInput
       id="volumen"
       type="range"
       placeholder="Search"
-      value={volumen.volumen}
-      onChange={(event: ChangeEvent<HTMLInputElement>) =>
-        setvolumen({
-          ...volumen,
-          volumen: Number(event.target.value),
-        })
-      }
+      min="5"
+      value={volumen}
+      onBlur={(e: ChangeEvent<HTMLInputElement>) => {
+        if (audio.current) {
+          audio.current.volume = Number(e.target.value) / 100
+        }
+        setvolumen(Number(e.target.value))
+      }}
+      onChange={(e: ChangeEvent<HTMLInputElement>) => {
+        if (audio.current) {
+          audio.current.volume = Number(e.target.value) / 100
+        }
+        setvolumen(Number(e.target.value))
+      }}
       css={css`
         width: 150px;
         height: 6px;
@@ -43,7 +47,7 @@ const BarVolumen: FC<Props> = ({ audio, color }) => {
         border-radius: 5px;
         background-image: linear-gradient(${color}, ${color});
         background-repeat: no-repeat;
-        background-size: ${volumen.volumen}% 100%;
+        background-size: ${volumen}% 100%;
         ::-webkit-slider-thumb {
           -webkit-appearance: none;
           height: 15px;

@@ -1,8 +1,10 @@
+/* eslint-disable no-unused-vars */
+import { controlsAtom } from '@Components/Navbar/player'
 import { css } from '@emotion/react'
 import useScreen from '@Hooks/useScreen'
 import useTime from '@Hooks/useTime'
-import P from '@Whil/components/P'
-import Atombutton from 'lib/Atombutton'
+import { useSetAtom } from 'jotai'
+import AtomButton from 'lib/Atombutton'
 import AtomImage from 'lib/AtomImage'
 import AtomText from 'lib/AtomText'
 import AtomWrapper from 'lib/Atomwrapper'
@@ -27,32 +29,45 @@ type Props = {
       url?: string
     }[]
   }
+  context: []
   preview_url?: string | null
   duration_ms?: number
+  type: 'album' | 'artist' | 'playlist' | 'track'
+  site?: {
+    album?: {
+      id: string
+      name: string
+      image: string
+    }
+    playlist?: {
+      id: string
+      name: string
+      image: string
+    }
+  }
   withImage?: boolean
 }
 
 const Track: FC<Props> = (props) => {
   const [hours, minutes, seconds] = useTime({ ms: props.duration_ms })
+  const dispatch = useSetAtom(controlsAtom)
   const router = useRouter()
-
   const screen = useScreen()
 
   return (
     <AtomWrapper
       css={css`
+        margin: 15px 0px;
         display: grid;
-        /* grid-template-columns: 50px 70px 1fr 1fr 50px; */
-        grid-template-columns: ${
-          props.withImage ? '50px 70px 1fr 1fr 50px' : '50px  1fr 50px'
-        };
+        grid-template-columns: ${props.withImage
+          ? '50px 70px 1fr 1fr 50px'
+          : '50px  1fr 50px'};
         gap: 10px;
         width: 100%;
         align-items: center;
         cursor: ${screen <= 980 ? 'pointer' : 'default'};
         @media (max-width: 568px) {
           grid-template-columns: 1fr;
-        }
         }
       `}
       key={props.id}
@@ -73,10 +88,45 @@ const Track: FC<Props> = (props) => {
           : () => {}
       }
     >
-      <Atombutton
+      <AtomButton
         onClick={
           props.preview_url
-            ? props.onPlayer
+            ? () => {
+                dispatch({
+                  type: 'VIEWIMAGESIDEBAR',
+                  payload: {
+                    image: props.image,
+                  },
+                })
+
+                dispatch({
+                  type: 'SETTRACK',
+                  payload: {
+                    player: {
+                      currentSite: {
+                        type: props.type,
+                        ...props.site,
+                      },
+                      currentTrack: {
+                        position: props?.position as number,
+                        id: props.id as string,
+                        name: props.name as string,
+                        image: props.image as string,
+                        artists: props.artists as Props['artists'],
+                        album: props.album as {
+                          id?: string
+                          name?: string
+                          images?: {
+                            url?: string
+                          }[]
+                        },
+                        preview_url: (props.preview_url as string) ?? '',
+                      },
+                      context: props.context,
+                    },
+                  },
+                })
+              }
             : () => {
                 toast.error('This song isn`t available', {
                   position: 'top-center',
@@ -111,10 +161,13 @@ const Track: FC<Props> = (props) => {
         >
           {(props.position as number) + 1}
         </AtomText>
-      </Atombutton>
-      {props.withImage && props?.album?.images && (
+      </AtomButton>
+      {props.withImage && (
         <AtomImage
-          src={(props?.album?.images[0]?.url as string) ?? ''}
+          src={
+            props.image ??
+            ((props?.album?.images && props?.album?.images[0]?.url) as string)
+          }
           width="60px"
           height="60px"
           alt={props.name as string}
@@ -144,7 +197,7 @@ const Track: FC<Props> = (props) => {
             `}
           >
             {props?.artists?.map((artist, index) => (
-              <Atombutton
+              <AtomButton
                 key={artist.id && artist?.id + index}
                 onClick={() => {
                   router
@@ -161,17 +214,10 @@ const Track: FC<Props> = (props) => {
                     })
                 }}
               >
-                <P
-                  styles={{
-                    opacity: 0.5,
-
-                    width: 'auto',
-                  }}
-                  key={artist.id}
-                >
+                <AtomText key={artist.id} opacity={0.5}>
                   {index === 0 ? artist.name : `, ${artist.name}`}
-                </P>
-              </Atombutton>
+                </AtomText>
+              </AtomButton>
             ))}
           </AtomWrapper>
         )}
@@ -185,7 +231,7 @@ const Track: FC<Props> = (props) => {
             }
           `}
         >
-          <Atombutton
+          <AtomButton
             onClick={() => {
               router
                 .push({
@@ -209,19 +255,10 @@ const Track: FC<Props> = (props) => {
             >
               {props?.album?.name}
             </AtomText>
-          </Atombutton>
+          </AtomButton>
         </AtomWrapper>
       )}
 
-      {/* <Atombutton
-        css={css`
-          @media (max-width: 768px) {
-            display: none;
-          }
-        `}
-      >
-        <Svg src={props.saved ? '/icons/fullheart' : '/icons/heart'} />
-      </Atombutton> */}
       <AtomWrapper
         css={css`
           grid-column: ${props.withImage ? '5 / 6' : '3 /4'};

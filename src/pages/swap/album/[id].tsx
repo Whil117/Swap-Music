@@ -1,17 +1,13 @@
-import AtomSectionHeader from '@Components/@atoms/AtomSection/Header'
-import OrganismBanner from '@Components/@organisms/OrganismBanner'
-import Card from '@Components/Cards/Card'
+import AtomBanner from '@Components/@atoms/AtomBanner'
+import AtomCard from '@Components/@atoms/AtomCard'
+import AtomTrack from '@Components/@atoms/AtomTrack'
 import SectionProps from '@Components/List'
-import Track from '@Components/Track/Track'
 import { css } from '@emotion/react'
-import { ActionPlayerTracks } from '@Redux/reducers/player'
-import { ArtistWrapper } from '@Styles/pages/swap/artist'
+import AtomSeoLayout from 'lib/AtomSeo'
 import AtomWrapper from 'lib/Atomwrapper'
 import spotifyAPI from 'lib/spotify/spotify'
 import { NextPageContext, NextPageFC } from 'next'
 import { getSession } from 'next-auth/react'
-import { useDispatch } from 'react-redux'
-import { Dispatch } from 'redux'
 import { SwiperSlide } from 'swiper/react'
 
 type Props = {
@@ -22,32 +18,14 @@ type Props = {
   ArtistAlbums: SpotifyApi.ArtistsAlbumsResponse
   id: string
 }
-const convertPlayerTracks = (
-  dispatch: Dispatch<ActionPlayerTracks>,
-  player: {
-    id: string
-    position: number
-    data: SpotifyApi.TrackObjectSimplified[]
-  }
-) => {
-  dispatch({
-    type: 'SETPLAYERTRACKS',
-    payload: {
-      tracks: player.data,
-      position: player.position,
-      currentTrackId: player.id,
-      play: true,
-    },
-  })
-}
-const Album: NextPageFC<Props> = ({
+
+const AlbumPage: NextPageFC<Props> = ({
   Album,
   TracksAlbum,
   ArtistAlbums,
   DurationTracks: ms,
   id,
 }) => {
-  const dispatch = useDispatch<Dispatch<ActionPlayerTracks>>()
   const data = [
     {
       id: '1',
@@ -57,62 +35,84 @@ const Album: NextPageFC<Props> = ({
   ]
 
   return (
-    <ArtistWrapper>
-      <OrganismBanner
-        title={Album.name}
-        id={Album.artists[0].id}
-        name={Album.artists[0].name}
-        image_url={
-          Album.images[0].url ??
-          'https://firebasestorage.googleapis.com/v0/b/swap-4f04f.appspot.com/o/images%2FFrame%2094.svg?alt=media&token=e9c9283e-808b-40ac-ba7b-3ce37452a9a2'
+    <>
+      <AtomSeoLayout
+        title="Swap"
+        page={Album.name}
+        description={
+          "Swap is a music discovery platform that helps you find the music you're looking for." +
+          Album.name
         }
-        type={Album.album_type}
-        release_date={Album.release_date}
-        total_tracks={Album.total_tracks}
-        useTime={{
-          ms,
-        }}
+        image={Album.images[0].url}
+        keywords={[Album.album_type]}
       />
-
       <AtomWrapper
         css={css`
-          display: flex;
-          alig-items: flex-start;
-          padding: 0 90px;
-          flex-direction: column;
-          gap: 25px;
+          width: 100%;
           @media (max-width: 980px) {
-            padding: 0 20px;
+            width: auto;
           }
         `}
       >
-        {TracksAlbum.items.map((track, idx) => (
-          <Track
-            {...track}
-            key={track.id}
-            position={idx}
-            onPlayer={() => {
-              convertPlayerTracks(dispatch, {
-                id: track?.id,
+        <AtomBanner
+          type="album"
+          image_url={Album.images[0].url}
+          name={Album.name}
+          album={{
+            type: Album.album_type,
+            artist: {
+              name: Album.artists[0].name,
+              id: Album.artists[0].id,
+            },
+            total_tracks: Album.total_tracks,
+            release_date: Album.release_date,
+            duration_ms: ms,
+          }}
+        />
+        <AtomWrapper
+          maxWidth="1440px"
+          css={css`
+            padding: 0 90px;
+            flex-direction: column;
+            @media (max-width: 980px) {
+              width: auto;
+              padding: 0 20px;
+            }
+          `}
+        >
+          {TracksAlbum.items.map((track, idx) => (
+            <AtomTrack
+              key={track.id}
+              type="album"
+              id={Album.id}
+              album={{
+                id: Album.id,
+                name: track.name,
+                preview_url: track.preview_url as string,
                 position: idx,
-                data: TracksAlbum?.items,
-              })
-            }}
-          />
-        ))}
+                image: Album.images[0].url,
+                duration: track.duration_ms,
+                artists: track.artists,
+                context: TracksAlbum.items as any,
+              }}
+            />
+          ))}
 
-        {data.map((item) => (
-          <AtomWrapper key={item.id}>
-            <SectionProps
-              Elements={({ setShow }) => (
-                <AtomSectionHeader setShow={setShow} title={item.title} />
-              )}
-            >
+          {data.map((item) => (
+            <SectionProps title={item.title} key={item.id}>
               {item.assets
                 ?.filter((asset) => asset.id !== id)
                 ?.map((artist) => (
-                  <SwiperSlide key={artist.id} style={{ width: 'auto' }}>
-                    <Card
+                  <SwiperSlide
+                    key={artist.id}
+                    style={{
+                      width: 'auto',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                    }}
+                  >
+                    <AtomCard
                       {...{
                         id: artist.id,
                         type: artist.type,
@@ -123,24 +123,27 @@ const Album: NextPageFC<Props> = ({
                   </SwiperSlide>
                 ))}
             </SectionProps>
-          </AtomWrapper>
-        ))}
+          ))}
+        </AtomWrapper>
       </AtomWrapper>
-    </ArtistWrapper>
+    </>
   )
 }
+AlbumPage.Layout = 'swap'
+
 export async function getServerSideProps(context: NextPageContext) {
   const { id } = context.query
   const Session = await getSession(context)
   spotifyAPI.setAccessToken(Session?.accessToken as string)
 
   const Album = await spotifyAPI.getAlbum(id as string).then((res) => res.body)
+
   const ArtistId = Album?.artists?.find((artist) => artist?.id)?.id
   const DurationTracks = Album.tracks.items.reduce(
     (acc, curr) => acc + curr.duration_ms,
     0
   )
-
+  AlbumPage.Layout = 'swap'
   const Artist = await spotifyAPI
     .getArtist(ArtistId as string)
     .then((artist) => artist.body)
@@ -152,17 +155,29 @@ export async function getServerSideProps(context: NextPageContext) {
   const TracksAlbum = await spotifyAPI
     .getAlbumTracks(id as string)
     .then((res) => res.body)
-
-  return {
-    props: {
-      id,
-      Album,
-      ArtistAlbums,
-      DurationTracks,
-      TracksAlbum,
-      Artist,
-    },
+  AlbumPage.SEO = {
+    title: Album.name,
+    image: Album.images[0].url,
+    keywords: [Album.album_type],
   }
+
+  return !Session?.accessToken
+    ? {
+        redirect: {
+          permanent: false,
+          destination: '/',
+        },
+        props: {},
+      }
+    : {
+        props: {
+          id,
+          Album,
+          ArtistAlbums,
+          DurationTracks,
+          TracksAlbum,
+          Artist,
+        },
+      }
 }
-Album.Layout = 'swap'
-export default Album
+export default AlbumPage
