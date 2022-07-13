@@ -14,7 +14,31 @@ type Props = {
   placeholder?: string
   min?: string
   max?: string
-  type?: string
+  type?:
+    | 'text'
+    | 'number'
+    | 'password'
+    | 'email'
+    | 'tel'
+    | 'search'
+    | 'url'
+    | 'date'
+    | 'time'
+    | 'datetime-local'
+    | 'month'
+    | 'week'
+    | 'color'
+    | 'range'
+    | 'checkbox'
+    | 'radio'
+    | 'select'
+    | 'file'
+    | 'hidden'
+    | 'image'
+    | 'button'
+    | 'reset'
+    | 'submit'
+    | 'textarea'
   value?: string | number
   onBlur?: (e: any) => void
   onChange?: (e: ChangeEvent<any>) => void
@@ -166,13 +190,17 @@ const AtomInput = (props: Props) => {
           </AtomText>
         </>
       ) : (
-        <>
+        <AtomWrapper
+          flexDirection="column"
+          css={css`
+            display: flex;
+          `}
+        >
           {props.label && (
             <AtomText
               as="label"
               htmlFor={props.id}
               css={css`
-                font-size: 12px;
                 font-weight: 600;
                 margin: 0px 0px 0px 0px;
                 padding: 0px 0px 0px 5px;
@@ -209,7 +237,7 @@ const AtomInput = (props: Props) => {
           ) : (
             <></>
           )}
-        </>
+        </AtomWrapper>
       )}
     </>
   )
