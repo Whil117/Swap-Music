@@ -38,7 +38,7 @@ const SearchPage: NextPageFCProps = () => {
           height: 25px;
         `}
       />
-      {data?.artists?.items?.length > 0 && (
+      {data?.artists?.items && data?.artists?.items?.length > 0 && (
         <SectionProps title="Artists">
           {data?.artists.items.map((artist) => (
             <SwiperSlide key={artist.id} style={{ width: 'auto' }}>
@@ -53,7 +53,7 @@ const SearchPage: NextPageFCProps = () => {
           ))}
         </SectionProps>
       )}
-      {data?.albums?.items?.length > 0 && (
+      {data?.albums?.items && data?.albums?.items?.length > 0 && (
         <SectionProps title="Albums">
           {data?.albums.items.map((artist) => (
             <SwiperSlide key={artist.id} style={{ width: 'auto' }}>
@@ -68,7 +68,7 @@ const SearchPage: NextPageFCProps = () => {
           ))}
         </SectionProps>
       )}
-      {data?.playlists?.items?.length > 0 && (
+      {data?.playlists?.items && data?.playlists?.items?.length > 0 && (
         <SectionProps title="Playlists">
           {data?.playlists.items.map((artist) => (
             <SwiperSlide key={artist.id} style={{ width: 'auto' }}>
@@ -83,7 +83,7 @@ const SearchPage: NextPageFCProps = () => {
           ))}
         </SectionProps>
       )}
-      {data?.shows?.items?.length > 0 && (
+      {data?.shows?.items && data?.shows?.items?.length > 0 && (
         <SectionProps title="Shows">
           {data?.shows.items.map((artist) => (
             <SwiperSlide key={artist.id} style={{ width: 'auto' }}>
@@ -98,7 +98,7 @@ const SearchPage: NextPageFCProps = () => {
           ))}
         </SectionProps>
       )}
-      {data?.episodes?.items?.length > 0 && (
+      {data?.episodes?.items && data?.episodes?.items?.length > 0 && (
         <SectionProps title="Episodies">
           {data?.episodes.items.map((artist) => (
             <SwiperSlide key={artist.id} style={{ width: 'auto' }}>
