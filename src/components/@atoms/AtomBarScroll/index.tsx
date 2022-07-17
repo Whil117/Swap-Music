@@ -16,7 +16,14 @@ import { useSelector } from 'react-redux'
 
 export const stepsId = atom('Playlists')
 
-const validPathsSongs = ['album', 'artist', 'library', 'profile', 'playlist']
+const validPathsSongs = [
+  'album',
+  'artist',
+  'library',
+  'profile',
+  'playlist',
+  'likedsongs',
+]
 
 export const NavBarAtom = atom(false)
 export const scrollPositionAtom = atom(0)

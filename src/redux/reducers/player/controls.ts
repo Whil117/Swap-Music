@@ -13,7 +13,7 @@ export type Inti = {
   color?: string
   player?: {
     currentSite: {
-      type: 'album' | 'artist' | 'playlist' | 'track'
+      type: 'album' | 'artist' | 'playlist' | 'track' | 'likedsongs'
       album?: {
         id: string
         name: string

@@ -1,21 +1,26 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 import { css } from '@emotion/react'
-import UseColor from '@Hooks/UseColor'
+import UseColor, { defaultImage } from '@Hooks/UseColor'
 import useTime from '@Hooks/useTime'
+import { State } from '@Redux/reducers/user'
+import { SelectFor } from '@Types/redux/reducers/user/types'
 import FollowNumbers from '@Utils/Followers'
+import AtomIcon from 'lib/AtomIcon'
 import AtomImage from 'lib/AtomImage'
 import AtomLink from 'lib/AtomLink'
 import AtomText from 'lib/AtomText'
 import AtomWrapper from 'lib/Atomwrapper'
 import { FC } from 'react'
+import { useSelector } from 'react-redux'
 
 type PropsArtist = {
-  image_url: string
+  image_url?: string
   name?: string
   borderRadiusImage?: string
   type?: string
   followers?: number
   color?: string
+  user?: State
 }
 
 type PropsAlbum = {
@@ -601,20 +606,108 @@ const typeBanners = {
       </AtomWrapper>
     </AtomWrapper>
   ),
+  likedSongs: () => (
+    <AtomWrapper
+      id="background-dynamic-color"
+      css={css`
+        height: 400px;
+        display: flex;
+        align-items: center;
+        padding: 0px 90px;
+        justify-content: flex-start;
+        transition: all 0.3s ease;
+        background: linear-gradient(
+            180deg,
+            rgba(100, 100, 100, 0) 0%,
+            #121216 100%
+          ),
+          #0072ff;
+        @media (max-width: 980px) {
+          justify-content: center;
+          width: 100%;
+          height: 600px;
+          padding: 0;
+        }
+      `}
+    >
+      <AtomWrapper
+        css={css`
+          display: flex;
+          align-items: center;
+          justify-content: flex-start;
+          width: 1440px;
+          gap: 20px;
+
+          @media (max-width: 980px) {
+            flex-direction: column;
+            width: auto;
+            padding: 0;
+          }
+        `}
+      >
+        <AtomIcon
+          width="100px"
+          height="100px"
+          icon="https://storage.googleapis.com/cdn-bucket-ixulabs-platform/WHIL/icons/Vector.svg"
+        />
+        <AtomWrapper
+          css={css`
+            max-width: 1160px;
+            display: grid;
+            gap: 10px;
+            /* width: 900px; */
+            @media (max-width: 1440px) {
+              width: 500px;
+            }
+            @media (max-width: 1240px) {
+              width: 350px;
+            }
+            @media (max-width: 980px) {
+              width: auto;
+              margin: 0 10px;
+            }
+          `}
+        >
+          <AtomText
+            as="h1"
+            id="headerBarScrollTitle"
+            fontWeight="bold"
+            css={css`
+              margin: 0;
+              font-size: 48px;
+              @media (max-width: 1440px) {
+                font-size: 36px;
+              }
+              @media (max-width: 890px) {
+                font-size: 28px;
+              }
+              @media (max-width: 778px) {
+                font-size: 22px;
+                text-align: center;
+              }
+            `}
+          >
+            Liked Songs
+          </AtomText>
+        </AtomWrapper>
+      </AtomWrapper>
+    </AtomWrapper>
+  ),
 }
 
 type AtomProps = {
-  type: 'artist' | 'album' | 'playlist' | 'profile'
+  type: 'artist' | 'album' | 'playlist' | 'profile' | 'likedSongs'
 } & PropsArtist &
   PropsAlbum &
   PropsProfile
 
 const AtomBanner: FC<AtomProps> = (props) => {
-  const colors = UseColor({ url: props.image_url as string })
-
+  const colors = UseColor({ url: (props.image_url as string) ?? defaultImage })
+  const user = useSelector((state: SelectFor) => state.user)
   return typeBanners[props.type]({
     ...props,
     color: colors[0],
+    user: user,
   })
 }
 

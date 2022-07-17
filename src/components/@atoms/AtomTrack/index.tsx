@@ -8,6 +8,7 @@ import { ActionPlayer, PLAYATOM } from '@Redux/reducers/player/controls'
 import { useSetAtom } from 'jotai'
 import AtomButton from 'lib/Atombutton'
 import AtomIcon from 'lib/AtomIcon'
+import AtomImage from 'lib/AtomImage'
 import AtomText from 'lib/AtomText'
 import AtomWrapper from 'lib/Atomwrapper'
 import { NextRouter, useRouter } from 'next/router'
@@ -218,6 +219,210 @@ const typeTracks = ({ dispatch, type, screen, router }: DefsTrack) => ({
       </AtomWrapper>
     )
   },
+  likedsongs: (props: Props) => {
+    const [hours, minutes, seconds] = useTime({
+      ms: props?.likedSongs?.duration,
+    })
+    const setPlayPlayer = useSetAtom(PLAYATOM)
+    const handleClick = () => {
+      Navigator({
+        title: props?.likedSongs?.name as string,
+        artist_name:
+          props?.likedSongs?.artists &&
+          (props?.likedSongs?.artists[0]?.name as string),
+        album_name: props?.likedSongs?.album?.name as string,
+        image: props?.likedSongs?.album?.image as string,
+      })
+      setPlayPlayer(true)
+      dispatch({
+        type: 'SEVERAL',
+        payload: {
+          play: true,
+          currentTime: 0,
+          image: props?.likedSongs?.image as string,
+          player: {
+            currentSite: {
+              type: type,
+            },
+            currentTrack: {
+              position: props?.likedSongs?.position as number,
+              id: props?.likedSongs?.id as string,
+              name: props?.likedSongs?.name as string,
+              image: props?.likedSongs?.album?.image as string,
+              artists: props?.likedSongs?.artists as ArtistProps,
+              album: props as {
+                id?: string
+                name?: string
+                images?: {
+                  url?: string
+                }[]
+              },
+              preview_url: (props?.likedSongs?.preview_url as string) ?? '',
+            },
+            context: props?.likedSongs?.context as any,
+          },
+        },
+      })
+    }
+
+    return (
+      <AtomWrapper
+        css={css`
+          margin-bottom: 2rem;
+          display: grid;
+          grid-template-columns: 50px 1fr 50px;
+          gap: 10px;
+          width: 100%;
+          align-items: center;
+          cursor: ${screen <= 980 ? 'pointer' : 'default'};
+          @media (max-width: 980px) {
+            grid-template-columns: 1fr;
+          }
+        `}
+        key={props?.id}
+        onClick={
+          screen <= 980
+            ? props?.likedSongs?.preview_url
+              ? handleClick
+              : () => handleError(screen)
+            : () => {}
+        }
+      >
+        <AtomButton
+          onClick={
+            props?.likedSongs?.preview_url
+              ? handleClick
+              : () => handleError(screen)
+          }
+          css={css`
+            grid-column: 1;
+            justify-self: center;
+            align-self: center;
+            position: relative;
+            margin: 0;
+            padding: 0;
+            @media (max-width: 980px) {
+              display: none;
+            }
+          `}
+        >
+          <AtomText
+            as="p"
+            css={css`
+              margin: 0;
+              padding: 0;
+              font-size: 16px;
+              font-weight: 600;
+              opacity: 1;
+              &:hover {
+                display: none;
+                opacity: 0;
+              }
+            `}
+          >
+            {(props?.likedSongs?.position as number) + 1}
+          </AtomText>
+          <AtomIcon
+            customCSS={css`
+              padding: 5px;
+              background-color: #121216;
+              position: absolute;
+              opacity: 0;
+              &:hover {
+                opacity: 1;
+              }
+            `}
+            width="18px"
+            height="18px"
+            icon="https://storage.googleapis.com/cdn-bucket-ixulabs-platform/WHIL/icons/playho.svg"
+          />
+        </AtomButton>
+        <AtomWrapper
+          css={css`
+            grid-column: 2 / 3;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            @media (max-width: 980px) {
+              grid-column: 1 / -1;
+            }
+          `}
+        >
+          <AtomImage
+            src={props.likedSongs?.image as string}
+            alt="xd"
+            width="50px"
+            height="50px"
+          />
+          <AtomWrapper>
+            <AtomText as="p">{props?.likedSongs?.name}</AtomText>
+            {props?.likedSongs?.artists?.length !== 0 && (
+              <AtomWrapper
+                css={css`
+                  display: flex;
+                  justify-content: flex-start;
+                `}
+              >
+                {props?.likedSongs?.artists?.map((artist, index) => (
+                  <AtomButton
+                    key={artist.id && artist?.id + index}
+                    onClick={() => {
+                      router
+                        .push({
+                          pathname: `/swap/artist/[id]`,
+                          query: {
+                            id: artist.id,
+                          },
+                        })
+                        .then(() => {
+                          document?.getElementById('view')?.scroll({
+                            top: 0,
+                          })
+                        })
+                    }}
+                  >
+                    <AtomText
+                      key={artist.id}
+                      fontSize="14px"
+                      opacity={0.5}
+                      css={css`
+                        &:hover {
+                          text-decoration: underline;
+                        }
+                      `}
+                    >
+                      {index === 0 ? artist.name : `, ${artist.name}`}
+                    </AtomText>
+                  </AtomButton>
+                ))}
+              </AtomWrapper>
+            )}
+          </AtomWrapper>
+        </AtomWrapper>
+        <AtomWrapper
+          css={css`
+            grid-column: 3 /4;
+            align-self: center;
+            justify-self: center;
+            @media (max-width: 980px) {
+              display: none;
+            }
+          `}
+        >
+          <AtomText as="p">
+            {hours ? `${hours} ${minutes}` : ''}
+            {!hours
+              ? `${minutes}:${
+                  seconds?.toFixed(0).length === 1
+                    ? `0${seconds.toFixed()}`
+                    : seconds?.toFixed()
+                }`
+              : ''}
+          </AtomText>
+        </AtomWrapper>
+      </AtomWrapper>
+    )
+  },
 })
 
 type ArtistProps = {
@@ -226,7 +431,7 @@ type ArtistProps = {
 }[]
 
 type DefsTrack = {
-  type: 'album'
+  type: 'album' | 'likedsongs' | 'playlist'
   id: string
   screen: number
   dispatch: (update: ActionPlayer) => void
@@ -234,7 +439,7 @@ type DefsTrack = {
 }
 
 type Props = {
-  type: 'album'
+  type: 'album' | 'likedsongs'
   id: string
   album?: {
     id?: string
@@ -244,6 +449,21 @@ type Props = {
     preview_url?: string
     image?: string
     artists?: ArtistProps
+    context?: never[]
+  }
+  likedSongs?: {
+    id?: string
+    position?: number
+    name?: string
+    duration?: number
+    preview_url?: string
+    image?: string
+    artists?: ArtistProps
+    album?: {
+      id?: string
+      name?: string
+      image?: string
+    }
     context?: never[]
   }
 }
