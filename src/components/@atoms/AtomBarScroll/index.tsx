@@ -26,7 +26,11 @@ const validPathsSongs = [
 ]
 
 export const NavBarAtom = atom(false)
-export const scrollPositionAtom = atom(0)
+export const scrollPositionAtom = atom({
+  scrollHeight: 0,
+  clientHeight: 0,
+  scrollTop: 0,
+})
 
 const AtomBarScroll: FC = () => {
   const user = useSelector((state: SelectFor) => state.user)
@@ -36,7 +40,7 @@ const AtomBarScroll: FC = () => {
   const setNavbar = useSetAtom(NavBarAtom)
   const router = useRouter()
   const screen = useScreen()
-  const scrollPosition = useAtomValue(scrollPositionAtom)
+  const scrollPosition = useAtomValue(scrollPositionAtom).scrollTop
   // const scrollPosition = UseScroll()
   return (
     <>

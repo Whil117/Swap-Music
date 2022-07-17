@@ -30,8 +30,14 @@ const SwapUser: FC<PropsLayout> = (props) => {
           <AtomWrapper
             id="view"
             onScroll={(e: FormEvent<HTMLDivElement>) => {
-              const scroll = e.currentTarget.scrollTop
-              setscrollPositionAtom(scroll)
+              const scrollTop = e.currentTarget.scrollTop
+              const scrollHeight = e.currentTarget.scrollHeight
+              const clientHeight = e.currentTarget.clientHeight
+              setscrollPositionAtom({
+                scrollHeight,
+                clientHeight,
+                scrollTop,
+              })
             }}
             alignItems="center"
             css={css`
