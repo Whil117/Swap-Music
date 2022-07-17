@@ -6,7 +6,7 @@ import Navbar from '@Components/Navbar/swap'
 import { css } from '@emotion/react'
 import { useSetAtom } from 'jotai'
 import AtomWrapper from 'lib/Atomwrapper'
-import { FC } from 'react'
+import { FC, FormEvent } from 'react'
 import { PropsLayout } from '..'
 import Hidratation from '../Hidratation'
 
@@ -29,11 +29,9 @@ const SwapUser: FC<PropsLayout> = (props) => {
           <Navbar />
           <AtomWrapper
             id="view"
-            onScroll={(e) => {
-              // console.log(e.target.scrollTop)
-              console.log(e.target.scrollTop)
-
-              setscrollPositionAtom(e.target.scrollTop)
+            onScroll={(e: FormEvent<HTMLDivElement>) => {
+              const scroll = e.currentTarget.scrollTop
+              setscrollPositionAtom(scroll)
             }}
             alignItems="center"
             css={css`
