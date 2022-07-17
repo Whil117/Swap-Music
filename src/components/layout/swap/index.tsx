@@ -1,13 +1,17 @@
-import AtomBarScroll from '@Components/@atoms/AtomBarScroll'
+import AtomBarScroll, {
+  scrollPositionAtom,
+} from '@Components/@atoms/AtomBarScroll'
 import NavbarPlayer from '@Components/Navbar/player'
 import Navbar from '@Components/Navbar/swap'
 import { css } from '@emotion/react'
+import { useSetAtom } from 'jotai'
 import AtomWrapper from 'lib/Atomwrapper'
 import { FC } from 'react'
 import { PropsLayout } from '..'
 import Hidratation from '../Hidratation'
 
 const SwapUser: FC<PropsLayout> = (props) => {
+  const setscrollPositionAtom = useSetAtom(scrollPositionAtom)
   return (
     <>
       <Hidratation>
@@ -25,6 +29,12 @@ const SwapUser: FC<PropsLayout> = (props) => {
           <Navbar />
           <AtomWrapper
             id="view"
+            onScroll={(e) => {
+              // console.log(e.target.scrollTop)
+              console.log(e.target.scrollTop)
+
+              setscrollPositionAtom(e.target.scrollTop)
+            }}
             alignItems="center"
             css={css`
               width: 100%;
