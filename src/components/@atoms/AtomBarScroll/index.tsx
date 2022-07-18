@@ -72,13 +72,17 @@ const getLikedSongs = async (
   songs.data.next !== null && setUrl && setUrl(songs.data.next)
   return songs.data
 }
+export const validPaths = atom(['likedsongs'])
+export const routerAtom = atom('')
 
 export const scrollPositionAtom = atom(
   (get) => ({
     scrollHeight: get(scrollHeightAtom),
+    router: get(routerAtom),
     clientHeight: get(clientHeightAtom),
     scrollTop: get(scrollTopAtom),
     isBottom: get(isBottomAtom),
+    validPaths: get(validPaths),
     accessToken: get(accessTokenAtom),
   }),
   async (get, set, args: ScrollProps) => {
@@ -86,9 +90,14 @@ export const scrollPositionAtom = atom(
     set(scrollHeightAtom, scrollHeight)
     set(clientHeightAtom, clientHeight)
     set(scrollTopAtom, scrollTop)
-    set(isBottomAtom, scrollTop + clientHeight >= scrollHeight - 1)
+    set(
+      isBottomAtom,
+      get(validPaths).includes(get(routerAtom)) &&
+        scrollTop + clientHeight >= scrollHeight - 1
+    )
 
     if (
+      get(validPaths).includes(get(routerAtom)) &&
       isBottom &&
       get(likedSongsAtom)?.items?.length < get(likedSongsAtom)?.total
     ) {
@@ -115,16 +124,16 @@ const AtomBarScroll: FC = () => {
   const setNavbar = useSetAtom(NavBarAtom)
   const router = useRouter()
   const screen = useScreen()
-  const scrollPosition = useAtomValue(scrollPositionAtom).scrollTop
+  const scrollPosition = useAtomValue(scrollPositionAtom)
 
   return (
     <>
       {validPathsSongs.includes(router.pathname.split('/')[2]) &&
-        scrollPosition >= 19.5 && (
+        scrollPosition.scrollTop >= 19.5 && (
           <AtomWrapper
             css={css`
               ${validPathsSongs.includes(router.pathname.split('/')[2]) &&
-              scrollPosition >= 19.5 &&
+              scrollPosition.scrollTop >= 19.5 &&
               css`
                 backgroun-opacity: 0.75;
                 background: ${colors[0]};
@@ -133,7 +142,7 @@ const AtomBarScroll: FC = () => {
               justify-content: ${router.asPath.includes('swap/library')
                 ? 'space-between'
                 : validPathsSongs.includes(router.pathname.split('/')[2]) &&
-                  scrollPosition >= 19.5
+                  scrollPosition.scrollTop >= 19.5
                 ? 'space-between'
                 : 'flex-end'};
               align-items: center;
@@ -154,7 +163,7 @@ const AtomBarScroll: FC = () => {
                 justify-content: ${router.asPath.includes('swap/library')
                   ? 'space-between'
                   : validPathsSongs.includes(router.pathname.split('/')[2]) &&
-                    scrollPosition >= 19.5
+                    scrollPosition.scrollTop >= 19.5
                   ? 'space-between'
                   : 'flex-end'};
               `}
@@ -187,7 +196,7 @@ const AtomBarScroll: FC = () => {
                 </AtomWrapper>
               )}
               {validPathsSongs.includes(router.pathname.split('/')[2]) &&
-                scrollPosition >= 19.5 && (
+                scrollPosition.scrollTop >= 19.5 && (
                   <AtomWrapper
                     css={css`
                       display: flex;

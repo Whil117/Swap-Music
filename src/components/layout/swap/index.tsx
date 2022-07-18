@@ -1,5 +1,6 @@
 import AtomBarScroll, {
   isBottomAtom,
+  routerAtom,
   scrollPositionAtom,
 } from '@Components/@atoms/AtomBarScroll'
 import NavbarPlayer from '@Components/Navbar/player'
@@ -7,6 +8,7 @@ import Navbar from '@Components/Navbar/swap'
 import { css } from '@emotion/react'
 import { useAtomValue, useSetAtom } from 'jotai'
 import AtomWrapper from 'lib/Atomwrapper'
+import { useRouter } from 'next/router'
 import { FC, useRef } from 'react'
 import { PropsLayout } from '..'
 import Hidratation from '../Hidratation'
@@ -16,10 +18,13 @@ const map = (value: number, x1: number, y1: number, x2: number, y2: number) =>
 
 const SwapUser: FC<PropsLayout> = (props) => {
   const setscrollPositionAtom = useSetAtom(scrollPositionAtom)
+  const router = useRouter()
   const scrollRef = useRef<HTMLDivElement>()
+  const setrouterAtom = useSetAtom(routerAtom)
   const isBottom = useAtomValue(isBottomAtom)
   const handleScroll = async () => {
     if (scrollRef.current) {
+      setrouterAtom(router.pathname.split('/')[2])
       setscrollPositionAtom({
         scrollHeight: map(
           scrollRef.current.scrollHeight,
