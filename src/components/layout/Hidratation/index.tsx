@@ -1,7 +1,8 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable no-console */
+import { accessTokenAtom } from '@Components/@atoms/AtomBarScroll'
 import AtomLoader from '@Components/@atoms/AtomLoader'
-import { atom, useAtom } from 'jotai'
+import { atom, useAtom, useSetAtom } from 'jotai'
 import spotifyAPI from 'lib/spotify/spotify'
 import { getSession } from 'next-auth/react'
 import { useRouter } from 'next/router'
@@ -18,9 +19,11 @@ const Hidratation: FC<Props> = ({ children }) => {
   const router = useRouter()
   const Session = getSession()
   const [show, setShow] = useAtom(showAtom)
+  const setaccessTokenAtom = useSetAtom(accessTokenAtom)
 
   const DataUserFetching = async (accessToken: string) => {
     spotifyAPI.setAccessToken(accessToken as string)
+    setaccessTokenAtom(accessToken)
     const me = await spotifyAPI
       .getMe()
       .then((res) => res.body)
@@ -104,15 +107,7 @@ const Hidratation: FC<Props> = ({ children }) => {
       .getMySavedTracks({
         limit: 50,
       })
-      .then((res) => {
-        return {
-          ...res.body,
-          items: res.body.items.map((track) => ({
-            ...track,
-            saved: true,
-          })),
-        }
-      })
+      .then((res) => res.body)
       .catch((err) => {
         console.log(err)
       })
@@ -129,12 +124,6 @@ const Hidratation: FC<Props> = ({ children }) => {
       followedArtists,
     }
   }
-
-  const getUser = async () => {
-    const user = await Session.then((res) => res?.accessToken)
-    return user
-  }
-
   useEffect(() => {
     Session.then(async (res) => {
       if (res?.accessToken) {

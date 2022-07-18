@@ -1,17 +1,53 @@
 import AtomBarScroll, {
+  isBottomAtom,
   scrollPositionAtom,
 } from '@Components/@atoms/AtomBarScroll'
 import NavbarPlayer from '@Components/Navbar/player'
 import Navbar from '@Components/Navbar/swap'
 import { css } from '@emotion/react'
-import { useSetAtom } from 'jotai'
+import { useAtomValue, useSetAtom } from 'jotai'
 import AtomWrapper from 'lib/Atomwrapper'
-import { FC, FormEvent } from 'react'
+import { FC, useRef } from 'react'
 import { PropsLayout } from '..'
 import Hidratation from '../Hidratation'
 
+const map = (value: number, x1: number, y1: number, x2: number, y2: number) =>
+  Number(Number(((value - x1) * (y2 - x2)) / (y1 - x1) + x2).toFixed(2))
+
 const SwapUser: FC<PropsLayout> = (props) => {
   const setscrollPositionAtom = useSetAtom(scrollPositionAtom)
+
+  const scrollRef = useRef<HTMLDivElement>()
+  const isBottom = useAtomValue(isBottomAtom)
+  const handleScroll = async () => {
+    if (scrollRef.current) {
+      setscrollPositionAtom({
+        scrollHeight: map(
+          scrollRef.current.scrollHeight,
+          0,
+          scrollRef.current.scrollHeight,
+          0,
+          100
+        ),
+        clientHeight: map(
+          scrollRef.current.clientHeight,
+          0,
+          scrollRef.current.scrollHeight,
+          0,
+          100
+        ),
+        isBottom: isBottom,
+        scrollTop: map(
+          scrollRef.current.scrollTop,
+          0,
+          scrollRef.current.scrollHeight,
+          0,
+          100
+        ),
+      })
+    }
+  }
+
   return (
     <>
       <Hidratation>
@@ -29,16 +65,8 @@ const SwapUser: FC<PropsLayout> = (props) => {
           <Navbar />
           <AtomWrapper
             id="view"
-            onScroll={(e: FormEvent<HTMLDivElement>) => {
-              const scrollTop = e.currentTarget.scrollTop
-              const scrollHeight = e.currentTarget.scrollHeight
-              const clientHeight = e.currentTarget.clientHeight
-              setscrollPositionAtom({
-                scrollHeight,
-                clientHeight,
-                scrollTop,
-              })
-            }}
+            ref={scrollRef as any}
+            onScroll={handleScroll}
             alignItems="center"
             css={css`
               width: 100%;
@@ -47,7 +75,7 @@ const SwapUser: FC<PropsLayout> = (props) => {
               grid-row: 1 /2;
               position: relative;
               overflow: hidden;
-              margin-bottom: 50px;
+              /* margin-bottom: 50px; */
               overflor-y: scroll;
               display: flex;
               flex-direction: column;

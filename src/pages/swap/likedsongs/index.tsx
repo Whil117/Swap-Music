@@ -1,17 +1,15 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 import AtomBanner from '@Components/@atoms/AtomBanner'
+import { likedSongsAtom } from '@Components/@atoms/AtomBarScroll'
 import AtomTrack from '@Components/@atoms/AtomTrack'
 import { css } from '@emotion/react'
-import { SelectFor } from '@Types/redux/reducers/user/types'
+import { useAtomValue } from 'jotai'
 import AtomSeoLayout from 'lib/AtomSeo'
 import AtomWrapper from 'lib/Atomwrapper'
 import { NextPageFCProps } from 'next'
-import { useSelector } from 'react-redux'
 
 const LikedSongs: NextPageFCProps = () => {
-  const user = useSelector((state: SelectFor) => state.user)
-  // const router = useRouter()
-  // const screen = useScreen()
+  const likedSongs = useAtomValue(likedSongsAtom)
 
   return (
     <>
@@ -37,7 +35,7 @@ const LikedSongs: NextPageFCProps = () => {
             }
           `}
         >
-          {user?.SavedTracks?.items?.map((track, idx) => (
+          {likedSongs?.items?.map((track, idx) => (
             <AtomTrack
               key={track.track.id}
               type="likedsongs"
@@ -55,7 +53,7 @@ const LikedSongs: NextPageFCProps = () => {
                 image: track.track.album.images[0].url,
                 duration: track.track.duration_ms,
                 artists: track.track.artists,
-                context: user?.SavedTracks?.items as any,
+                context: [],
               }}
             />
           ))}
