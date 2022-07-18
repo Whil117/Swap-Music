@@ -16,7 +16,6 @@ const map = (value: number, x1: number, y1: number, x2: number, y2: number) =>
 
 const SwapUser: FC<PropsLayout> = (props) => {
   const setscrollPositionAtom = useSetAtom(scrollPositionAtom)
-
   const scrollRef = useRef<HTMLDivElement>()
   const isBottom = useAtomValue(isBottomAtom)
   const handleScroll = async () => {
