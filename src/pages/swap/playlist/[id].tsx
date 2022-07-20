@@ -37,6 +37,7 @@ const Playlist: NextPageFC<Props> = ({ Playlist }) => {
             artist: {
               name: Playlist.owner.display_name as string,
               id: Playlist.owner.id,
+              type: Playlist.owner.type,
             },
             type: Playlist.type,
             total_tracks: Playlist.tracks.items.length,

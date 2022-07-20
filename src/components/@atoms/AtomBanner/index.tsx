@@ -49,6 +49,7 @@ type PropsPlaylist = {
     type?: string
     artist?: {
       name: string
+      type: string
       id: string
     }
   }
@@ -450,7 +451,7 @@ const typeBanners = {
             >
               <AtomLink
                 href={{
-                  pathname: '/swap/artist/[id]',
+                  pathname: `/swap/${props?.playlist?.artist?.type?.toLowerCase()}/[id]`,
                   query: { id: props?.playlist?.artist?.id },
                 }}
                 passHref
