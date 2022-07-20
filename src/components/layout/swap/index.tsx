@@ -79,7 +79,7 @@ const SwapUser: FC<PropsLayout> = (props) => {
               grid-row: 1 /2;
               position: relative;
               overflow: hidden;
-              /* margin-bottom: 50px; */
+              margin-bottom: 50px;
               overflor-y: scroll;
               display: flex;
               flex-direction: column;

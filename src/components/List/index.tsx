@@ -33,7 +33,7 @@ const SectionProps: FC<Props> = ({ children, title }) => {
           justify-content: space-between;
         `}
       >
-        <AtomText as="p" fontSize="22px">
+        <AtomText as="h3" margin="10px">
           {title}
         </AtomText>
         <AtomButton

@@ -2,10 +2,9 @@
 /* eslint-disable no-unused-vars */
 import AtomBanner from '@Components/@atoms/AtomBanner'
 import AtomCard from '@Components/@atoms/AtomCard'
-import AtomTable from '@Components/@atoms/AtomTable'
+import AtomTrack from '@Components/@atoms/AtomTrack'
 import SectionProps from '@Components/List'
 import { css } from '@emotion/react'
-import useTime from '@Hooks/useTime'
 import { SelectFor } from '@Types/redux/reducers/user/types'
 import AtomButton from 'lib/Atombutton'
 import AtomSeoLayout from 'lib/AtomSeo'
@@ -62,12 +61,9 @@ const ArtistById: NextPageFC<ArtistById> = ({
         keywords={['Swap', `${Artist.name}`]}
       />
       <AtomWrapper
-        flexDirection="column"
         css={css`
-          display: flex;
           width: 100%;
-          justify-content: space-between;
-          @media (max-width: 768px) {
+          @media (max-width: 980px) {
             width: auto;
           }
         `}
@@ -80,107 +76,47 @@ const ArtistById: NextPageFC<ArtistById> = ({
         />
         <AtomWrapper
           padding="0 90px"
+          maxWidth="1440px"
           css={css`
             @media (max-width: 980px) {
               padding: 0 30px;
             }
           `}
         >
-          <AtomText as="h2">Popular</AtomText>
-          <AtomTable
-            tableWidth="1440px"
-            customCSS={css`
-              tbody {
-                tr {
-                  height: 60px;
-                }
-              }
-            `}
-            columns={[
-              {
-                id: 'position&play',
-                title: '',
-                customCSS: css`
-                  text-align: center;
-                `,
-                view: (item, index) => <AtomText as="p">{index}</AtomText>,
-              },
+          <AtomText as="h3" margin="10px">
+            Popular
+          </AtomText>
+          {Popular.tracks
+            .filter((_, index) => (display ? index < 5 : index < 10))
+            .map((track, index) => (
+              <AtomTrack
+                key={track?.id}
+                type="likedsongs"
+                id={track?.album.id as string}
+                likedSongs={{
+                  id: track?.album.id,
+                  name: track?.name,
+                  preview_url: track?.preview_url as string,
+                  position: index,
+                  album: {
+                    id: track?.album.id,
+                    name: track?.album.name,
+                    image: track?.album.images[0].url as string,
+                  },
+                  image: track?.album.images[0].url,
+                  duration: track?.duration_ms,
+                  artists: track?.artists,
+                  context: Popular.tracks,
+                }}
+              />
+            ))}
 
-              {
-                id: 'songname',
-                customCSS: css`
-                  padding: 0px;
-                `,
-                title: '',
-                view: (item) => {
-                  return (
-                    <>
-                      <AtomText as="p" fontSize="16px" fontWeight="normal">
-                        {item?.name}
-                      </AtomText>
-                    </>
-                  )
-                },
-              },
-              {
-                id: 'album',
-                title: '',
-                view: (item) => (
-                  <AtomButton
-                    onClick={() => {
-                      router
-                        .push({
-                          pathname: `/swap/album/[id]`,
-                          query: {
-                            id: item?.album.id,
-                          },
-                        })
-                        .then(() => {
-                          document?.getElementById('view')?.scroll({
-                            top: 0,
-                          })
-                        })
-                    }}
-                  >
-                    <AtomText as="span" textDecoration="underline">
-                      {item?.album.name}
-                    </AtomText>
-                  </AtomButton>
-                ),
-              },
-              {
-                id: 'duration',
-                title: '',
-                view: (item) => {
-                  const [hours, minutes, seconds] = useTime({
-                    ms: item?.duration_ms,
-                  })
-                  return (
-                    <AtomText as="p">
-                      {' '}
-                      {hours ? `${hours} ${minutes}` : ''}
-                      {!hours
-                        ? `${minutes}:${
-                            seconds?.toFixed(0).length === 1
-                              ? `0${seconds.toFixed()}`
-                              : seconds?.toFixed()
-                          }`
-                        : ''}
-                    </AtomText>
-                  )
-                },
-              },
-            ]}
-            data={Popular.tracks.filter((_, index) =>
-              display ? index < 5 : index < 10
-            )}
-          />
           <AtomButton onClick={() => setDisplay(!display)}>
             {display ? 'Show More' : 'Show Less'}
           </AtomButton>
         </AtomWrapper>
         <AtomWrapper
-          width="1440px"
+          maxWidth="1440px"
           css={css`
             display: flex;
             alig-items: flex-start;
@@ -192,7 +128,7 @@ const ArtistById: NextPageFC<ArtistById> = ({
           `}
         >
           {data.map((item) => (
-            <AtomWrapper key={item.id} width="100%  ">
+            <AtomWrapper key={item.id} width="100%">
               <SectionProps title={item.title}>
                 {item.assets?.map((artist) => (
                   <SwiperSlide key={artist.id} style={{ width: 'auto' }}>
@@ -211,7 +147,7 @@ const ArtistById: NextPageFC<ArtistById> = ({
           ))}
         </AtomWrapper>
         <AtomWrapper
-          width="1440px"
+          maxWidth="1440px"
           css={css`
             display: flex;
             alig-items: flex-start;
@@ -222,25 +158,31 @@ const ArtistById: NextPageFC<ArtistById> = ({
             }
           `}
         >
-          <SectionProps title={`Your Favorites Albums from ${Artist.name}`}>
-            {user.SavedAlbums?.items
-              ?.filter((item) =>
-                item.album.artists.find((artist) => artist.name === Artist.name)
-              )
-              ?.map((artist, index) => (
-                <SwiperSlide key={index} style={{ width: 'auto' }}>
-                  <AtomCard
-                    key={artist.album.id}
-                    {...{
-                      id: artist.album.id,
-                      type: artist.album.type,
-                      image: artist.album.images[0].url,
-                      name: artist.album.name,
-                    }}
-                  />
-                </SwiperSlide>
-              ))}
-          </SectionProps>
+          {user.SavedAlbums?.items?.filter((item) =>
+            item.album.artists.find((artist) => artist.name === Artist.name)
+          ).length > 0 && (
+            <SectionProps title={`Your Favorites Albums from ${Artist.name}`}>
+              {user.SavedAlbums?.items
+                ?.filter((item) =>
+                  item.album.artists.find(
+                    (artist) => artist.name === Artist.name
+                  )
+                )
+                ?.map((artist, index) => (
+                  <SwiperSlide key={index} style={{ width: 'auto' }}>
+                    <AtomCard
+                      key={artist.album.id}
+                      {...{
+                        id: artist.album.id,
+                        type: artist.album.type,
+                        image: artist.album.images[0].url,
+                        name: artist.album.name,
+                      }}
+                    />
+                  </SwiperSlide>
+                ))}
+            </SectionProps>
+          )}
         </AtomWrapper>
       </AtomWrapper>
     </>

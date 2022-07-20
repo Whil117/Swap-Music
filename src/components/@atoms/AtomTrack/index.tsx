@@ -9,6 +9,7 @@ import { useSetAtom } from 'jotai'
 import AtomButton from 'lib/Atombutton'
 import AtomIcon from 'lib/AtomIcon'
 import AtomImage from 'lib/AtomImage'
+import AtomLink from 'lib/AtomLink'
 import AtomText from 'lib/AtomText'
 import AtomWrapper from 'lib/Atomwrapper'
 import { NextRouter, useRouter } from 'next/router'
@@ -77,7 +78,7 @@ const typeTracks = ({ dispatch, type, screen, router }: DefsTrack) => ({
     return (
       <AtomWrapper
         css={css`
-          margin-bottom: 1rem;
+          margin-bottom: 2rem;
           display: grid;
           grid-template-columns: 50px 1fr 50px;
           gap: 10px;
@@ -268,9 +269,9 @@ const typeTracks = ({ dispatch, type, screen, router }: DefsTrack) => ({
     return (
       <AtomWrapper
         css={css`
-          margin-bottom: 1rem;
+          margin-bottom: 2rem;
           display: grid;
-          grid-template-columns: 50px 1fr 50px;
+          grid-template-columns: 50px 1fr 1fr 50px;
           gap: 10px;
           width: 100%;
           align-items: center;
@@ -339,7 +340,7 @@ const typeTracks = ({ dispatch, type, screen, router }: DefsTrack) => ({
         </AtomButton>
         <AtomWrapper
           css={css`
-            grid-column: 2 / 3;
+            grid-column: 2;
             display: flex;
             align-items: center;
             gap: 10px;
@@ -400,8 +401,36 @@ const typeTracks = ({ dispatch, type, screen, router }: DefsTrack) => ({
           </AtomWrapper>
         </AtomWrapper>
         <AtomWrapper
+          width="auto"
           css={css`
-            grid-column: 3 /4;
+            grid-column: 3;
+          `}
+        >
+          <AtomLink
+            href={{
+              pathname: '/swap/album/[id]',
+              query: {
+                id: props?.likedSongs?.album?.id,
+              },
+            }}
+            passHref
+          >
+            <a>
+              <AtomText
+                css={css`
+                  &:hover {
+                    text-decoration: underline;
+                  }
+                `}
+              >
+                {props?.likedSongs?.album?.name}
+              </AtomText>
+            </a>
+          </AtomLink>
+        </AtomWrapper>
+        <AtomWrapper
+          css={css`
+            grid-column: 4;
             align-self: center;
             justify-self: center;
             @media (max-width: 980px) {
@@ -472,7 +501,7 @@ const typeTracks = ({ dispatch, type, screen, router }: DefsTrack) => ({
     return (
       <AtomWrapper
         css={css`
-          margin-bottom: 1rem;
+          margin-bottom: 2rem;
           display: grid;
           grid-template-columns: 50px 1fr 50px;
           gap: 10px;
@@ -701,4 +730,3 @@ const AtomTrack: FC<Props> = (props) => {
 }
 
 export default AtomTrack
-//https://storage.googleapis.com/cdn-bucket-ixulabs-platform/WHIL/icons/playho.svg
