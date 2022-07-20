@@ -1,43 +1,18 @@
 /* eslint-disable no-unused-vars */
 import AtomBanner from '@Components/@atoms/AtomBanner'
-import { controlsAtom } from '@Components/Navbar/player'
-import Track from '@Components/Track/Track'
+import AtomTrack from '@Components/@atoms/AtomTrack'
 import { css } from '@emotion/react'
-import { ActionPlayerTracks } from '@Redux/reducers/player'
-import { useSetAtom } from 'jotai'
 import AtomSeoLayout from 'lib/AtomSeo'
 import AtomWrapper from 'lib/Atomwrapper'
 import spotifyAPI from 'lib/spotify/spotify'
 import { NextPageContext, NextPageFC } from 'next'
 import { getSession } from 'next-auth/react'
-import { Dispatch } from 'react'
-import { useDispatch } from 'react-redux'
 
 type Props = {
   Playlist: SpotifyApi.SinglePlaylistResponse
 }
 
-const convertPlayerTracks = (
-  dispatch: Dispatch<ActionPlayerTracks>,
-  player: {
-    id: string
-    data: SpotifyApi.TrackObjectSimplified[] | SpotifyApi.PlaylistTrackObject[]
-  }
-) => {
-  dispatch({
-    type: 'SETPLAYERTRACKS',
-    payload: {
-      tracks: player.data,
-      currentTrackId: player.id,
-      play: true,
-    },
-  })
-}
-
 const Playlist: NextPageFC<Props> = ({ Playlist }) => {
-  const dispatch = useDispatch<Dispatch<ActionPlayerTracks>>()
-  const dispatchImage = useSetAtom(controlsAtom)
-
   return (
     <>
       <AtomSeoLayout
@@ -84,23 +59,25 @@ const Playlist: NextPageFC<Props> = ({ Playlist }) => {
             }
           `}
         >
-          {Playlist.tracks.items.map((track, idx) => (
-            <Track
-              {...{ ...(track?.track as any) }}
-              position={idx}
+          {Playlist?.tracks?.items?.map((track, idx) => (
+            <AtomTrack
               key={track?.track?.id}
-              withImage
-              onPlayer={() => {
-                dispatchImage({
-                  type: 'VIEWIMAGESIDEBAR',
-                  payload: {
-                    image: track?.track?.album?.images[0].url,
-                  },
-                })
-                convertPlayerTracks(dispatch, {
-                  id: track?.track?.id as string,
-                  data: Playlist.tracks.items,
-                })
+              type="likedsongs"
+              id={track?.track?.album.id as string}
+              likedSongs={{
+                id: track?.track?.album.id,
+                name: track?.track?.name,
+                preview_url: track?.track?.preview_url as string,
+                position: idx,
+                album: {
+                  id: track?.track?.album.id,
+                  name: track?.track?.album.name,
+                  image: track?.track?.album.images[0].url as string,
+                },
+                image: track?.track?.album.images[0].url,
+                duration: track?.track?.duration_ms,
+                artists: track?.track?.artists,
+                context: Playlist?.tracks?.items,
               }}
             />
           ))}
