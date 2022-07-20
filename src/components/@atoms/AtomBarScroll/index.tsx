@@ -147,7 +147,7 @@ const AtomBarScroll: FC = () => {
                 : 'flex-end'};
               align-items: center;
               width: 100%;
-              padding: 15px 0px;
+              padding: 10px 0px;
               position: sticky;
               top: 0;
               z-index: 2;
