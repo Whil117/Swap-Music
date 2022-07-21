@@ -1,4 +1,9 @@
-import { ApolloClient, ApolloProvider, InMemoryCache } from '@apollo/client'
+import {
+  ApolloClient,
+  ApolloProvider,
+  DefaultOptions,
+  InMemoryCache,
+} from '@apollo/client'
 import Layout from '@Components/layout'
 import { Global } from '@emotion/react'
 import { persistor, store } from '@Redux/store'
@@ -15,9 +20,21 @@ import 'swiper/css/navigation'
 import 'swiper/css/pagination'
 import 'swiper/css/scrollbar'
 
+const defaultOptions: DefaultOptions = {
+  watchQuery: {
+    fetchPolicy: 'no-cache',
+    errorPolicy: 'ignore',
+  },
+  query: {
+    fetchPolicy: 'no-cache',
+    errorPolicy: 'all',
+  },
+}
+
 export const client = new ApolloClient({
   uri: `https://swapbackend.vercel.app/api/graphql`,
   cache: new InMemoryCache(),
+  defaultOptions: defaultOptions,
 })
 
 const MyApp = ({

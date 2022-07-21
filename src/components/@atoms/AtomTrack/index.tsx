@@ -1,5 +1,7 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 /* eslint-disable no-unused-vars */
+import { ApolloClient, InMemoryCache, useLazyQuery } from '@apollo/client'
+import { TRACKBYSLUG } from '@Apollo/client/querys/track'
 import { controlsAtom, Navigator } from '@Components/Navbar/player'
 import { css } from '@emotion/react'
 import useScreen from '@Hooks/useScreen'
@@ -13,6 +15,7 @@ import AtomLink from 'lib/AtomLink'
 import AtomText from 'lib/AtomText'
 import AtomWrapper from 'lib/Atomwrapper'
 import { NextRouter, useRouter } from 'next/router'
+
 import { FC } from 'react'
 import { toast } from 'react-toastify'
 
@@ -30,12 +33,17 @@ const handleError = (screen: number) => {
     progress: undefined,
   })
 }
+export const client = new ApolloClient({
+  uri: `https://swapbackend.vercel.app/api/graphql`,
+  cache: new InMemoryCache(),
+})
 
 const typeTracks = ({ dispatch, type, screen, router }: DefsTrack) => ({
   album: (props: Props) => {
     const [hours, minutes, seconds] = useTime({ ms: props?.album?.duration })
     const setPlayPlayer = useSetAtom(PLAYATOM)
-    const handleClick = () => {
+    const [EXECUTETRACKBYSLUG] = useLazyQuery(TRACKBYSLUG)
+    const handleClick = async (track: string) => {
       Navigator({
         title: props?.album?.name as string,
         artist_name:
@@ -67,7 +75,7 @@ const typeTracks = ({ dispatch, type, screen, router }: DefsTrack) => ({
                   url?: string
                 }[]
               },
-              preview_url: (props?.album?.preview_url as string) ?? '',
+              preview_url: (track as string) ?? '',
             },
             context: props?.album?.context as any,
           },
@@ -90,17 +98,35 @@ const typeTracks = ({ dispatch, type, screen, router }: DefsTrack) => ({
           }
         `}
         key={props?.id}
-        onClick={
-          screen <= 980
-            ? props?.album?.preview_url
-              ? handleClick
-              : () => handleError(screen)
-            : () => {}
+        onClick={async () =>
+          await client
+            .query({
+              variables: {
+                slug:
+                  props?.album?.artists &&
+                  props?.album?.artists[0]?.name + ' ' + props?.album?.name,
+              },
+              query: TRACKBYSLUG,
+            })
+            .then(async (data: any) => {
+              await handleClick(data?.trackBySlug?.url)
+            })
         }
       >
         <AtomButton
-          onClick={
-            props?.album?.preview_url ? handleClick : () => handleError(screen)
+          onClick={async () =>
+            await client
+              .query({
+                variables: {
+                  slug:
+                    props?.album?.artists &&
+                    props?.album?.artists[0]?.name + ' ' + props?.album?.name,
+                },
+                query: TRACKBYSLUG,
+              })
+              .then(async (data: any) => {
+                await handleClick(data?.trackBySlug?.url)
+              })
           }
           css={css`
             grid-column: 1;
@@ -225,7 +251,8 @@ const typeTracks = ({ dispatch, type, screen, router }: DefsTrack) => ({
       ms: props?.likedSongs?.duration,
     })
     const setPlayPlayer = useSetAtom(PLAYATOM)
-    const handleClick = () => {
+    const [EXECUTETRACKBYSLUG] = useLazyQuery(TRACKBYSLUG)
+    const handleClick = async (track: string) => {
       Navigator({
         title: props?.likedSongs?.name as string,
         artist_name:
@@ -258,14 +285,13 @@ const typeTracks = ({ dispatch, type, screen, router }: DefsTrack) => ({
                   url?: string
                 }[]
               },
-              preview_url: (props?.likedSongs?.preview_url as string) ?? '',
+              preview_url: (track as string) ?? '',
             },
             context: props?.likedSongs?.context as any,
           },
         },
       })
     }
-
     return (
       <AtomWrapper
         css={css`
@@ -281,19 +307,39 @@ const typeTracks = ({ dispatch, type, screen, router }: DefsTrack) => ({
           }
         `}
         key={props?.id}
-        onClick={
-          screen <= 980
-            ? props?.likedSongs?.preview_url
-              ? handleClick
-              : () => handleError(screen)
-            : () => {}
+        onClick={async () =>
+          await client
+            .query({
+              variables: {
+                slug:
+                  props?.likedSongs?.artists &&
+                  props?.likedSongs?.artists[0]?.name +
+                    ' ' +
+                    props?.likedSongs?.name,
+              },
+              query: TRACKBYSLUG,
+            })
+            .then(async (data: any) => {
+              await handleClick(data?.trackBySlug?.url)
+            })
         }
       >
         <AtomButton
-          onClick={
-            props?.likedSongs?.preview_url
-              ? handleClick
-              : () => handleError(screen)
+          onClick={async () =>
+            await client
+              .query({
+                variables: {
+                  slug:
+                    props?.likedSongs?.artists &&
+                    props?.likedSongs?.artists[0]?.name +
+                      ' ' +
+                      props?.likedSongs?.name,
+                },
+                query: TRACKBYSLUG,
+              })
+              .then(async (data: any) => {
+                await handleClick(data?.trackBySlug?.url)
+              })
           }
           css={css`
             grid-column: 1;
@@ -457,7 +503,10 @@ const typeTracks = ({ dispatch, type, screen, router }: DefsTrack) => ({
       ms: props?.playlist?.duration,
     })
     const setPlayPlayer = useSetAtom(PLAYATOM)
-    const handleClick = () => {
+
+    const [EXECUTETRACKBYSLUG] = useLazyQuery(TRACKBYSLUG)
+
+    const handleClick = async (track: string) => {
       Navigator({
         title: props?.playlist?.name as string,
         artist_name:
@@ -490,7 +539,7 @@ const typeTracks = ({ dispatch, type, screen, router }: DefsTrack) => ({
                   url?: string
                 }[]
               },
-              preview_url: (props?.playlist?.preview_url as string) ?? '',
+              preview_url: (track as string) ?? '',
             },
             context: props?.playlist?.context as any,
           },
@@ -513,19 +562,39 @@ const typeTracks = ({ dispatch, type, screen, router }: DefsTrack) => ({
           }
         `}
         key={props?.id}
-        onClick={
-          screen <= 980
-            ? props?.playlist?.preview_url
-              ? handleClick
-              : () => handleError(screen)
-            : () => {}
+        onClick={async () =>
+          await client
+            .query({
+              variables: {
+                slug:
+                  props?.playlist?.artists &&
+                  props?.playlist?.artists[0]?.name +
+                    ' ' +
+                    props?.playlist?.name,
+              },
+              query: TRACKBYSLUG,
+            })
+            .then(async (data: any) => {
+              await handleClick(data?.trackBySlug?.url)
+            })
         }
       >
         <AtomButton
-          onClick={
-            props?.playlist?.preview_url
-              ? handleClick
-              : () => handleError(screen)
+          onClick={async () =>
+            await client
+              .query({
+                variables: {
+                  slug:
+                    props?.playlist?.artists &&
+                    props?.playlist?.artists[0]?.name +
+                      ' ' +
+                      props?.playlist?.name,
+                },
+                query: TRACKBYSLUG,
+              })
+              .then(async (data: any) => {
+                await handleClick(data?.trackBySlug?.url)
+              })
           }
           css={css`
             grid-column: 1;
