@@ -2,8 +2,12 @@ import {
   ApolloClient,
   ApolloProvider,
   DefaultOptions,
+  from,
+  HttpLink,
   InMemoryCache,
+  split,
 } from '@apollo/client'
+import { getMainDefinition } from '@apollo/client/utilities'
 import Layout from '@Components/layout'
 import { Global } from '@emotion/react'
 import { persistor, store } from '@Redux/store'
@@ -31,17 +35,71 @@ const defaultOptions: DefaultOptions = {
   },
 }
 
+const createClient = () => {
+  const httpLink = new HttpLink({
+    uri: `https://swapbackend1.herokuapp.com/api/graphql`,
+  })
+
+  const httpAuthLink = from([httpLink])
+  const splitLink = split(
+    ({ query }) => {
+      const definition = getMainDefinition(query)
+      return (
+        definition.kind === `OperationDefinition` &&
+        definition.operation === `subscription`
+      )
+    },
+
+    httpAuthLink
+  )
+
+  const client = new ApolloClient({
+    link: splitLink,
+    cache: new InMemoryCache(),
+    ssrMode: true,
+  })
+  return client
+}
+let apolloClient: ApolloClient<any>
+
 export const client = new ApolloClient({
-  uri: `https://swapbackend.vercel.app/api/graphql`,
+  uri: `https://swapbackend1.herokuapp.com/api/graphql`,
   cache: new InMemoryCache(),
   defaultOptions: defaultOptions,
 })
+
+export const getApolloClient = (initialState?: object) => {
+  const _apolloClient = apolloClient ?? createClient()
+
+  // If your page has Next.js data fetching methods that use Apollo Client, the initial state
+  // gets hydrated here
+  if (initialState) {
+    // Get existing cache, loaded during client side data fetching
+    const existingCache = _apolloClient.extract()
+    // Restore the cache using the data passed from getStaticProps/getServerSideProps
+    // combined with the existing cached data
+    _apolloClient.cache.restore({ ...existingCache, ...initialState })
+  }
+  // For SSG and SSR always create a new Apollo Client
+  if (typeof window === `undefined`) return _apolloClient
+  // Create the Apollo Client once in the client
+  if (!apolloClient) apolloClient = _apolloClient
+  return _apolloClient
+}
+export const useApollo = (initialState: object) => {
+  if (apolloClient) {
+    return apolloClient
+  }
+  return getApolloClient(initialState)
+}
 
 const MyApp = ({
   Component,
   pageProps: { session, ...pageProps },
 }: AppPropsWithLayout) => {
   const SEO = Component.SEO
+  const { initialApolloState } = pageProps
+  const apolloClient = useApollo(initialApolloState)
 
   return (
     <>
@@ -54,7 +112,7 @@ const MyApp = ({
           description={SEO?.description}
         />
       )}
-      <ApolloProvider client={client}>
+      <ApolloProvider client={apolloClient}>
         <SessionProvider session={session}>
           <Provider store={store}>
             <PersistGate persistor={persistor}>

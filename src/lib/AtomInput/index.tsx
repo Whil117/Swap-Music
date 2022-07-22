@@ -13,7 +13,7 @@ type Props = {
   label?: string
   placeholder?: string
   min?: string
-  max?: string
+  max?: string | number
   type?:
     | 'text'
     | 'number'

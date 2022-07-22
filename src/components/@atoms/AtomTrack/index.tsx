@@ -36,6 +36,8 @@ const handleError = (screen: number) => {
 export const client = new ApolloClient({
   uri: `https://swapbackend.vercel.app/api/graphql`,
   cache: new InMemoryCache(),
+  connectToDevTools: true,
+  queryDeduplication: true,
 })
 
 const typeTracks = ({ dispatch, type, screen, router }: DefsTrack) => ({
@@ -98,7 +100,8 @@ const typeTracks = ({ dispatch, type, screen, router }: DefsTrack) => ({
           }
         `}
         key={props?.id}
-        onClick={async () =>
+        onClick={async (e) => {
+          e.preventDefault()
           await client
             .query({
               variables: {
@@ -111,10 +114,11 @@ const typeTracks = ({ dispatch, type, screen, router }: DefsTrack) => ({
             .then(async (data: any) => {
               await handleClick(data?.trackBySlug?.url)
             })
-        }
+        }}
       >
         <AtomButton
-          onClick={async () =>
+          onClick={async (e) => {
+            e.preventDefault()
             await client
               .query({
                 variables: {
@@ -127,7 +131,7 @@ const typeTracks = ({ dispatch, type, screen, router }: DefsTrack) => ({
               .then(async (data: any) => {
                 await handleClick(data?.trackBySlug?.url)
               })
-          }
+          }}
           css={css`
             grid-column: 1;
             justify-self: center;
@@ -251,8 +255,8 @@ const typeTracks = ({ dispatch, type, screen, router }: DefsTrack) => ({
       ms: props?.likedSongs?.duration,
     })
     const setPlayPlayer = useSetAtom(PLAYATOM)
-    const [EXECUTETRACKBYSLUG] = useLazyQuery(TRACKBYSLUG)
-    const handleClick = async (track: string) => {
+
+    const handleClick = (track: string) => {
       Navigator({
         title: props?.likedSongs?.name as string,
         artist_name:
@@ -307,9 +311,24 @@ const typeTracks = ({ dispatch, type, screen, router }: DefsTrack) => ({
           }
         `}
         key={props?.id}
-        onClick={async () =>
-          await client
-            .query({
+        onClick={async () => {
+          const data = await client.query({
+            variables: {
+              slug:
+                props?.likedSongs?.artists &&
+                props?.likedSongs?.artists[0]?.name +
+                  ' ' +
+                  props?.likedSongs?.name,
+            },
+            query: TRACKBYSLUG,
+          })
+
+          handleClick(data?.data?.trackBySlug?.url)
+        }}
+      >
+        <AtomButton
+          onClick={async () => {
+            const data = await client.query({
               variables: {
                 slug:
                   props?.likedSongs?.artists &&
@@ -319,28 +338,8 @@ const typeTracks = ({ dispatch, type, screen, router }: DefsTrack) => ({
               },
               query: TRACKBYSLUG,
             })
-            .then(async (data: any) => {
-              await handleClick(data?.trackBySlug?.url)
-            })
-        }
-      >
-        <AtomButton
-          onClick={async () =>
-            await client
-              .query({
-                variables: {
-                  slug:
-                    props?.likedSongs?.artists &&
-                    props?.likedSongs?.artists[0]?.name +
-                      ' ' +
-                      props?.likedSongs?.name,
-                },
-                query: TRACKBYSLUG,
-              })
-              .then(async (data: any) => {
-                await handleClick(data?.trackBySlug?.url)
-              })
-          }
+            handleClick(data?.data?.trackBySlug?.url)
+          }}
           css={css`
             grid-column: 1;
             justify-self: center;
@@ -562,7 +561,8 @@ const typeTracks = ({ dispatch, type, screen, router }: DefsTrack) => ({
           }
         `}
         key={props?.id}
-        onClick={async () =>
+        onClick={async (e) => {
+          e.preventDefault()
           await client
             .query({
               variables: {
@@ -577,10 +577,11 @@ const typeTracks = ({ dispatch, type, screen, router }: DefsTrack) => ({
             .then(async (data: any) => {
               await handleClick(data?.trackBySlug?.url)
             })
-        }
+        }}
       >
         <AtomButton
-          onClick={async () =>
+          onClick={async (e) => {
+            e.preventDefault()
             await client
               .query({
                 variables: {
@@ -595,7 +596,7 @@ const typeTracks = ({ dispatch, type, screen, router }: DefsTrack) => ({
               .then(async (data: any) => {
                 await handleClick(data?.trackBySlug?.url)
               })
-          }
+          }}
           css={css`
             grid-column: 1;
             justify-self: center;

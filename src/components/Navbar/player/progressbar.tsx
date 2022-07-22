@@ -17,11 +17,21 @@ type Props = {
 
 export const progressBarAtom = atomWithStorage('PROGRESSBAR', 0 as number)
 
+function millisToMinutesAndSeconds(time: number) {
+  var minutes = Math.floor(time / 60)
+  var seconds = time - minutes * 60
+  return {
+    minutes: minutes ?? 0,
+    seconds: seconds ?? 0,
+  }
+}
+
 const Progressbar: FC<Props> = ({ audio }) => {
   const setPlayPlayer = useSetAtom(PLAYATOM)
   const playerPlayer = useAtomValue(PLAYATOM)
   const [currentTime, setCurrentTime] = useAtom(progressBarAtom)
   const controls = useAtomValue(controlsAtom)
+  const totalTime = audio?.current?.duration ?? (0 as number)
   const screen = useScreen()
   const colors = useAtomValue(colorsAtom)
 
@@ -49,21 +59,18 @@ const Progressbar: FC<Props> = ({ audio }) => {
           }
         `}
       >
-        {Math.round(
-          audio.current?.currentTime ? audio.current.currentTime : 0
-        ) > 9
-          ? `0:${Math.round(
-              audio.current?.currentTime ? audio.current.currentTime : 0
-            )}`
-          : `0:0${Math.round(
-              audio.current?.currentTime ? audio.current.currentTime : 0
-            )}`}
+        {millisToMinutesAndSeconds(currentTime ? currentTime : 0).minutes}:
+        {millisToMinutesAndSeconds(currentTime ? currentTime : 0).seconds < 10
+          ? `0${
+              millisToMinutesAndSeconds(currentTime ? currentTime : 0).seconds
+            }`
+          : millisToMinutesAndSeconds(currentTime ? currentTime : 0).seconds}
       </AtomText>
       <AtomInput
         id="player-reproductor"
         type="range"
         min="0"
-        max="30"
+        max={audio.current?.duration ? audio.current.duration : 0}
         value={currentTime}
         disabled={screen <= 980}
         onChange={(event) => {
@@ -82,7 +89,9 @@ const Progressbar: FC<Props> = ({ audio }) => {
           border-radius: 5px;
           background-image: linear-gradient(${colors[0]}, ${colors[0]});
           background-repeat: no-repeat;
-          background-size: ${Math.floor(((currentTime - 0) * 100) / 30 - 0)}%
+          background-size: ${Math.floor(
+              ((((currentTime - 0) * 100) / totalTime) as number as number) - 0
+            )}%
             100%;
           ::-webkit-slider-thumb {
             -webkit-appearance: none;
@@ -175,12 +184,6 @@ const Progressbar: FC<Props> = ({ audio }) => {
           }}
           onEnded={() => {
             setPlayPlayer(false)
-            // dispatch({
-            //   type: 'PLAY',
-            //   payload: {
-            //     play: false,
-            //   },
-            // })
           }}
         ></audio>
       )}
@@ -195,7 +198,10 @@ const Progressbar: FC<Props> = ({ audio }) => {
           }
         `}
       >
-        0:30
+        {Math.round(millisToMinutesAndSeconds(totalTime).minutes)}:
+        {Math.round(millisToMinutesAndSeconds(totalTime).seconds) < 10
+          ? `0${Math.round(millisToMinutesAndSeconds(totalTime).seconds)}`
+          : Math.round(millisToMinutesAndSeconds(totalTime).seconds)}
       </AtomText>
     </AtomWrapper>
   )

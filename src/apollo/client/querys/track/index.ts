@@ -6,6 +6,7 @@ export const TRACKBYSLUG = gql`
       id
       slug
       url
+      __typename
     }
   }
 `

@@ -124,7 +124,7 @@ const LandingPage: NextPageFC<SpotifyAuthProps> = ({
               ¡NOTE!: Your session is manage for Spotify Inc.
             </AtomText>
             <AtomButton
-              onClick={() => signIn(providers.spotify.id)}
+              onClick={() => signIn(providers?.spotify?.id)}
               css={css`
                 background-color: ${colors.green_light};
                 color: ${colors.white};
