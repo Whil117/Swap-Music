@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { controlsAtom } from '@Components/Navbar/player'
 import { volumenAtom } from '@Components/Navbar/player/volumen.bar'
 import { PLAYATOM } from '@Redux/reducers/player/controls'
@@ -12,9 +13,8 @@ const VideoById: NextPageFCProps = () => {
 
   useEffect(() => {
     const player = new YTPlayer('#player')
-    console.log('USEFFECT')
 
-    player.load(controls.player?.currentTrack.youtube_id)
+    player.load(controls.player?.currentTrack.youtube_id as string)
     player.play()
     player.setVolume(volumen)
     if (playSong) {
