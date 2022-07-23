@@ -18,7 +18,7 @@ const Playlist: NextPageFC<Props> = ({ Playlist }) => {
       <AtomSeoLayout
         title="Swap"
         page={Playlist.name}
-        image={Playlist.images[0].url}
+        image={Playlist.images[0]?.url}
         keywords={[Playlist.description as string]}
       />
       <AtomWrapper
@@ -73,9 +73,9 @@ const Playlist: NextPageFC<Props> = ({ Playlist }) => {
                 album: {
                   id: track?.track?.album.id,
                   name: track?.track?.album.name,
-                  image: track?.track?.album.images[0].url as string,
+                  image: track?.track?.album.images[0]?.url as string,
                 },
-                image: track?.track?.album.images[0].url,
+                image: track?.track?.album.images[0]?.url,
                 duration: track?.track?.duration_ms,
                 artists: track?.track?.artists,
                 context: Playlist?.tracks?.items.map((track) => ({
@@ -86,9 +86,9 @@ const Playlist: NextPageFC<Props> = ({ Playlist }) => {
                   album: {
                     id: track?.track?.album.id,
                     name: track?.track?.album.name,
-                    image: track?.track?.album.images[0].url as string,
+                    image: track?.track?.album.images[0]?.url as string,
                   },
-                  image: track?.track?.album.images[0].url,
+                  image: track?.track?.album.images[0]?.url,
                   duration: track?.track?.duration_ms,
                   artists: track?.track?.artists,
                   type: 'playlist',
@@ -109,12 +109,12 @@ export async function getServerSideProps(context: NextPageContext) {
 
   const PLAY = await spotifyAPI
     .getPlaylist(id as string)
-    .then((res) => res.body)
+    .then((res) => res?.body)
 
   Playlist.SEO = {
     title: PLAY.name,
-    image: PLAY.images[0].url,
-    keywords: [PLAY.owner.display_name as string],
+    image: PLAY.images[0]?.url,
+    keywords: [PLAY?.owner?.display_name as string],
   }
 
   return {
