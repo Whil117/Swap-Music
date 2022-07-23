@@ -173,8 +173,12 @@ const NavbarPlayer: FC = () => {
               )}
               <AtomWrapper
                 css={css`
-                  grid-column: 2;
+                  grid-column: ${controls.view ? '1' : '2'};
                   grid-row: 1;
+                  display: flex;
+                  flex-direction: row;
+                  align-items: center;
+                  gap: 10px;
                 `}
               >
                 <AtomButton
@@ -226,7 +230,12 @@ const NavbarPlayer: FC = () => {
                     })
                   }}
                 >
-                  {controls?.player?.currentTrack?.youtube_url}
+                  <AtomIcon
+                    width="20px"
+                    height="20px"
+                    icon="https://storage.googleapis.com/cdn-bucket-ixulabs-platform/WHIL/icons/to.svg"
+                  />
+                  {/* {controls?.player?.currentTrack?.youtube_url} */}
                 </AtomButton>
               </AtomWrapper>
               <AtomWrapper
