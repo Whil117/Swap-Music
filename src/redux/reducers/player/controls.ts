@@ -1,3 +1,4 @@
+import { ContextTracks } from '@Components/@atoms/AtomTrack'
 import colors from '@Styles/global/colors'
 import { atom } from 'jotai'
 import { atomWithStorage } from 'jotai/utils'
@@ -43,7 +44,7 @@ export type Inti = {
         }[]
       }
     }
-    context: never[]
+    context: ContextTracks[]
   }
   currentTime?: number
   image?: string

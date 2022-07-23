@@ -7,8 +7,8 @@ import ReducerAtomPlayer, {
   PLAYATOM,
   reducerplayer,
 } from '@Redux/reducers/player/controls'
-
 import Svg from '@Whil/components/Svg'
+import axios from 'axios'
 import { useAtom, useAtomValue, useSetAtom } from 'jotai'
 import AtomButton from 'lib/Atombutton'
 import AtomIcon from 'lib/AtomIcon'
@@ -418,26 +418,27 @@ const NavbarPlayer: FC = () => {
     </>
   )
 }
+function download(audio: string) {
+  axios({
+    url: audio,
+    method: 'GET',
+    responseType: 'blob',
+  }).then((response) => {
+    const url = window.URL.createObjectURL(new Blob([response.data]))
+    const link = document.createElement('a')
+    link.href = url
+    link.setAttribute('download', 'audio.mp3')
+    document.body.appendChild(link)
+    link.click()
+    document.body.removeChild(link)
+  })
+}
 
 const buttonsActions = (
   router: NextRouter,
   controls: Inti,
   dispatch: (update: ActionPlayer) => void
 ) => [
-  {
-    key: 1,
-    id: 'repeat',
-    onClick: () => {
-      dispatch({
-        type: 'REPEAT',
-        payload: {
-          repeat: !controls.repeat,
-        },
-      })
-    },
-    active: controls.repeat,
-    icon: 'https://storage.googleapis.com/cdn-bucket-ixulabs-platform/WHIL/icons/repeat2.svg',
-  },
   {
     key: 2,
     id: 'aleatory',

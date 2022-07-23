@@ -53,7 +53,21 @@ const LikedSongs: NextPageFCProps = () => {
                 image: track.track.album.images[0].url,
                 duration: track.track.duration_ms,
                 artists: track.track.artists,
-                context: [],
+                context: likedSongs?.items.map((track) => ({
+                  id: track.track.id,
+                  name: track.track.name,
+                  preview_url: track.track.preview_url as string,
+                  position: idx,
+                  album: {
+                    id: track.track.album.id,
+                    name: track.track.album.name,
+                    image: track.track.album.images[0].url as string,
+                  },
+                  image: track.track.album.images[0].url,
+                  duration: track.track.duration_ms,
+                  artists: track.track.artists,
+                  type: 'likedsongs',
+                })),
               }}
             />
           ))}

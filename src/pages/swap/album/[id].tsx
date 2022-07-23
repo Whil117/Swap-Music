@@ -93,7 +93,21 @@ const AlbumPage: NextPageFC<Props> = ({
                 image: Album.images[0].url,
                 duration: track.duration_ms,
                 artists: track.artists,
-                context: TracksAlbum.items as any,
+                context: TracksAlbum.items.map((track) => ({
+                  id: track.id,
+                  name: track.name,
+                  preview_url: track.preview_url as string,
+                  position: idx,
+                  album: {
+                    id: Album.id,
+                    name: Album.name,
+                    image: Album.images[0].url,
+                  },
+                  image: Album.images[0].url,
+                  duration: track.duration_ms,
+                  artists: track.artists,
+                  type: 'album',
+                })),
               }}
             />
           ))}

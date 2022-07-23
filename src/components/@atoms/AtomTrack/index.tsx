@@ -17,35 +17,6 @@ import { NextRouter, useRouter } from 'next/router'
 import { client } from 'pages/_app'
 
 import { FC } from 'react'
-import { toast } from 'react-toastify'
-
-const handleError = (screen: number) => {
-  toast.error('This song isn`t available', {
-    position: screen <= 980 ? 'top-center' : 'top-right',
-    autoClose: 5000,
-    style: {
-      top: '4.5em',
-    },
-    hideProgressBar: false,
-    closeOnClick: true,
-    pauseOnHover: true,
-    draggable: true,
-    progress: undefined,
-  })
-}
-
-const EXECUTESONG = async (slug: string, callback: (data: any) => void) => {
-  await client
-    .query({
-      variables: {
-        slug: slug,
-      },
-      query: TRACKBYSLUG,
-    })
-    .then(async (data) => {
-      await callback(data)
-    })
-}
 
 const typeTracks = ({ dispatch, type, screen, router }: DefsTrack) => ({
   album: (props: Props) => {
@@ -737,6 +708,23 @@ type DefsTrack = {
   dispatch: (update: ActionPlayer) => void
   router: NextRouter
 }
+type Album = {
+  id?: string
+  name?: string
+  image?: string
+}
+
+export type ContextTracks = {
+  id?: string
+  name?: string
+  image?: string
+  album?: Album
+  artists?: ArtistProps
+  duration?: number
+  position?: number
+  preview_url?: string
+  type: 'album' | 'likedsongs' | 'playlist'
+}
 
 type Props = {
   type: 'album' | 'likedsongs'
@@ -749,7 +737,7 @@ type Props = {
     preview_url?: string
     image?: string
     artists?: ArtistProps
-    context?: never[]
+    context?: ContextTracks[]
   }
   likedSongs?: {
     id?: string
@@ -759,12 +747,8 @@ type Props = {
     preview_url?: string
     image?: string
     artists?: ArtistProps
-    album?: {
-      id?: string
-      name?: string
-      image?: string
-    }
-    context?: never[]
+    album?: Album
+    context?: ContextTracks[]
   }
   playlist?: {
     id?: string
@@ -774,12 +758,8 @@ type Props = {
     preview_url?: string
     image?: string
     artists?: ArtistProps
-    album?: {
-      id?: string
-      name?: string
-      image?: string
-    }
-    context?: never[]
+    album?: Album
+    context?: ContextTracks[]
   }
 }
 
