@@ -52,6 +52,7 @@ const AtomCard: FC<Card> = (props) => {
           .then(() => {
             document?.getElementById('view')?.scroll({
               top: 0,
+              behavior: 'smooth',
             })
           })
       }}

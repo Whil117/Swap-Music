@@ -60,6 +60,8 @@ const SwapUser: FC<PropsLayout> = (props) => {
             display: grid;
             grid-template-columns: 250px 1fr;
             grid-template-rows: 1fr auto;
+            overflow: hidden;
+
             height: 100vh;
             @media (max-width: 980px) {
               grid-template-columns: 1fr;

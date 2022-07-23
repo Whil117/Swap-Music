@@ -10,7 +10,6 @@ import { useSetAtom } from 'jotai'
 import AtomButton from 'lib/Atombutton'
 import AtomIcon from 'lib/AtomIcon'
 import AtomImage from 'lib/AtomImage'
-import AtomLink from 'lib/AtomLink'
 import AtomText from 'lib/AtomText'
 import AtomWrapper from 'lib/Atomwrapper'
 import { NextRouter, useRouter } from 'next/router'
@@ -396,6 +395,7 @@ const typeTracks = ({ dispatch, type, screen, router }: DefsTrack) => ({
                         .then(() => {
                           document?.getElementById('view')?.scroll({
                             top: 0,
+                            behavior: 'smooth',
                           })
                         })
                     }}
@@ -424,27 +424,33 @@ const typeTracks = ({ dispatch, type, screen, router }: DefsTrack) => ({
             grid-column: 3;
           `}
         >
-          <AtomLink
-            href={{
-              pathname: '/swap/album/[id]',
-              query: {
-                id: props?.likedSongs?.album?.id,
-              },
+          <AtomButton
+            onClick={() => {
+              router
+                .push({
+                  pathname: '/swap/album/[id]',
+                  query: {
+                    id: props?.likedSongs?.album?.id,
+                  },
+                })
+                .then(() => {
+                  document?.getElementById('view')?.scroll({
+                    top: 0,
+                    behavior: 'smooth',
+                  })
+                })
             }}
-            passHref
           >
-            <a>
-              <AtomText
-                css={css`
-                  &:hover {
-                    text-decoration: underline;
-                  }
-                `}
-              >
-                {props?.likedSongs?.album?.name}
-              </AtomText>
-            </a>
-          </AtomLink>
+            <AtomText
+              css={css`
+                &:hover {
+                  text-decoration: underline;
+                }
+              `}
+            >
+              {props?.likedSongs?.album?.name}
+            </AtomText>
+          </AtomButton>
         </AtomWrapper>
         <AtomWrapper
           css={css`
