@@ -6,6 +6,7 @@ import Normalize from '@Styles/global/normalize'
 import AtomSeoLayout from 'lib/AtomSeo'
 import { SessionProvider } from 'next-auth/react'
 import type { AppPropsWithLayout } from 'next/app'
+import Script from 'next/script'
 import { Provider } from 'react-redux'
 import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
@@ -39,6 +40,7 @@ const MyApp = ({
           description={SEO?.description}
         />
       )}
+      <Script src="https://www.youtube.com/iframe_api" />
       <ApolloProvider client={client}>
         <SessionProvider session={session}>
           <Provider store={store}>

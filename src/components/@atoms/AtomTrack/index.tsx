@@ -21,7 +21,11 @@ const typeTracks = ({ dispatch, type, screen, router }: DefsTrack) => ({
   album: (props: Props) => {
     const [hours, minutes, seconds] = useTime({ ms: props?.album?.duration })
     const setPlayPlayer = useSetAtom(PLAYATOM)
-    const handleClick = async (track: string) => {
+    const handleClick = async (
+      track: string,
+      youtube_url: string,
+      youtube_id: string
+    ) => {
       Navigator({
         title: props?.album?.name as string,
         artist_name:
@@ -45,6 +49,8 @@ const typeTracks = ({ dispatch, type, screen, router }: DefsTrack) => ({
               id: props?.id as string,
               name: props?.album?.name as string,
               image: props?.album?.image as string,
+              youtube_url: youtube_url,
+              youtube_id: youtube_id,
               artists: props?.album?.artists as ArtistProps,
               album: props as {
                 id?: string
@@ -89,7 +95,11 @@ const typeTracks = ({ dispatch, type, screen, router }: DefsTrack) => ({
               query: TRACKBYSLUG,
             })
 
-            handleClick(data?.data?.trackBySlug?.url)
+            handleClick(
+              data?.data?.trackBySlug?.url,
+              data?.data?.trackBySlug?.youtube_url,
+              data?.data?.trackBySlug?.id
+            )
           }
         }}
       >
@@ -103,7 +113,11 @@ const typeTracks = ({ dispatch, type, screen, router }: DefsTrack) => ({
               query: TRACKBYSLUG,
             })
 
-            handleClick(data?.data?.trackBySlug?.url)
+            handleClick(
+              data?.data?.trackBySlug?.url,
+              data?.data?.trackBySlug?.youtube_url,
+              data?.data?.trackBySlug?.id
+            )
           }}
           css={css`
             grid-column: 1;
@@ -229,7 +243,11 @@ const typeTracks = ({ dispatch, type, screen, router }: DefsTrack) => ({
     })
     const setPlayPlayer = useSetAtom(PLAYATOM)
 
-    const handleClick = (track: string) => {
+    const handleClick = (
+      track: string,
+      youtube_url: string,
+      youtube_id: string
+    ) => {
       Navigator({
         title: props?.likedSongs?.name as string,
         artist_name:
@@ -253,7 +271,9 @@ const typeTracks = ({ dispatch, type, screen, router }: DefsTrack) => ({
               position: props?.likedSongs?.position as number,
               id: props?.likedSongs?.id as string,
               name: props?.likedSongs?.name as string,
+              youtube_id: youtube_id,
               image: props?.likedSongs?.album?.image as string,
+              youtube_url: youtube_url,
               artists: props?.likedSongs?.artists as ArtistProps,
               album: props as {
                 id?: string
@@ -297,7 +317,11 @@ const typeTracks = ({ dispatch, type, screen, router }: DefsTrack) => ({
               query: TRACKBYSLUG,
             })
 
-            handleClick(data?.data?.trackBySlug?.url)
+            handleClick(
+              data?.data?.trackBySlug?.url,
+              data?.data?.trackBySlug?.youtube_url,
+              data?.data?.trackBySlug?.id
+            )
           }
         }}
       >
@@ -310,7 +334,11 @@ const typeTracks = ({ dispatch, type, screen, router }: DefsTrack) => ({
               },
               query: TRACKBYSLUG,
             })
-            handleClick(data?.data?.trackBySlug?.url)
+            handleClick(
+              data?.data?.trackBySlug?.url,
+              data?.data?.trackBySlug?.youtube_url,
+              data?.data?.trackBySlug?.id
+            )
           }}
           css={css`
             grid-column: 1;
@@ -482,7 +510,11 @@ const typeTracks = ({ dispatch, type, screen, router }: DefsTrack) => ({
     })
     const setPlayPlayer = useSetAtom(PLAYATOM)
 
-    const handleClick = async (track: string) => {
+    const handleClick = async (
+      track: string,
+      youtube_url: string,
+      youtube_id: string
+    ) => {
       Navigator({
         title: props?.playlist?.name as string,
         artist_name:
@@ -505,7 +537,9 @@ const typeTracks = ({ dispatch, type, screen, router }: DefsTrack) => ({
             currentTrack: {
               position: props?.playlist?.position as number,
               id: props?.playlist?.id as string,
+              youtube_id: youtube_id,
               name: props?.playlist?.name as string,
+              youtube_url: youtube_url,
               image: props?.playlist?.album?.image as string,
               artists: props?.playlist?.artists as ArtistProps,
               album: props as {
@@ -552,7 +586,11 @@ const typeTracks = ({ dispatch, type, screen, router }: DefsTrack) => ({
                 query: TRACKBYSLUG,
               })
               .then(async (data: any) => {
-                await handleClick(data?.trackBySlug?.url)
+                await handleClick(
+                  data?.trackBySlug?.url,
+                  data?.data?.trackBySlug?.youtube_url,
+                  data?.data?.trackBySlug?.id
+                )
               })
           }
         }}
@@ -568,7 +606,11 @@ const typeTracks = ({ dispatch, type, screen, router }: DefsTrack) => ({
                 query: TRACKBYSLUG,
               })
               .then(async (data: any) => {
-                await handleClick(data?.trackBySlug?.url)
+                await handleClick(
+                  data?.trackBySlug?.url,
+                  data?.data?.trackBySlug?.youtube_url,
+                  data?.data?.trackBySlug?.id
+                )
               })
           }}
           css={css`

@@ -171,45 +171,64 @@ const NavbarPlayer: FC = () => {
                   </AtomButton>
                 </AtomWrapper>
               )}
-              <AtomButton
-                width="max-content"
+              <AtomWrapper
                 css={css`
-                  &:hover {
-                    text-decoration: underline;
-                  }
+                  grid-column: 2;
+                  grid-row: 1;
                 `}
-                onClick={() => {
-                  router
-                    .push({
-                      pathname: `/swap/album/[id]`,
-                      query: {
-                        id: controls?.player?.currentTrack?.album.id,
-                      },
-                    })
-                    .then(() => {
-                      document?.getElementById('view')?.scroll({
-                        top: 0,
-                      })
-                    })
-                }}
               >
-                <AtomText
-                  fontWeight="700"
-                  as="p"
+                <AtomButton
+                  width="max-content"
                   css={css`
-                    grid-column: 2;
-                    grid-row: 1;
-                    align-self: center;
-                    @media (max-width: 980px) {
-                      grid-row: 1;
-                      grid-column: 1;
-                      font-size: 1rem;
+                    &:hover {
+                      text-decoration: underline;
                     }
                   `}
+                  onClick={() => {
+                    router
+                      .push({
+                        pathname: `/swap/album/[id]`,
+                        query: {
+                          id: controls?.player?.currentTrack?.album.id,
+                        },
+                      })
+                      .then(() => {
+                        document?.getElementById('view')?.scroll({
+                          top: 0,
+                        })
+                      })
+                  }}
                 >
-                  {controls?.player?.currentTrack?.name}
-                </AtomText>
-              </AtomButton>
+                  <AtomText
+                    fontWeight="700"
+                    as="p"
+                    css={css`
+                      grid-column: 2;
+                      grid-row: 1;
+                      align-self: center;
+                      @media (max-width: 980px) {
+                        grid-row: 1;
+                        grid-column: 1;
+                        font-size: 1rem;
+                      }
+                    `}
+                  >
+                    {controls?.player?.currentTrack?.name}
+                  </AtomText>
+                </AtomButton>
+                <AtomButton
+                  onClick={() => {
+                    router.push({
+                      pathname: `/swap/video/[id]`,
+                      query: {
+                        id: controls?.player?.currentTrack?.id,
+                      },
+                    })
+                  }}
+                >
+                  {controls?.player?.currentTrack?.youtube_url}
+                </AtomButton>
+              </AtomWrapper>
               <AtomWrapper
                 css={css`
                   grid-row: 2;
