@@ -5,8 +5,8 @@ import { controlsAtom, Navigator } from '@Components/Navbar/player'
 import { css } from '@emotion/react'
 import useScreen from '@Hooks/useScreen'
 import useTime from '@Hooks/useTime'
-import { ActionPlayer, PLAYATOM } from '@Redux/reducers/player/controls'
-import { useSetAtom } from 'jotai'
+import { ActionPlayer, Inti, PLAYATOM } from '@Redux/reducers/player/controls'
+import { useAtomValue, useSetAtom } from 'jotai'
 import AtomButton from 'lib/Atombutton'
 import AtomIcon from 'lib/AtomIcon'
 import AtomImage from 'lib/AtomImage'
@@ -17,7 +17,13 @@ import { client } from 'pages/_app'
 
 import { FC } from 'react'
 
-const typeTracks = ({ dispatch, type, screen, router }: DefsTrack) => ({
+const typeTracks = ({
+  dispatch,
+  type,
+  screen,
+  router,
+  controls,
+}: DefsTrack) => ({
   album: (props: Props) => {
     const [hours, minutes, seconds] = useTime({ ms: props?.album?.duration })
     const setPlayPlayer = useSetAtom(PLAYATOM)
@@ -73,7 +79,10 @@ const typeTracks = ({ dispatch, type, screen, router }: DefsTrack) => ({
     return (
       <AtomWrapper
         css={css`
-          margin-bottom: 2rem;
+          padding: 0.5rem;
+          &:hover {
+            background-color: #222229;
+          }
           display: grid;
           grid-template-columns: 50px 1fr 50px;
           gap: 10px;
@@ -145,6 +154,22 @@ const typeTracks = ({ dispatch, type, screen, router }: DefsTrack) => ({
               }
             `}
           >
+            {controls?.player?.currentTrack?.name === props?.album?.name && (
+              <AtomIcon
+                customCSS={css`
+                  background-color: #121216;
+                  position: absolute;
+                  &:hover {
+                    background-color: #222229;
+                    opacity: 1;
+                  }
+                `}
+                width="18px"
+                color="white"
+                height="18px"
+                icon="https://storage.googleapis.com/cdn-bucket-ixulabs-platform/WHIL/icons/fluent_sound-wave-circle-24-regular.svg"
+              />
+            )}
             {(props?.album?.position as number) + 1}
           </AtomText>
           <AtomIcon
@@ -152,8 +177,11 @@ const typeTracks = ({ dispatch, type, screen, router }: DefsTrack) => ({
               padding: 5px;
               background-color: #121216;
               position: absolute;
+
               opacity: 0;
               &:hover {
+                background-color: #222229;
+
                 opacity: 1;
               }
             `}
@@ -758,6 +786,7 @@ type DefsTrack = {
   id: string
   screen: number
   dispatch: (update: ActionPlayer) => void
+  controls?: Inti
   router: NextRouter
 }
 type Album = {
@@ -817,6 +846,7 @@ type Props = {
 
 const AtomTrack: FC<Props> = (props) => {
   const dispatch = useSetAtom(controlsAtom)
+  const controls = useAtomValue(controlsAtom)
   const router = useRouter()
   const screen = useScreen()
   return typeTracks({
@@ -825,6 +855,7 @@ const AtomTrack: FC<Props> = (props) => {
     screen,
     id: props.id,
     type: props.type,
+    controls,
   })[props.type](props)
 }
 
