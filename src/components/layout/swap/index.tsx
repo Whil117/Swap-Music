@@ -88,14 +88,16 @@ const SwapUser: FC<PropsLayout> = (props) => {
               overflow: auto;
               alig-items: flex-start;
               ::-webkit-scrollbar {
-                width: 5px;
-                /* height: 8px; */
+                width: 8px;
               }
+
               ::-webkit-scrollbar-thumb {
+                width: 5px;
                 background: #ccc;
                 border-radius: 4px;
               }
               ::-webkit-scrollbar-thumb:hover {
+                width: 5px;
                 background: #b3b3b3;
                 box-shadow: 0 0 2px 1px rgba(0, 0, 0, 0.2);
               }
