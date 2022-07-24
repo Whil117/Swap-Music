@@ -17,7 +17,7 @@ import 'swiper/css/pagination'
 import 'swiper/css/scrollbar'
 
 export const client = new ApolloClient({
-  uri: process.env.NEXT_PUBLIC_LOCATION ?? `http://localhost:4000/api/graphql`,
+  uri: 'https://swapbackend.vercel.app/api/graphql',
   cache: new InMemoryCache(),
   connectToDevTools: true,
   queryDeduplication: true,
