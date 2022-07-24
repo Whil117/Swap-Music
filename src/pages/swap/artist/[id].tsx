@@ -106,7 +106,21 @@ const ArtistById: NextPageFC<ArtistById> = ({
                   image: track?.album.images[0].url,
                   duration: track?.duration_ms,
                   artists: track?.artists,
-                  context: Popular.tracks,
+                  context: Popular.tracks.map((track) => ({
+                    id: track?.id,
+                    name: track?.name,
+                    preview_url: track?.preview_url as string,
+                    position: index,
+                    album: {
+                      id: track?.album.id,
+                      name: track?.album.name,
+                      image: track?.album.images[0].url as string,
+                    },
+                    image: track?.album.images[0].url,
+                    duration: track?.duration_ms,
+                    artists: track?.artists,
+                    type: 'likedsongs',
+                  })),
                 }}
               />
             ))}

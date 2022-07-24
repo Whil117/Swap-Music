@@ -298,6 +298,10 @@ const typeTracks = ({ dispatch, type, screen, router }: DefsTrack) => ({
           margin-bottom: 2rem;
           display: grid;
           grid-template-columns: 50px 1fr 1fr 50px;
+          padding: 0.5rem;
+          &:hover {
+            background-color: #222229;
+          }
           gap: 10px;
           width: 100%;
           align-items: center;
