@@ -6,7 +6,7 @@ import { css } from '@emotion/react'
 import useScreen from '@Hooks/useScreen'
 import useTime from '@Hooks/useTime'
 import { ActionPlayer, Inti, PLAYATOM } from '@Redux/reducers/player/controls'
-import { useAtomValue, useSetAtom } from 'jotai'
+import { SetStateAction, useAtom, useAtomValue, useSetAtom } from 'jotai'
 import AtomButton from 'lib/Atombutton'
 import AtomIcon from 'lib/AtomIcon'
 import AtomImage from 'lib/AtomImage'
@@ -23,10 +23,11 @@ const typeTracks = ({
   screen,
   router,
   controls,
+  setPlayPlayer,
+  playPlayer,
 }: DefsTrack) => ({
   album: (props: Props) => {
     const [hours, minutes, seconds] = useTime({ ms: props?.album?.duration })
-    const setPlayPlayer = useSetAtom(PLAYATOM)
     const handleClick = async (
       track: string,
       youtube_url: string,
@@ -96,37 +97,53 @@ const typeTracks = ({
         key={props?.id}
         onClick={async (e) => {
           if (screen <= 980) {
-            const data = await client.query({
-              fetchPolicy: 'no-cache',
-              variables: {
-                slug: slug,
-              },
-              query: TRACKBYSLUG,
-            })
+            if (controls?.player?.currentTrack?.name === props?.album?.name) {
+              const audio = document.getElementById(
+                'AUDIOPLAYER'
+              ) as HTMLAudioElement
+              playPlayer ? audio.pause() : audio.play()
+              setPlayPlayer(!playPlayer)
+            } else {
+              const data = await client.query({
+                fetchPolicy: 'no-cache',
+                variables: {
+                  slug: slug,
+                },
+                query: TRACKBYSLUG,
+              })
 
-            handleClick(
-              data?.data?.trackBySlug?.url,
-              data?.data?.trackBySlug?.youtube_url,
-              data?.data?.trackBySlug?.id
-            )
+              handleClick(
+                data?.data?.trackBySlug?.url,
+                data?.data?.trackBySlug?.youtube_url,
+                data?.data?.trackBySlug?.id
+              )
+            }
           }
         }}
       >
         <AtomButton
           onClick={async (e) => {
-            const data = await client.query({
-              fetchPolicy: 'no-cache',
-              variables: {
-                slug: slug,
-              },
-              query: TRACKBYSLUG,
-            })
+            if (controls?.player?.currentTrack?.name === props?.album?.name) {
+              const audio = document.getElementById(
+                'AUDIOPLAYER'
+              ) as HTMLAudioElement
+              playPlayer ? audio.pause() : audio.play()
+              setPlayPlayer(!playPlayer)
+            } else {
+              const data = await client.query({
+                fetchPolicy: 'no-cache',
+                variables: {
+                  slug: slug,
+                },
+                query: TRACKBYSLUG,
+              })
 
-            handleClick(
-              data?.data?.trackBySlug?.url,
-              data?.data?.trackBySlug?.youtube_url,
-              data?.data?.trackBySlug?.id
-            )
+              handleClick(
+                data?.data?.trackBySlug?.url,
+                data?.data?.trackBySlug?.youtube_url,
+                data?.data?.trackBySlug?.id
+              )
+            }
           }}
           css={css`
             grid-column: 1;
@@ -187,7 +204,12 @@ const typeTracks = ({
             `}
             width="18px"
             height="18px"
-            icon="https://storage.googleapis.com/cdn-bucket-ixulabs-platform/WHIL/icons/playho.svg"
+            icon={
+              controls?.player?.currentTrack?.name === props?.album?.name &&
+              playPlayer
+                ? ' https://storage.googleapis.com/cdn-bucket-ixulabs-platform/WHIL/icons/pauseee.svg'
+                : 'https://storage.googleapis.com/cdn-bucket-ixulabs-platform/WHIL/icons/playho.svg'
+            }
           />
         </AtomButton>
         <AtomWrapper
@@ -341,36 +363,56 @@ const typeTracks = ({
         key={props?.id}
         onClick={async () => {
           if (screen <= 980) {
-            const data = await client.query({
-              fetchPolicy: 'no-cache',
-              variables: {
-                slug: slug,
-              },
-              query: TRACKBYSLUG,
-            })
+            if (
+              controls?.player?.currentTrack?.name === props?.likedSongs?.name
+            ) {
+              const audio = document.getElementById(
+                'AUDIOPLAYER'
+              ) as HTMLAudioElement
+              playPlayer ? audio.pause() : audio.play()
+              setPlayPlayer(!playPlayer)
+            } else {
+              const data = await client.query({
+                fetchPolicy: 'no-cache',
+                variables: {
+                  slug: slug,
+                },
+                query: TRACKBYSLUG,
+              })
 
-            handleClick(
-              data?.data?.trackBySlug?.url,
-              data?.data?.trackBySlug?.youtube_url,
-              data?.data?.trackBySlug?.id
-            )
+              handleClick(
+                data?.data?.trackBySlug?.url,
+                data?.data?.trackBySlug?.youtube_url,
+                data?.data?.trackBySlug?.id
+              )
+            }
           }
         }}
       >
         <AtomButton
           onClick={async () => {
-            const data = await client.query({
-              fetchPolicy: 'no-cache',
-              variables: {
-                slug: slug,
-              },
-              query: TRACKBYSLUG,
-            })
-            handleClick(
-              data?.data?.trackBySlug?.url,
-              data?.data?.trackBySlug?.youtube_url,
-              data?.data?.trackBySlug?.id
-            )
+            if (
+              controls?.player?.currentTrack?.name === props?.likedSongs?.name
+            ) {
+              const audio = document.getElementById(
+                'AUDIOPLAYER'
+              ) as HTMLAudioElement
+              playPlayer ? audio.pause() : audio.play()
+              setPlayPlayer(!playPlayer)
+            } else {
+              const data = await client.query({
+                fetchPolicy: 'no-cache',
+                variables: {
+                  slug: slug,
+                },
+                query: TRACKBYSLUG,
+              })
+              handleClick(
+                data?.data?.trackBySlug?.url,
+                data?.data?.trackBySlug?.youtube_url,
+                data?.data?.trackBySlug?.id
+              )
+            }
           }}
           css={css`
             grid-column: 1;
@@ -398,6 +440,23 @@ const typeTracks = ({
               }
             `}
           >
+            {controls?.player?.currentTrack?.name ===
+              props?.likedSongs?.name && (
+              <AtomIcon
+                customCSS={css`
+                  background-color: #121216;
+                  position: absolute;
+                  &:hover {
+                    background-color: #222229;
+                    opacity: 1;
+                  }
+                `}
+                width="18px"
+                color="white"
+                height="18px"
+                icon="https://storage.googleapis.com/cdn-bucket-ixulabs-platform/WHIL/icons/fluent_sound-wave-circle-24-regular.svg"
+              />
+            )}
             {(props?.likedSongs?.position as number) + 1}
           </AtomText>
           <AtomIcon
@@ -412,7 +471,12 @@ const typeTracks = ({
             `}
             width="18px"
             height="18px"
-            icon="https://storage.googleapis.com/cdn-bucket-ixulabs-platform/WHIL/icons/playho.svg"
+            icon={
+              controls?.player?.currentTrack?.name ===
+                props?.likedSongs?.name && playPlayer
+                ? ' https://storage.googleapis.com/cdn-bucket-ixulabs-platform/WHIL/icons/pauseee.svg'
+                : 'https://storage.googleapis.com/cdn-bucket-ixulabs-platform/WHIL/icons/playho.svg'
+            }
           />
         </AtomButton>
         <AtomWrapper
@@ -629,21 +693,31 @@ const typeTracks = ({
       >
         <AtomButton
           onClick={async (e) => {
-            await client
-              .query({
-                fetchPolicy: 'no-cache',
-                variables: {
-                  slug: slug,
-                },
-                query: TRACKBYSLUG,
-              })
-              .then(async (data: any) => {
-                await handleClick(
-                  data?.trackBySlug?.url,
-                  data?.data?.trackBySlug?.youtube_url,
-                  data?.data?.trackBySlug?.id
-                )
-              })
+            if (
+              controls?.player?.currentTrack?.name === props?.playlist?.name
+            ) {
+              const audio = document.getElementById(
+                'AUDIOPLAYER'
+              ) as HTMLAudioElement
+              playPlayer ? audio.pause() : audio.play()
+              setPlayPlayer(!playPlayer)
+            } else {
+              await client
+                .query({
+                  fetchPolicy: 'no-cache',
+                  variables: {
+                    slug: slug,
+                  },
+                  query: TRACKBYSLUG,
+                })
+                .then(async (data: any) => {
+                  await handleClick(
+                    data?.trackBySlug?.url,
+                    data?.data?.trackBySlug?.youtube_url,
+                    data?.data?.trackBySlug?.id
+                  )
+                })
+            }
           }}
           css={css`
             grid-column: 1;
@@ -671,6 +745,22 @@ const typeTracks = ({
               }
             `}
           >
+            {controls?.player?.currentTrack?.name === props?.playlist?.name && (
+              <AtomIcon
+                customCSS={css`
+                  background-color: #121216;
+                  position: absolute;
+                  &:hover {
+                    background-color: #222229;
+                    opacity: 1;
+                  }
+                `}
+                width="18px"
+                color="white"
+                height="18px"
+                icon="https://storage.googleapis.com/cdn-bucket-ixulabs-platform/WHIL/icons/fluent_sound-wave-circle-24-regular.svg"
+              />
+            )}
             {(props?.playlist?.position as number) + 1}
           </AtomText>
           <AtomIcon
@@ -685,7 +775,12 @@ const typeTracks = ({
             `}
             width="18px"
             height="18px"
-            icon="https://storage.googleapis.com/cdn-bucket-ixulabs-platform/WHIL/icons/playho.svg"
+            icon={
+              controls?.player?.currentTrack?.name === props?.playlist?.name &&
+              playPlayer
+                ? ' https://storage.googleapis.com/cdn-bucket-ixulabs-platform/WHIL/icons/pauseee.svg'
+                : 'https://storage.googleapis.com/cdn-bucket-ixulabs-platform/WHIL/icons/playho.svg'
+            }
           />
         </AtomButton>
         <AtomWrapper
@@ -786,8 +881,10 @@ type DefsTrack = {
   id: string
   screen: number
   dispatch: (update: ActionPlayer) => void
+  setPlayPlayer: (update: SetStateAction<boolean>) => void
   controls?: Inti
   router: NextRouter
+  playPlayer: boolean
 }
 type Album = {
   id?: string
@@ -847,6 +944,7 @@ type Props = {
 const AtomTrack: FC<Props> = (props) => {
   const dispatch = useSetAtom(controlsAtom)
   const controls = useAtomValue(controlsAtom)
+  const [playPlayer, setPlayPlayer] = useAtom(PLAYATOM)
   const router = useRouter()
   const screen = useScreen()
   return typeTracks({
@@ -856,6 +954,8 @@ const AtomTrack: FC<Props> = (props) => {
     id: props.id,
     type: props.type,
     controls,
+    playPlayer,
+    setPlayPlayer,
   })[props.type](props)
 }
 
