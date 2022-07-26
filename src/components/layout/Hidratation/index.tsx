@@ -24,7 +24,6 @@ const Hidratation: FC<Props> = ({ children }) => {
   const DataUserFetching = async (accessToken: string) => {
     spotifyAPI.setAccessToken(accessToken as string)
     setaccessTokenAtom(accessToken)
-    console.log(await Session)
     const me = await spotifyAPI
       .getMe()
       .then((res) => res.body)

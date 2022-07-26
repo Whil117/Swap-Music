@@ -1,30 +1,26 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 /* eslint-disable no-unused-vars */
-import { TRACKBYSLUG } from '@Apollo/client/querys/track'
 import { controlsAtom, Navigator } from '@Components/Navbar/player'
 import { css } from '@emotion/react'
 import useScreen from '@Hooks/useScreen'
 import useTime from '@Hooks/useTime'
 import { ActionPlayer, Inti, PLAYATOM } from '@Redux/reducers/player/controls'
-import { SetStateAction, useAtom, useAtomValue, useSetAtom } from 'jotai'
+import { SetStateAction, useSetAtom } from 'jotai'
 import AtomButton from 'lib/Atombutton'
-import AtomIcon from 'lib/AtomIcon'
 import AtomImage from 'lib/AtomImage'
 import AtomText from 'lib/AtomText'
 import AtomWrapper from 'lib/Atomwrapper'
 import { NextRouter, useRouter } from 'next/router'
-import { client } from 'pages/_app'
 
 import { FC } from 'react'
+import AtomPlayTrack from '../AtomPlayTrack'
 
 const typeTracks = ({
   dispatch,
   type,
   screen,
   router,
-  controls,
   setPlayPlayer,
-  playPlayer,
 }: DefsTrack) => ({
   album: (props: Props) => {
     const [hours, minutes, seconds] = useTime({ ms: props?.album?.duration })
@@ -80,6 +76,7 @@ const typeTracks = ({
     return (
       <AtomWrapper
         css={css`
+          margin-bottom: 2rem;
           padding: 0.5rem;
           &:hover {
             background-color: #222229;
@@ -95,123 +92,40 @@ const typeTracks = ({
           }
         `}
         key={props?.id}
-        onClick={async (e) => {
-          if (screen <= 980) {
-            if (controls?.player?.currentTrack?.name === props?.album?.name) {
-              const audio = document.getElementById(
-                'AUDIOPLAYER'
-              ) as HTMLAudioElement
-              playPlayer ? audio.pause() : audio.play()
-              setPlayPlayer(!playPlayer)
-            } else {
-              const data = await client.query({
-                fetchPolicy: 'no-cache',
-                variables: {
-                  slug: slug,
-                },
-                query: TRACKBYSLUG,
-              })
+        // onClick={async (e) => {
+        //   if (screen <= 980) {
+        //     if (controls?.player?.currentTrack?.name === props?.album?.name) {
+        //       const audio = document.getElementById(
+        //         'AUDIOPLAYER'
+        //       ) as HTMLAudioElement
+        //       playPlayer ? audio.pause() : audio.play()
+        //       setPlayPlayer(!playPlayer)
+        //     } else {
+        //       const data = await client.query({
+        //         fetchPolicy: 'no-cache',
+        //         variables: {
+        //           slug: slug,
+        //         },
+        //         query: TRACKBYSLUG,
+        //       })
 
-              handleClick(
-                data?.data?.trackBySlug?.url,
-                data?.data?.trackBySlug?.youtube_url,
-                data?.data?.trackBySlug?.id
-              )
-            }
-          }
-        }}
+        //       handleClick(
+        //         data?.data?.trackBySlug?.url,
+        //         data?.data?.trackBySlug?.youtube_url,
+        //         data?.data?.trackBySlug?.id
+        //       )
+        //     }
+        //   }
+        // }}
       >
-        <AtomButton
-          onClick={async (e) => {
-            if (controls?.player?.currentTrack?.name === props?.album?.name) {
-              const audio = document.getElementById(
-                'AUDIOPLAYER'
-              ) as HTMLAudioElement
-              playPlayer ? audio.pause() : audio.play()
-              setPlayPlayer(!playPlayer)
-            } else {
-              const data = await client.query({
-                fetchPolicy: 'no-cache',
-                variables: {
-                  slug: slug,
-                },
-                query: TRACKBYSLUG,
-              })
-
-              handleClick(
-                data?.data?.trackBySlug?.url,
-                data?.data?.trackBySlug?.youtube_url,
-                data?.data?.trackBySlug?.id
-              )
-            }
+        <AtomPlayTrack
+          name={props?.album?.name as string}
+          position={props?.album?.position as number}
+          slug={slug as string}
+          onTrack={async (url, ytUrl, id) => {
+            await handleClick(url, ytUrl, id)
           }}
-          css={css`
-            grid-column: 1;
-            justify-self: center;
-            align-self: center;
-            position: relative;
-            margin: 0;
-            padding: 0;
-            @media (max-width: 980px) {
-              display: none;
-            }
-          `}
-        >
-          <AtomText
-            as="p"
-            css={css`
-              margin: 0;
-              padding: 0;
-              font-size: 16px;
-              font-weight: 600;
-              opacity: 1;
-              &:hover {
-                display: none;
-                opacity: 0;
-              }
-            `}
-          >
-            {controls?.player?.currentTrack?.name === props?.album?.name && (
-              <AtomIcon
-                customCSS={css`
-                  background-color: #121216;
-                  position: absolute;
-                  &:hover {
-                    background-color: #222229;
-                    opacity: 1;
-                  }
-                `}
-                width="18px"
-                color="white"
-                height="18px"
-                icon="https://storage.googleapis.com/cdn-bucket-ixulabs-platform/WHIL/icons/fluent_sound-wave-circle-24-regular.svg"
-              />
-            )}
-            {(props?.album?.position as number) + 1}
-          </AtomText>
-          <AtomIcon
-            customCSS={css`
-              padding: 5px;
-              background-color: #121216;
-              position: absolute;
-
-              opacity: 0;
-              &:hover {
-                background-color: #222229;
-
-                opacity: 1;
-              }
-            `}
-            width="18px"
-            height="18px"
-            icon={
-              controls?.player?.currentTrack?.name === props?.album?.name &&
-              playPlayer
-                ? ' https://storage.googleapis.com/cdn-bucket-ixulabs-platform/WHIL/icons/pauseee.svg'
-                : 'https://storage.googleapis.com/cdn-bucket-ixulabs-platform/WHIL/icons/playho.svg'
-            }
-          />
-        </AtomButton>
+        />
         <AtomWrapper
           css={css`
             grid-column: 2 / 3;
@@ -291,7 +205,6 @@ const typeTracks = ({
     const [hours, minutes, seconds] = useTime({
       ms: props?.likedSongs?.duration,
     })
-    const setPlayPlayer = useSetAtom(PLAYATOM)
 
     const handleClick = (
       track: string,
@@ -346,9 +259,9 @@ const typeTracks = ({
       <AtomWrapper
         css={css`
           margin-bottom: 2rem;
+          padding: 0.5rem;
           display: grid;
           grid-template-columns: 50px 1fr 1fr 50px;
-          padding: 0.5rem;
           &:hover {
             background-color: #222229;
           }
@@ -361,35 +274,43 @@ const typeTracks = ({
           }
         `}
         key={props?.id}
-        onClick={async () => {
-          if (screen <= 980) {
-            if (
-              controls?.player?.currentTrack?.name === props?.likedSongs?.name
-            ) {
-              const audio = document.getElementById(
-                'AUDIOPLAYER'
-              ) as HTMLAudioElement
-              playPlayer ? audio.pause() : audio.play()
-              setPlayPlayer(!playPlayer)
-            } else {
-              const data = await client.query({
-                fetchPolicy: 'no-cache',
-                variables: {
-                  slug: slug,
-                },
-                query: TRACKBYSLUG,
-              })
+        // onClick={async () => {
+        //   if (screen <= 980) {
+        //     if (
+        //       controls?.player?.currentTrack?.name === props?.likedSongs?.name
+        //     ) {
+        //       const audio = document.getElementById(
+        //         'AUDIOPLAYER'
+        //       ) as HTMLAudioElement
+        //       playPlayer ? audio.pause() : audio.play()
+        //       setPlayPlayer(!playPlayer)
+        //     } else {
+        //       const data = await client.query({
+        //         fetchPolicy: 'no-cache',
+        //         variables: {
+        //           slug: slug,
+        //         },
+        //         query: TRACKBYSLUG,
+        //       })
 
-              handleClick(
-                data?.data?.trackBySlug?.url,
-                data?.data?.trackBySlug?.youtube_url,
-                data?.data?.trackBySlug?.id
-              )
-            }
-          }
-        }}
+        //       handleClick(
+        //         data?.data?.trackBySlug?.url,
+        //         data?.data?.trackBySlug?.youtube_url,
+        //         data?.data?.trackBySlug?.id
+        //       )
+        //     }
+        //   }
+        // }}
       >
-        <AtomButton
+        <AtomPlayTrack
+          name={props?.likedSongs?.name as string}
+          position={props?.likedSongs?.position as number}
+          slug={slug as string}
+          onTrack={async (url, ytUrl, id) => {
+            await handleClick(url, ytUrl, id)
+          }}
+        />
+        {/* <AtomButton
           onClick={async () => {
             if (
               controls?.player?.currentTrack?.name === props?.likedSongs?.name
@@ -440,25 +361,24 @@ const typeTracks = ({
               }
             `}
           >
-            {controls?.player?.currentTrack?.name ===
-              props?.likedSongs?.name && (
-              <AtomIcon
-                customCSS={css`
-                  background-color: #121216;
-                  position: absolute;
-                  &:hover {
-                    background-color: #222229;
-                    opacity: 1;
-                  }
-                `}
-                width="18px"
-                color="white"
-                height="18px"
-                icon="https://storage.googleapis.com/cdn-bucket-ixulabs-platform/WHIL/icons/fluent_sound-wave-circle-24-regular.svg"
-              />
-            )}
             {(props?.likedSongs?.position as number) + 1}
           </AtomText>
+          {controls?.player?.currentTrack?.name === props?.likedSongs?.name && (
+            <AtomIcon
+              customCSS={css`
+                background-color: #121216;
+                position: absolute;
+                &:hover {
+                  background-color: #222229;
+                  opacity: 1;
+                }
+              `}
+              width="18px"
+              color="white"
+              height="18px"
+              icon="https://storage.googleapis.com/cdn-bucket-ixulabs-platform/WHIL/icons/fluent_sound-wave-circle-24-regular.svg"
+            />
+          )}
           <AtomIcon
             customCSS={css`
               padding: 5px;
@@ -466,6 +386,7 @@ const typeTracks = ({
               position: absolute;
               opacity: 0;
               &:hover {
+                background-color: #222229;
                 opacity: 1;
               }
             `}
@@ -474,11 +395,11 @@ const typeTracks = ({
             icon={
               controls?.player?.currentTrack?.name ===
                 props?.likedSongs?.name && playPlayer
-                ? ' https://storage.googleapis.com/cdn-bucket-ixulabs-platform/WHIL/icons/pauseee.svg'
+                ? ' https://storage.googleapis.com/cdn-bucket-ixulabs-platform/WHIL/icons/PUASE.svg'
                 : 'https://storage.googleapis.com/cdn-bucket-ixulabs-platform/WHIL/icons/playho.svg'
             }
           />
-        </AtomButton>
+        </AtomButton> */}
         <AtomWrapper
           css={css`
             grid-column: 2;
@@ -604,7 +525,6 @@ const typeTracks = ({
     const [hours, minutes, seconds] = useTime({
       ms: props?.playlist?.duration,
     })
-    const setPlayPlayer = useSetAtom(PLAYATOM)
 
     const handleClick = async (
       track: string,
@@ -671,118 +591,34 @@ const typeTracks = ({
           }
         `}
         key={props?.id}
-        onClick={async (e) => {
-          if (screen <= 980) {
-            await client
-              .query({
-                fetchPolicy: 'no-cache',
-                variables: {
-                  slug: slug,
-                },
-                query: TRACKBYSLUG,
-              })
-              .then(async (data: any) => {
-                await handleClick(
-                  data?.trackBySlug?.url,
-                  data?.data?.trackBySlug?.youtube_url,
-                  data?.data?.trackBySlug?.id
-                )
-              })
-          }
-        }}
+        // onClick={async (e) => {
+        //   if (screen <= 980) {
+        //     await client
+        //       .query({
+        //         fetchPolicy: 'no-cache',
+        //         variables: {
+        //           slug: slug,
+        //         },
+        //         query: TRACKBYSLUG,
+        //       })
+        //       .then(async (data: any) => {
+        //         await handleClick(
+        //           data?.trackBySlug?.url,
+        //           data?.data?.trackBySlug?.youtube_url,
+        //           data?.data?.trackBySlug?.id
+        //         )
+        //       })
+        //   }
+        // }}
       >
-        <AtomButton
-          onClick={async (e) => {
-            if (
-              controls?.player?.currentTrack?.name === props?.playlist?.name
-            ) {
-              const audio = document.getElementById(
-                'AUDIOPLAYER'
-              ) as HTMLAudioElement
-              playPlayer ? audio.pause() : audio.play()
-              setPlayPlayer(!playPlayer)
-            } else {
-              await client
-                .query({
-                  fetchPolicy: 'no-cache',
-                  variables: {
-                    slug: slug,
-                  },
-                  query: TRACKBYSLUG,
-                })
-                .then(async (data: any) => {
-                  await handleClick(
-                    data?.trackBySlug?.url,
-                    data?.data?.trackBySlug?.youtube_url,
-                    data?.data?.trackBySlug?.id
-                  )
-                })
-            }
+        <AtomPlayTrack
+          name={props?.playlist?.name as string}
+          position={props?.playlist?.position as number}
+          slug={slug as string}
+          onTrack={async (url, ytUrl, id) => {
+            await handleClick(url, ytUrl, id)
           }}
-          css={css`
-            grid-column: 1;
-            justify-self: center;
-            align-self: center;
-            position: relative;
-            margin: 0;
-            padding: 0;
-            @media (max-width: 980px) {
-              display: none;
-            }
-          `}
-        >
-          <AtomText
-            as="p"
-            css={css`
-              margin: 0;
-              padding: 0;
-              font-size: 16px;
-              font-weight: 600;
-              opacity: 1;
-              &:hover {
-                display: none;
-                opacity: 0;
-              }
-            `}
-          >
-            {controls?.player?.currentTrack?.name === props?.playlist?.name && (
-              <AtomIcon
-                customCSS={css`
-                  background-color: #121216;
-                  position: absolute;
-                  &:hover {
-                    background-color: #222229;
-                    opacity: 1;
-                  }
-                `}
-                width="18px"
-                color="white"
-                height="18px"
-                icon="https://storage.googleapis.com/cdn-bucket-ixulabs-platform/WHIL/icons/fluent_sound-wave-circle-24-regular.svg"
-              />
-            )}
-            {(props?.playlist?.position as number) + 1}
-          </AtomText>
-          <AtomIcon
-            customCSS={css`
-              padding: 5px;
-              background-color: #121216;
-              position: absolute;
-              opacity: 0;
-              &:hover {
-                opacity: 1;
-              }
-            `}
-            width="18px"
-            height="18px"
-            icon={
-              controls?.player?.currentTrack?.name === props?.playlist?.name &&
-              playPlayer
-                ? ' https://storage.googleapis.com/cdn-bucket-ixulabs-platform/WHIL/icons/pauseee.svg'
-                : 'https://storage.googleapis.com/cdn-bucket-ixulabs-platform/WHIL/icons/playho.svg'
-            }
-          />
-        </AtomButton>
+        />
         <AtomWrapper
           css={css`
             grid-column: 2 / 3;
@@ -884,7 +720,6 @@ type DefsTrack = {
   setPlayPlayer: (update: SetStateAction<boolean>) => void
   controls?: Inti
   router: NextRouter
-  playPlayer: boolean
 }
 type Album = {
   id?: string
@@ -943,8 +778,7 @@ type Props = {
 
 const AtomTrack: FC<Props> = (props) => {
   const dispatch = useSetAtom(controlsAtom)
-  const controls = useAtomValue(controlsAtom)
-  const [playPlayer, setPlayPlayer] = useAtom(PLAYATOM)
+  const setPlayPlayer = useSetAtom(PLAYATOM)
   const router = useRouter()
   const screen = useScreen()
   return typeTracks({
@@ -953,8 +787,6 @@ const AtomTrack: FC<Props> = (props) => {
     screen,
     id: props.id,
     type: props.type,
-    controls,
-    playPlayer,
     setPlayPlayer,
   })[props.type](props)
 }

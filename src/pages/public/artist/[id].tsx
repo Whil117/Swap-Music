@@ -44,7 +44,6 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
     .catch((err) => {
       console.log(err)
     })
-  console.log(id)
 
   ArtistById.Layout = 'public'
   ArtistById.SEO = {
