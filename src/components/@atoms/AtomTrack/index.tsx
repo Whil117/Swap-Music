@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 /* eslint-disable no-unused-vars */
 import { controlsAtom, Navigator } from '@Components/Navbar/player'
-import { css } from '@emotion/react'
+import { css, SerializedStyles } from '@emotion/react'
 import useScreen from '@Hooks/useScreen'
 import useTime from '@Hooks/useTime'
 import { ActionPlayer, Inti, PLAYATOM } from '@Redux/reducers/player/controls'
@@ -21,6 +21,7 @@ const typeTracks = ({
   screen,
   router,
   setPlayPlayer,
+  customCSS,
 }: DefsTrack) => ({
   album: (props: Props) => {
     const [hours, minutes, seconds] = useTime({ ms: props?.album?.duration })
@@ -76,7 +77,7 @@ const typeTracks = ({
     return (
       <AtomWrapper
         css={css`
-          margin-bottom: 2rem;
+          margin-bottom: 1rem;
           padding: 0.5rem;
           &:hover {
             background-color: #222229;
@@ -90,6 +91,7 @@ const typeTracks = ({
           @media (max-width: 980px) {
             grid-template-columns: 1fr;
           }
+          ${customCSS}
         `}
         key={props?.id}
         // onClick={async (e) => {
@@ -258,7 +260,7 @@ const typeTracks = ({
     return (
       <AtomWrapper
         css={css`
-          margin-bottom: 2rem;
+          margin-bottom: 1rem;
           padding: 0.5rem;
           display: grid;
           grid-template-columns: 50px 1fr 1fr 50px;
@@ -272,6 +274,7 @@ const typeTracks = ({
           @media (max-width: 980px) {
             grid-template-columns: 1fr;
           }
+          ${customCSS}
         `}
         key={props?.id}
         // onClick={async () => {
@@ -579,7 +582,7 @@ const typeTracks = ({
     return (
       <AtomWrapper
         css={css`
-          margin-bottom: 2rem;
+          margin-bottom: 1rem;
           display: grid;
           grid-template-columns: 50px 1fr 50px;
           gap: 10px;
@@ -589,6 +592,7 @@ const typeTracks = ({
           @media (max-width: 980px) {
             grid-template-columns: 1fr;
           }
+          ${customCSS}
         `}
         key={props?.id}
         // onClick={async (e) => {
@@ -718,6 +722,7 @@ type DefsTrack = {
   screen: number
   dispatch: (update: ActionPlayer) => void
   setPlayPlayer: (update: SetStateAction<boolean>) => void
+  customCSS?: SerializedStyles
   controls?: Inti
   router: NextRouter
 }
@@ -742,6 +747,7 @@ export type ContextTracks = {
 type Props = {
   type: 'album' | 'likedsongs'
   id: string
+  customCSS?: SerializedStyles
   album?: {
     id?: string
     position?: number
@@ -788,6 +794,7 @@ const AtomTrack: FC<Props> = (props) => {
     id: props.id,
     type: props.type,
     setPlayPlayer,
+    customCSS: props.customCSS,
   })[props.type](props)
 }
 

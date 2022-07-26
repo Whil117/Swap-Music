@@ -98,6 +98,45 @@ const Queue: NextPageFCProps = () => {
         <AtomText fontSize="28px" fontWeight="bold">
           Queue
         </AtomText>
+        <AtomWrapper>
+          <AtomText opacity={0.5} fontWeight="bold">
+            Now Playing
+          </AtomText>
+          <AtomTrack
+            key={controls?.player?.currentTrack?.id}
+            type="likedsongs"
+            id={controls?.player?.currentTrack?.id as string}
+            likedSongs={{
+              id: controls?.player?.currentTrack?.id,
+              name: controls?.player?.currentTrack?.name,
+              preview_url: controls?.player?.currentTrack
+                ?.preview_url as string,
+              position: 0,
+              album: {
+                id: controls?.player?.currentTrack?.album?.id,
+                name: controls?.player?.currentTrack?.album?.name,
+                image: controls?.player?.currentTrack?.image as string,
+              },
+              image: controls?.player?.currentTrack?.image,
+              duration: 0,
+              artists: [],
+              context: [],
+            }}
+            customCSS={css`
+              margin-bottom: 0px;
+            `}
+          />
+        </AtomWrapper>
+        {/* <AtomWrapper
+          css={css`
+            background-color: #555555;
+            height: 1px;
+            width: 100%;
+          `}
+        ></AtomWrapper> */}
+        <AtomText opacity={0.5} fontWeight="bold">
+          Next up
+        </AtomText>
         {typeQueue[
           controls?.player?.currentSite.type as keyof typeof typeQueue
         ](controls)}
