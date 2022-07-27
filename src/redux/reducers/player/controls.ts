@@ -28,6 +28,7 @@ export type Inti = {
     }
     currentTrack: {
       id: string
+      idTrack: string
       position: number
       name: string
       artists: {
@@ -76,6 +77,7 @@ export const initialState = {
     },
     currentTrack: {
       id: '',
+      idTrack: '',
       position: 0,
       name: '',
       artists: [] as {

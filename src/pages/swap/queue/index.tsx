@@ -20,12 +20,52 @@ const typeQueue = {
           gap: 20px;
         `}
       >
-        {controls?.player?.context?.map((track, idx) => (
+        {controls?.player?.context
+          ?.filter((item) => item.id !== controls.player?.currentTrack?.idTrack)
+          ?.map((track, idx) => (
+            <AtomTrack
+              key={track?.id}
+              type="likedsongs"
+              id={track?.album?.id as string}
+              likedSongs={{
+                id: track?.album?.id,
+                idTrack: track?.id,
+                name: track?.name,
+                preview_url: track?.preview_url as string,
+                position: idx,
+                album: {
+                  id: track?.album?.id,
+                  name: track?.album?.name,
+                  image: track?.album?.image as string,
+                },
+                image: track?.album?.image,
+                duration: track?.duration,
+                artists: track?.artists,
+                context: controls?.player?.context,
+              }}
+            />
+          ))}
+      </AtomWrapper>
+    )
+  },
+  likedsongs: (controls: Inti) => (
+    <AtomWrapper
+      css={css`
+        display: flex;
+        alig-items: flex-start;
+        flex-direction: column;
+        gap: 20px;
+      `}
+    >
+      {controls?.player?.context
+        ?.filter((item) => item.id !== controls.player?.currentTrack?.idTrack)
+        ?.map((track, idx) => (
           <AtomTrack
             key={track?.id}
             type="likedsongs"
             id={track?.album?.id as string}
             likedSongs={{
+              idTrack: track?.id,
               id: track?.album?.id,
               name: track?.name,
               preview_url: track?.preview_url as string,
@@ -42,47 +82,13 @@ const typeQueue = {
             }}
           />
         ))}
-      </AtomWrapper>
-    )
-  },
-  likedsongs: (controls: Inti) => (
-    <AtomWrapper
-      css={css`
-        display: flex;
-        alig-items: flex-start;
-        flex-direction: column;
-        gap: 20px;
-      `}
-    >
-      {controls?.player?.context?.map((track, idx) => (
-        <AtomTrack
-          key={track?.id}
-          type="likedsongs"
-          id={track?.album?.id as string}
-          likedSongs={{
-            id: track?.album?.id,
-            name: track?.name,
-            preview_url: track?.preview_url as string,
-            position: idx,
-            album: {
-              id: track?.album?.id,
-              name: track?.album?.name,
-              image: track?.album?.image as string,
-            },
-            image: track?.album?.image,
-            duration: track?.duration,
-            artists: track?.artists,
-            context: controls?.player?.context,
-          }}
-        />
-      ))}
     </AtomWrapper>
   ),
 }
 
 const Queue: NextPageFCProps = () => {
   const controls = useAtomValue(controlsAtom)
-  // console.log(controls.player?.currentTrack?.album)
+  // console.log(controls.player?.currentTrack)
 
   return (
     <AtomWrapper>
@@ -109,6 +115,7 @@ const Queue: NextPageFCProps = () => {
             id={controls?.player?.currentTrack?.id as string}
             likedSongs={{
               id: controls?.player?.currentTrack?.id,
+              idTrack: controls?.player?.currentTrack?.id,
               name: controls?.player?.currentTrack?.name,
               preview_url: controls?.player?.currentTrack
                 ?.preview_url as string,

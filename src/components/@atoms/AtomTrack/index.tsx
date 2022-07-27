@@ -52,6 +52,7 @@ const typeTracks = ({
               ...props.album,
               position: props?.album?.position as number,
               id: props?.id as string,
+              idTrack: props?.album?.idTrack as string,
               name: props?.album?.name as string,
               image: props?.album?.image as string,
               youtube_url: youtube_url,
@@ -66,9 +67,7 @@ const typeTracks = ({
               },
               preview_url: (track as string) ?? '',
             },
-            context: props?.album?.context?.filter(
-              (item) => item.id !== props?.album?.idTrack
-            ) as ContextTracks[],
+            context: props?.album?.context as ContextTracks[],
           },
         },
       })
@@ -214,6 +213,7 @@ const typeTracks = ({
               ...props.likedSongs,
               position: props?.likedSongs?.position as number,
               id: props?.likedSongs?.id as string,
+              idTrack: props?.likedSongs?.idTrack as string,
               name: props?.likedSongs?.name as string,
               youtube_id: youtube_id,
               image: props?.likedSongs?.album?.image as string,
@@ -228,9 +228,7 @@ const typeTracks = ({
               },
               preview_url: (track as string) ?? '',
             },
-            context: props?.likedSongs?.context?.filter(
-              (item) => item.id !== props?.likedSongs?.idTrack
-            ) as ContextTracks[],
+            context: props?.likedSongs?.context as ContextTracks[],
           },
         },
       })
@@ -421,6 +419,7 @@ const typeTracks = ({
               ...props.playlist,
               position: props?.playlist?.position as number,
               id: props?.playlist?.id as string,
+              idTrack: props?.playlist?.idTrack as string,
               youtube_id: youtube_id,
               name: props?.playlist?.name as string,
               youtube_url: youtube_url,
@@ -435,9 +434,7 @@ const typeTracks = ({
               },
               preview_url: (track as string) ?? '',
             },
-            context: props?.playlist?.context?.filter(
-              (item) => item.id !== props?.id
-            ) as ContextTracks[],
+            context: props?.playlist?.context as ContextTracks[],
           },
         },
       })
@@ -623,6 +620,7 @@ type Props = {
   playlist?: {
     id?: string
     position?: number
+    idTrack?: string
     name?: string
     duration?: number
     preview_url?: string
