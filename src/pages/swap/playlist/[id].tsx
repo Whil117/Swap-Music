@@ -67,6 +67,7 @@ const Playlist: NextPageFC<Props> = ({ Playlist }) => {
               id={track?.track?.album.id as string}
               likedSongs={{
                 id: track?.track?.album.id,
+                idTrack: track?.track?.id,
                 name: track?.track?.name,
                 preview_url: track?.track?.preview_url as string,
                 position: idx,

@@ -43,6 +43,7 @@ const LikedSongs: NextPageFCProps = () => {
               likedSongs={{
                 id: track.track.album.id,
                 name: track.track.name,
+                idTrack: track.track.id,
                 preview_url: track.track.preview_url as string,
                 position: idx,
                 album: {

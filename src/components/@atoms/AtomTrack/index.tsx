@@ -66,7 +66,9 @@ const typeTracks = ({
               },
               preview_url: (track as string) ?? '',
             },
-            context: props?.album?.context as any,
+            context: props?.album?.context?.filter(
+              (item) => item.id !== props?.album?.idTrack
+            ) as ContextTracks[],
           },
         },
       })
@@ -95,31 +97,6 @@ const typeTracks = ({
           ${customCSS}
         `}
         key={props?.id}
-        // onClick={async (e) => {
-        //   if (screen <= 980) {
-        //     if (controls?.player?.currentTrack?.name === props?.album?.name) {
-        //       const audio = document.getElementById(
-        //         'AUDIOPLAYER'
-        //       ) as HTMLAudioElement
-        //       playPlayer ? audio.pause() : audio.play()
-        //       setPlayPlayer(!playPlayer)
-        //     } else {
-        //       const data = await client.query({
-        //         fetchPolicy: 'no-cache',
-        //         variables: {
-        //           slug: slug,
-        //         },
-        //         query: TRACKBYSLUG,
-        //       })
-
-        //       handleClick(
-        //         data?.data?.trackBySlug?.url,
-        //         data?.data?.trackBySlug?.youtube_url,
-        //         data?.data?.trackBySlug?.id
-        //       )
-        //     }
-        //   }
-        // }}
       >
         <AtomPlayTrack
           name={props?.album?.name as string}
@@ -251,7 +228,9 @@ const typeTracks = ({
               },
               preview_url: (track as string) ?? '',
             },
-            context: props?.likedSongs?.context as any,
+            context: props?.likedSongs?.context?.filter(
+              (item) => item.id !== props?.likedSongs?.idTrack
+            ) as ContextTracks[],
           },
         },
       })
@@ -456,7 +435,9 @@ const typeTracks = ({
               },
               preview_url: (track as string) ?? '',
             },
-            context: props?.playlist?.context as any,
+            context: props?.playlist?.context?.filter(
+              (item) => item.id !== props?.id
+            ) as ContextTracks[],
           },
         },
       })
@@ -481,25 +462,6 @@ const typeTracks = ({
           ${customCSS}
         `}
         key={props?.id}
-        // onClick={async (e) => {
-        //   if (screen <= 980) {
-        //     await client
-        //       .query({
-        //         fetchPolicy: 'no-cache',
-        //         variables: {
-        //           slug: slug,
-        //         },
-        //         query: TRACKBYSLUG,
-        //       })
-        //       .then(async (data: any) => {
-        //         await handleClick(
-        //           data?.trackBySlug?.url,
-        //           data?.data?.trackBySlug?.youtube_url,
-        //           data?.data?.trackBySlug?.id
-        //         )
-        //       })
-        //   }
-        // }}
       >
         <AtomPlayTrack
           name={props?.playlist?.name as string}
@@ -636,6 +598,7 @@ type Props = {
   customCSS?: SerializedStyles
   album?: {
     id?: string
+    idTrack?: string
     position?: number
     name?: string
     duration?: number
@@ -651,6 +614,7 @@ type Props = {
     name?: string
     duration?: number
     preview_url?: string
+    idTrack?: string
     image?: string
     artists?: ArtistProps
     album?: Album

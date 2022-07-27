@@ -88,6 +88,7 @@ const AlbumPage: NextPageFC<Props> = ({
               album={{
                 id: Album.id,
                 name: track.name,
+                idTrack: track.id,
                 preview_url: track.preview_url as string,
                 position: idx,
                 image: Album.images[0].url,
