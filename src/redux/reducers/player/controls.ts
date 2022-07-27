@@ -31,8 +31,8 @@ export type Inti = {
       position: number
       name: string
       artists: {
-        name?: string | undefined
-        id?: string | undefined
+        name?: string
+        id?: string
       }[]
       youtube_url?: string
       youtube_id?: string
@@ -41,10 +41,10 @@ export type Inti = {
       album: {
         id?: string
         name?: string
-        images?: {
-          url?: string
-        }[]
+        image?: string
       }
+      duration?: number
+      context?: ContextTracks[]
     }
     context: ContextTracks[]
   }

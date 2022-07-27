@@ -49,6 +49,7 @@ const typeTracks = ({
               type: type,
             },
             currentTrack: {
+              ...props.album,
               position: props?.album?.position as number,
               id: props?.id as string,
               name: props?.album?.name as string,
@@ -56,7 +57,7 @@ const typeTracks = ({
               youtube_url: youtube_url,
               youtube_id: youtube_id,
               artists: props?.album?.artists as ArtistProps,
-              album: props as {
+              album: props.album?.album as {
                 id?: string
                 name?: string
                 images?: {
@@ -233,6 +234,7 @@ const typeTracks = ({
               type: type,
             },
             currentTrack: {
+              ...props.likedSongs,
               position: props?.likedSongs?.position as number,
               id: props?.likedSongs?.id as string,
               name: props?.likedSongs?.name as string,
@@ -240,7 +242,7 @@ const typeTracks = ({
               image: props?.likedSongs?.album?.image as string,
               youtube_url: youtube_url,
               artists: props?.likedSongs?.artists as ArtistProps,
-              album: props as {
+              album: props.likedSongs?.album as {
                 id?: string
                 name?: string
                 images?: {
@@ -277,33 +279,6 @@ const typeTracks = ({
           ${customCSS}
         `}
         key={props?.id}
-        // onClick={async () => {
-        //   if (screen <= 980) {
-        //     if (
-        //       controls?.player?.currentTrack?.name === props?.likedSongs?.name
-        //     ) {
-        //       const audio = document.getElementById(
-        //         'AUDIOPLAYER'
-        //       ) as HTMLAudioElement
-        //       playPlayer ? audio.pause() : audio.play()
-        //       setPlayPlayer(!playPlayer)
-        //     } else {
-        //       const data = await client.query({
-        //         fetchPolicy: 'no-cache',
-        //         variables: {
-        //           slug: slug,
-        //         },
-        //         query: TRACKBYSLUG,
-        //       })
-
-        //       handleClick(
-        //         data?.data?.trackBySlug?.url,
-        //         data?.data?.trackBySlug?.youtube_url,
-        //         data?.data?.trackBySlug?.id
-        //       )
-        //     }
-        //   }
-        // }}
       >
         <AtomPlayTrack
           name={props?.likedSongs?.name as string}
@@ -313,96 +288,6 @@ const typeTracks = ({
             await handleClick(url, ytUrl, id)
           }}
         />
-        {/* <AtomButton
-          onClick={async () => {
-            if (
-              controls?.player?.currentTrack?.name === props?.likedSongs?.name
-            ) {
-              const audio = document.getElementById(
-                'AUDIOPLAYER'
-              ) as HTMLAudioElement
-              playPlayer ? audio.pause() : audio.play()
-              setPlayPlayer(!playPlayer)
-            } else {
-              const data = await client.query({
-                fetchPolicy: 'no-cache',
-                variables: {
-                  slug: slug,
-                },
-                query: TRACKBYSLUG,
-              })
-              handleClick(
-                data?.data?.trackBySlug?.url,
-                data?.data?.trackBySlug?.youtube_url,
-                data?.data?.trackBySlug?.id
-              )
-            }
-          }}
-          css={css`
-            grid-column: 1;
-            justify-self: center;
-            align-self: center;
-            position: relative;
-            margin: 0;
-            padding: 0;
-            @media (max-width: 980px) {
-              display: none;
-            }
-          `}
-        >
-          <AtomText
-            as="p"
-            css={css`
-              margin: 0;
-              padding: 0;
-              font-size: 16px;
-              font-weight: 600;
-              opacity: 1;
-              &:hover {
-                display: none;
-                opacity: 0;
-              }
-            `}
-          >
-            {(props?.likedSongs?.position as number) + 1}
-          </AtomText>
-          {controls?.player?.currentTrack?.name === props?.likedSongs?.name && (
-            <AtomIcon
-              customCSS={css`
-                background-color: #121216;
-                position: absolute;
-                &:hover {
-                  background-color: #222229;
-                  opacity: 1;
-                }
-              `}
-              width="18px"
-              color="white"
-              height="18px"
-              icon="https://storage.googleapis.com/cdn-bucket-ixulabs-platform/WHIL/icons/fluent_sound-wave-circle-24-regular.svg"
-            />
-          )}
-          <AtomIcon
-            customCSS={css`
-              padding: 5px;
-              background-color: #121216;
-              position: absolute;
-              opacity: 0;
-              &:hover {
-                background-color: #222229;
-                opacity: 1;
-              }
-            `}
-            width="18px"
-            height="18px"
-            icon={
-              controls?.player?.currentTrack?.name ===
-                props?.likedSongs?.name && playPlayer
-                ? ' https://storage.googleapis.com/cdn-bucket-ixulabs-platform/WHIL/icons/PUASE.svg'
-                : 'https://storage.googleapis.com/cdn-bucket-ixulabs-platform/WHIL/icons/playho.svg'
-            }
-          />
-        </AtomButton> */}
         <AtomWrapper
           css={css`
             grid-column: 2;
@@ -554,6 +439,7 @@ const typeTracks = ({
               type: type,
             },
             currentTrack: {
+              ...props.playlist,
               position: props?.playlist?.position as number,
               id: props?.playlist?.id as string,
               youtube_id: youtube_id,
@@ -561,7 +447,7 @@ const typeTracks = ({
               youtube_url: youtube_url,
               image: props?.playlist?.album?.image as string,
               artists: props?.playlist?.artists as ArtistProps,
-              album: props as {
+              album: props.playlist?.album as {
                 id?: string
                 name?: string
                 images?: {
@@ -756,6 +642,7 @@ type Props = {
     preview_url?: string
     image?: string
     artists?: ArtistProps
+    album?: Album
     context?: ContextTracks[]
   }
   likedSongs?: {

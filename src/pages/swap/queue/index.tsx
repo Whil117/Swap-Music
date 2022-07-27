@@ -82,6 +82,7 @@ const typeQueue = {
 
 const Queue: NextPageFCProps = () => {
   const controls = useAtomValue(controlsAtom)
+  // console.log(controls.player?.currentTrack?.album)
 
   return (
     <AtomWrapper>
@@ -112,14 +113,10 @@ const Queue: NextPageFCProps = () => {
               preview_url: controls?.player?.currentTrack
                 ?.preview_url as string,
               position: 0,
-              album: {
-                id: controls?.player?.currentTrack?.album?.id,
-                name: controls?.player?.currentTrack?.album?.name,
-                image: controls?.player?.currentTrack?.image as string,
-              },
+              album: controls.player?.currentTrack?.album,
               image: controls?.player?.currentTrack?.image,
-              duration: 0,
-              artists: [],
+              duration: controls?.player?.currentTrack?.duration,
+              artists: controls?.player?.currentTrack?.artists,
               context: [],
             }}
             customCSS={css`
@@ -127,13 +124,7 @@ const Queue: NextPageFCProps = () => {
             `}
           />
         </AtomWrapper>
-        {/* <AtomWrapper
-          css={css`
-            background-color: #555555;
-            height: 1px;
-            width: 100%;
-          `}
-        ></AtomWrapper> */}
+
         <AtomText opacity={0.5} fontWeight="bold">
           Next up
         </AtomText>
