@@ -88,7 +88,6 @@ const typeQueue = {
 
 const Queue: NextPageFCProps = () => {
   const controls = useAtomValue(controlsAtom)
-  // console.log(controls.player?.currentTrack)
 
   return (
     <AtomWrapper>
