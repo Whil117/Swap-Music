@@ -12,6 +12,7 @@ type Props = {
   id: string
   label?: string
   placeholder?: string
+  onClick?: () => void
   min?: string
   max?: string | number
   type?:
@@ -213,6 +214,7 @@ const AtomInput = (props: Props) => {
             {...props}
             value={lodash.get(props.formik?.values, props.id) ?? props.value}
             onChange={props.onChange ?? props.formik?.handleChange}
+            onClick={props.onClick}
             onBlur={(e) => {
               props.formik?.handleBlur(e)
               props.onBlur?.(e)

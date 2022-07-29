@@ -1,6 +1,7 @@
 /* eslint-disable no-unused-vars */
 import { css } from '@emotion/react'
 import { colorsAtom } from '@Hooks/UseColor'
+import useSetRef from '@Hooks/useSetRef'
 import ReducerAtomPlayer, {
   ActionPlayer,
   Inti,
@@ -9,7 +10,7 @@ import ReducerAtomPlayer, {
 } from '@Redux/reducers/player/controls'
 import Svg from '@Whil/components/Svg'
 import axios from 'axios'
-import { useAtom, useAtomValue, useSetAtom } from 'jotai'
+import { atom, useAtom, useAtomValue, useSetAtom } from 'jotai'
 import AtomButton from 'lib/Atombutton'
 import AtomIcon from 'lib/AtomIcon'
 import AtomImage from 'lib/AtomImage'
@@ -44,11 +45,18 @@ export const Navigator = (props: NavigatorProps) => {
   })
 }
 
+export const audioRefAtom = atom({})
+
 const NavbarPlayer: FC = () => {
   const colors = useAtomValue(colorsAtom)
   const [controls, dispatch] = useAtom(controlsAtom)
   const setPlayPlayer = useSetAtom(PLAYATOM)
+  const setAudioRef = useSetAtom(audioRefAtom)
   const audio = useRef<HTMLAudioElement>()
+  useSetRef<MutableRefObject<HTMLAudioElement | undefined>>(
+    audio as any,
+    setAudioRef
+  )
   const router = useRouter()
 
   const handlePlay = () => {

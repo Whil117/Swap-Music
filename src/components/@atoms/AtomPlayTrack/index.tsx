@@ -14,7 +14,12 @@ import { FC } from 'react'
 type Props = {
   name: string
   slug: string
-  onTrack: (url: string, yt_url: string, id: string) => void
+  onTrack: (
+    url: string,
+    yt_url: string,
+    id: string,
+    youtube_video: string
+  ) => void
   position: number
 }
 
@@ -44,7 +49,8 @@ const AtomPlayTrack: FC<Props> = (props) => {
           props.onTrack(
             data?.data?.trackBySlug?.url,
             data?.data?.trackBySlug?.youtube_url,
-            data?.data?.trackBySlug?.id
+            data?.data?.trackBySlug?.id,
+            data?.data?.trackBySlug?.youtube_video
           )
         }
       }}

@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-page-custom-font */
 import AtomBarScroll, {
   isBottomAtom,
   routerAtom,
@@ -8,6 +9,7 @@ import Navbar from '@Components/Navbar/swap'
 import { css } from '@emotion/react'
 import { useAtomValue, useSetAtom } from 'jotai'
 import AtomWrapper from 'lib/Atomwrapper'
+import Head from 'next/head'
 import { useRouter } from 'next/router'
 import { FC, useRef } from 'react'
 import { PropsLayout } from '..'
@@ -54,6 +56,12 @@ const SwapUser: FC<PropsLayout> = (props) => {
 
   return (
     <>
+      <Head>
+        <link
+          href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700&display=swap"
+          rel="stylesheet"
+        />
+      </Head>
       <Hidratation>
         <AtomWrapper
           css={css`

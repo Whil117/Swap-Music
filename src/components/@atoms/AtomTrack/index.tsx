@@ -28,7 +28,8 @@ const typeTracks = ({
     const handleClick = async (
       track: string,
       youtube_url: string,
-      youtube_id: string
+      youtube_id: string,
+      youtube_video: string
     ) => {
       Navigator({
         title: props?.album?.name as string,
@@ -57,6 +58,7 @@ const typeTracks = ({
               image: props?.album?.image as string,
               youtube_url: youtube_url,
               youtube_id: youtube_id,
+              youtube_video: youtube_video,
               artists: props?.album?.artists as ArtistProps,
               album: props.album?.album as {
                 id?: string
@@ -101,8 +103,8 @@ const typeTracks = ({
           name={props?.album?.name as string}
           position={props?.album?.position as number}
           slug={slug as string}
-          onTrack={async (url, ytUrl, id) => {
-            await handleClick(url, ytUrl, id)
+          onTrack={async (url, ytUrl, id, youtube_video) => {
+            await handleClick(url, ytUrl, id, youtube_video)
           }}
         />
         <AtomWrapper
@@ -188,7 +190,8 @@ const typeTracks = ({
     const handleClick = (
       track: string,
       youtube_url: string,
-      youtube_id: string
+      youtube_id: string,
+      youtube_video: string
     ) => {
       Navigator({
         title: props?.likedSongs?.name as string,
@@ -216,6 +219,7 @@ const typeTracks = ({
               idTrack: props?.likedSongs?.idTrack as string,
               name: props?.likedSongs?.name as string,
               youtube_id: youtube_id,
+              youtube_video: youtube_video,
               image: props?.likedSongs?.album?.image as string,
               youtube_url: youtube_url,
               artists: props?.likedSongs?.artists as ArtistProps,
@@ -261,8 +265,8 @@ const typeTracks = ({
           name={props?.likedSongs?.name as string}
           position={props?.likedSongs?.position as number}
           slug={slug as string}
-          onTrack={async (url, ytUrl, id) => {
-            await handleClick(url, ytUrl, id)
+          onTrack={async (url, ytUrl, id, youtube_video) => {
+            await handleClick(url, ytUrl, id, youtube_video)
           }}
         />
         <AtomWrapper
@@ -394,7 +398,8 @@ const typeTracks = ({
     const handleClick = async (
       track: string,
       youtube_url: string,
-      youtube_id: string
+      youtube_id: string,
+      youtube_video: string
     ) => {
       Navigator({
         title: props?.playlist?.name as string,
@@ -423,6 +428,7 @@ const typeTracks = ({
               youtube_id: youtube_id,
               name: props?.playlist?.name as string,
               youtube_url: youtube_url,
+              youtube_video: youtube_video,
               image: props?.playlist?.album?.image as string,
               artists: props?.playlist?.artists as ArtistProps,
               album: props.playlist?.album as {
@@ -464,8 +470,8 @@ const typeTracks = ({
           name={props?.playlist?.name as string}
           position={props?.playlist?.position as number}
           slug={slug as string}
-          onTrack={async (url, ytUrl, id) => {
-            await handleClick(url, ytUrl, id)
+          onTrack={async (url, ytUrl, id, youtube_video) => {
+            await handleClick(url, ytUrl, id, youtube_video)
           }}
         />
         <AtomWrapper

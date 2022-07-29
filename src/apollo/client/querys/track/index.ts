@@ -7,6 +7,7 @@ export const TRACKBYSLUG = gql`
       id
       slug
       youtube_url
+      youtube_video
       url
       __typename
     }

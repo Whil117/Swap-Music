@@ -87,7 +87,7 @@ const Navbar: FC<Props> = () => {
             display: flex;
             align-items: center;
             justify-content: flex-start;
-            padding: 0px 1rem;
+            padding: 1rem;
           `}
           onClick={() =>
             router.push('/').then(() =>
@@ -172,7 +172,7 @@ const Navbar: FC<Props> = () => {
               gap: 1rem;
               width: -webkit-fill-available;
               /* height: ${controls?.view ? '385px' : '500px'}; */
-              height: calc(100vh - 575px);
+              height: calc(100vh - 610px);
               ::-webkit-scrollbar {
                 width: 5px;
                 /* height: 8px; */

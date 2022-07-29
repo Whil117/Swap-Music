@@ -8,6 +8,7 @@ import { atomWithStorage } from 'jotai/utils'
 import AtomInput from 'lib/AtomInput'
 import AtomText from 'lib/AtomText'
 import AtomWrapper from 'lib/Atomwrapper'
+import { videoRefAtom } from 'pages/swap/video/[id]'
 import { FC, MutableRefObject } from 'react'
 import { controlsAtom } from '.'
 
@@ -31,6 +32,8 @@ const Progressbar: FC<Props> = ({ audio }) => {
   const playerPlayer = useAtomValue(PLAYATOM)
   const [currentTime, setCurrentTime] = useAtom(progressBarAtom)
   const controls = useAtomValue(controlsAtom)
+  const [video, setVideo] = useAtom(videoRefAtom)
+
   const totalTime = audio?.current?.duration ?? (0 as number)
   const screen = useScreen()
   const colors = useAtomValue(colorsAtom)
@@ -73,6 +76,11 @@ const Progressbar: FC<Props> = ({ audio }) => {
         max={audio.current?.duration ? audio.current.duration : 0}
         value={currentTime}
         disabled={screen <= 980}
+        onClick={() => {
+          if (video.current) {
+            video.current.currentTime = currentTime
+          }
+        }}
         onChange={(event) => {
           if (audio.current) {
             audio.current.currentTime = Number(event.target.value)
@@ -178,6 +186,8 @@ const Progressbar: FC<Props> = ({ audio }) => {
           onPlaying={() => {
             if (audio.current) {
               audio.current.ontimeupdate = (event: any) => {
+                // setVideo()
+                // video.current.currentTime = Math.round(event.target.currentTime)
                 setCurrentTime(Math.round(event.target.currentTime))
               }
             }

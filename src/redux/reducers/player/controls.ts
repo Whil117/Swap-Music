@@ -37,6 +37,7 @@ export type Inti = {
       }[]
       youtube_url?: string
       youtube_id?: string
+      youtube_video?: string
       preview_url: string
       image: string
       album: {

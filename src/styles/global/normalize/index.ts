@@ -5,13 +5,13 @@ const Normalize = css`
   html {
     line-height: 1.15; /* 1 */
     -webkit-text-size-adjust: 100%; /* 2 */
-    font-family: 'Inter', sans-serif;
+    font-family: 'Open Sans', sans-serif;
   }
   body {
     background: ${colors.black_primary};
     color: ${colors.white};
     margin: 0;
-    font-family: 'Roboto', sans-serif;
+    font-family: 'Open Sans', sans-serif;
   }
   p {
     font-weight: 600;
