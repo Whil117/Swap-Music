@@ -38,6 +38,7 @@ export type Inti = {
       youtube_url?: string
       youtube_id?: string
       youtube_video?: string
+      lyrics?: string
       preview_url: string
       image: string
       album: {
@@ -80,6 +81,7 @@ export const initialState = {
       id: '',
       idTrack: '',
       position: 0,
+      lyrics: '',
       name: '',
       artists: [] as {
         name?: string

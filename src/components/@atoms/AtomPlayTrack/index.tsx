@@ -14,11 +14,14 @@ import { FC } from 'react'
 type Props = {
   name: string
   slug: string
+  artist: string
+  title_track: string
   onTrack: (
     url: string,
     yt_url: string,
     id: string,
-    youtube_video: string
+    youtube_video: string,
+    lyrics: string
   ) => void
   position: number
 }
@@ -43,6 +46,8 @@ const AtomPlayTrack: FC<Props> = (props) => {
             fetchPolicy: 'no-cache',
             variables: {
               slug: props.slug,
+              artist: props.artist,
+              title_track: props.title_track,
             },
             query: TRACKBYSLUG,
           })
@@ -50,7 +55,8 @@ const AtomPlayTrack: FC<Props> = (props) => {
             data?.data?.trackBySlug?.url,
             data?.data?.trackBySlug?.youtube_url,
             data?.data?.trackBySlug?.id,
-            data?.data?.trackBySlug?.youtube_video
+            data?.data?.trackBySlug?.youtube_video,
+            data?.data?.trackBySlug?.lyrics
           )
         }
       }}

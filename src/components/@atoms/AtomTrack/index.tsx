@@ -29,7 +29,8 @@ const typeTracks = ({
       track: string,
       youtube_url: string,
       youtube_id: string,
-      youtube_video: string
+      youtube_video: string,
+      lyrics: string
     ) => {
       Navigator({
         title: props?.album?.name as string,
@@ -58,6 +59,7 @@ const typeTracks = ({
               image: props?.album?.image as string,
               youtube_url: youtube_url,
               youtube_id: youtube_id,
+              lyrics: lyrics,
               youtube_video: youtube_video,
               artists: props?.album?.artists as ArtistProps,
               album: props.album?.album as {
@@ -101,10 +103,14 @@ const typeTracks = ({
       >
         <AtomPlayTrack
           name={props?.album?.name as string}
+          artist={
+            props?.album?.artists && (props?.album?.artists[0]?.name as any)
+          }
+          title_track={props?.album?.name as string}
           position={props?.album?.position as number}
           slug={slug as string}
-          onTrack={async (url, ytUrl, id, youtube_video) => {
-            await handleClick(url, ytUrl, id, youtube_video)
+          onTrack={async (url, ytUrl, id, youtube_video, lyrics) => {
+            await handleClick(url, ytUrl, id, youtube_video, lyrics)
           }}
         />
         <AtomWrapper
@@ -191,7 +197,8 @@ const typeTracks = ({
       track: string,
       youtube_url: string,
       youtube_id: string,
-      youtube_video: string
+      youtube_video: string,
+      lyrics: string
     ) => {
       Navigator({
         title: props?.likedSongs?.name as string,
@@ -219,6 +226,7 @@ const typeTracks = ({
               idTrack: props?.likedSongs?.idTrack as string,
               name: props?.likedSongs?.name as string,
               youtube_id: youtube_id,
+              lyrics: lyrics,
               youtube_video: youtube_video,
               image: props?.likedSongs?.album?.image as string,
               youtube_url: youtube_url,
@@ -263,10 +271,15 @@ const typeTracks = ({
       >
         <AtomPlayTrack
           name={props?.likedSongs?.name as string}
+          artist={
+            props?.likedSongs?.artists &&
+            (props?.likedSongs?.artists[0]?.name as any)
+          }
+          title_track={props?.likedSongs?.name as string}
           position={props?.likedSongs?.position as number}
           slug={slug as string}
-          onTrack={async (url, ytUrl, id, youtube_video) => {
-            await handleClick(url, ytUrl, id, youtube_video)
+          onTrack={async (url, ytUrl, id, youtube_video, lyrics) => {
+            await handleClick(url, ytUrl, id, youtube_video, lyrics)
           }}
         />
         <AtomWrapper
@@ -399,7 +412,8 @@ const typeTracks = ({
       track: string,
       youtube_url: string,
       youtube_id: string,
-      youtube_video: string
+      youtube_video: string,
+      lyrics: string
     ) => {
       Navigator({
         title: props?.playlist?.name as string,
@@ -428,6 +442,7 @@ const typeTracks = ({
               youtube_id: youtube_id,
               name: props?.playlist?.name as string,
               youtube_url: youtube_url,
+              lyrics: lyrics,
               youtube_video: youtube_video,
               image: props?.playlist?.album?.image as string,
               artists: props?.playlist?.artists as ArtistProps,
@@ -468,10 +483,12 @@ const typeTracks = ({
       >
         <AtomPlayTrack
           name={props?.playlist?.name as string}
+          artist={props?.playlist?.artists?.[0]?.name as string}
+          title_track={props?.playlist?.name as string}
           position={props?.playlist?.position as number}
           slug={slug as string}
-          onTrack={async (url, ytUrl, id, youtube_video) => {
-            await handleClick(url, ytUrl, id, youtube_video)
+          onTrack={async (url, ytUrl, id, youtube_video, lyrics) => {
+            await handleClick(url, ytUrl, id, youtube_video, lyrics)
           }}
         />
         <AtomWrapper

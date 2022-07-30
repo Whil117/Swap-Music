@@ -477,6 +477,22 @@ const buttonsActions = (
   dispatch: (update: ActionPlayer) => void
 ) => [
   {
+    key: 3,
+    id: 'lyrics',
+    active: router.asPath.includes('/lyrics'),
+    color: '#fff',
+    onClick: () =>
+      router.asPath.includes('/lyrics')
+        ? router.back()
+        : router.push('/swap/lyrics').then(() => {
+            document?.getElementById('view')?.scroll({
+              top: 0,
+              behavior: 'smooth',
+            })
+          }),
+    icon: 'https://storage.googleapis.com/cdn-bucket-ixulabs-platform/WHIL/icons/microphone.svg',
+  },
+  {
     key: 2,
     id: 'aleatory',
     active: controls.aleatory,
@@ -499,6 +515,7 @@ const buttonsActions = (
     icon: 'https://storage.googleapis.com/cdn-bucket-ixulabs-platform/WHIL/icons/queue.svg',
   },
 ]
+
 const playerButtons = (
   controls: Inti,
   dispatch: (update: ActionPlayer) => void

@@ -83,9 +83,8 @@ const VideoById: NextPageFCProps = () => {
         </AtomText>
         {/* <AtomWrapper id="video-player"></AtomWrapper> */}
         <video
-          width="1440"
+          width="1075"
           height="600"
-          controls
           ref={videoref as LegacyRef<HTMLVideoElement> | undefined}
           autoPlay
         >
